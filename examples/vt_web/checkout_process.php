@@ -1,41 +1,35 @@
 <?php 
 
-require(dirname(__FILE__) . '/../veritrans.php');
+require(dirname(__FILE__) . '/../../Veritrans.php');
 
-Veritrans::$server_key = 'eebadfec-fa3a-496a-8ea0-bb5795179ce6';
-Veritrans::$is_sandbox = true; // uncomment for production environment
+Veritrans::$serverKey = 'eebadfec-fa3a-496a-8ea0-bb5795179ce6';
+// Veritrans::$is_production = true; // uncomment for production environment
+
+$item_details = array(
+	array(
+		'id' => 'Id',
+		'quantity' => 1,
+		'price' => 10000,
+		'name' => 'Item'
+		)
+	);
 
 $params = array(
-	'$txn->order_id' => 'order';
-	'$txn->gross_amount' => 10000;
+	'transaction_details' => array(
+			'order_id' => rand(),
+			'gross_amount' => 10000,
+		),	
+	'item_details' => $item_details,
+	'vtweb' => array(
+		'enabled_payments' => array(
+			'cimb_clicks'
+			)
+		)
 );
 
-$txn->item_details = array();
-
-// can also be initialized this way
-// $txn = new Veritrans::Transaction(array(
-// 	'order_id' => rand(),
-// 	'gross_amount' => 10000
-// 	));
-
-
 try {
-	header('Location: ' . $txn->get_redirection_url($params));
+	header('Location: ' . Veritrans_Vtweb::getRedirectionUrl($params)); // redirect to Veritrans VTWeb page
 } catch (Exception $e)
 {
 	echo $e->getMessage();
 }
-
-
-
-// kalau gini harusnya error 
-$txn = Veritrans_Transaction::find('order');
-
-$txn->order_id;
-$txn->gross_amount;
-$txn->fraud_status
-
-$txn->item_details;
-
-$txn->get_redirection_url();
-$txn->get_transacript(); // => json / array

@@ -2,25 +2,23 @@
 
 class Veritrans_ApiRequestor {
 
-  private $sandbox_base_url = 'https://api.sandbox.veritrans.co.id/v2';
-  private $production_base_url = 'https://api.veritrans.co.id/v2';
-
   public static function get($url, $server_key, $data_hash)
   {
-    return Veritrans_Utility::remoteCall($url, $server_key, $data_hash, false);
+    return self::remoteCall($url, $server_key, $data_hash, false);
   }
 
   public static function post($url, $server_key, $data_hash)
   {
-    return Veritrans_Utility::remoteCall($url, $server_key, $data_hash, true);
+    return self::remoteCall($url, $server_key, $data_hash, true);
   }
 
-  public static function remote_call($url, $server_key, $data_hash, $post = true)
+  public static function remoteCall($url, $server_key, $data_hash, $post = true)
   {
     $ch = curl_init();
     
     if ($data_hash) {
       $body = json_encode($data_hash);
+      var_dump($body);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     }
     
@@ -42,13 +40,13 @@ class Veritrans_ApiRequestor {
 
     if ($result === FALSE)
     {
-      throw new \Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
+      throw new Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
     } else
     {
       $result_array = json_decode($result, true);
       if (!in_array($result_array['status_code'], array(200, 201, 202)))
       {
-        throw new \Exception('Veritrans Error (' . $result_array['status_code'] . '): ' . $result_array['status_message'], $result_array['status_code']);
+        throw new Exception('Veritrans Error (' . $result_array['status_code'] . '): ' . $result_array['status_message'], $result_array['status_code']);
       } else
       {
         return $result_array;

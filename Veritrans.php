@@ -13,19 +13,16 @@ if (!function_exists('json_decode')) {
   throw new Exception('Veritrans needs the JSON PHP extension.');
 }
 
+// The singleton
+require('Veritrans/Veritrans.php');
+
+// Veritrans API Resources
 require('Veritrans/Transaction.php');
+
+// Plumbing
 require('Veritrans/ApiRequestor.php');
 require('Veritrans/Notification.php');
 require('Veritrans/Response.php');
 require('Veritrans/Vtdirect.php');
 require('Veritrans/Vtlink.php');
 require('Veritrans/Vtweb.php');
-
-class Veritrans {
-
-	public static $server_key;
-	public static $is_production = false;
-	public static $sandbox_base_url = 'https://api.sandbox.veritrans.co.id/v2';
-	public static $production_base_url = 'https://api.veritrans.co.id/v2';
-
-}
