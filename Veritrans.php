@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // This snippet due to the braintree_php.
 if (version_compare(PHP_VERSION, '5.2.1', '<')) {
@@ -22,7 +22,5 @@ require('Veritrans/Transaction.php');
 // Plumbing
 require('Veritrans/ApiRequestor.php');
 require('Veritrans/Notification.php');
-require('Veritrans/Response.php');
-require('Veritrans/Vtdirect.php');
-require('Veritrans/Vtlink.php');
-require('Veritrans/Vtweb.php');
+require('Veritrans/VtDirect.php');
+require('Veritrans/VtWeb.php');
