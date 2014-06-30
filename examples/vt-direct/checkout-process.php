@@ -6,15 +6,12 @@ if(empty($_POST['token_id'])) {
   die('Empty token_id!');
 }
 
-Veritrans::$serverKey = 'f1faeaec-0889-47e2-9d3b-cb8f49f41a3d';
-
-$token_id = $_POST['token_id'];
+Veritrans::$serverKey = '<your server key>';
 
 $transaction_details = array(
   'order_id'    => time(),
   'gross_amount'  => 200000
 );
-
 
 // Populate items
 $items = array(
@@ -62,6 +59,9 @@ $customer_details = array(
     'billing_address'  => $billing_address,
     'shipping_address' => $shipping_address
   );
+
+// Token ID from checkout page
+$token_id = $_POST['token_id'];
 
 // Transaction data to be sent
 $transaction_data = array(

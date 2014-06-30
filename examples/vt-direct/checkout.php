@@ -45,7 +45,7 @@
       // Sandbox URL
       Veritrans.url = "https://api.sandbox.veritrans.co.id/v2/token";
       // TODO: Change with your client key.
-      Veritrans.client_key = "4ef29a82-e782-435d-8ab8-fe3de4b9eddb";
+      Veritrans.client_key = "<your client key>";
       var card = function () {
         return {
           "card_number": $(".card-number").val(),
