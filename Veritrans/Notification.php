@@ -4,7 +4,7 @@ class Veritrans_Notification {
 
   private $response;
 
-  public function verify()
+  public function verified()
   {
     if (is_null($this->response)) {
       $this->response = json_decode(file_get_contents('php://input'), true);

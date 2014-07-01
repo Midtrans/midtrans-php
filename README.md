@@ -51,21 +51,11 @@ You can see some VT-Web examples [here](https://github.com/veritrans/veritrans-p
 #### Get Redirection URL of a Charge
 
 ```php
-// Item details are optional
-$item_details = array(
-    array(
-      'id' => 'Id',
-      'quantity' => 1,
-      'price' => 10000,
-      'name' => 'Item'
-    ));
-
 $params = array(
     'transaction_details' => array(
       'order_id' => rand(),
       'gross_amount' => 10000,
-    ),
-    'item_details' => $item_details,
+    )
     'vtweb' => array()
   );
 
@@ -82,11 +72,25 @@ catch (Exception $e) {
 
 ```php
 $notif = new Veritrans_Notification();
-if ($notif->verify()) {
-  error_log(print_r($notif, true));
-}
-else {
-  error_log("Not verified!\n");
+if ($notif->verified()) {
+  error_log("Status order ID $result->order_id: $result->status_code");
+
+  // Success
+  if ($result->status_code == '200') {
+    // TODO Update merchant's database (i.e. update status order)
+  }
+  // Pending
+  else if ($result->status_code == '201') {
+    // TODO Update merchant's database (i.e. update status order)
+  }
+  // Denied
+  else if ($result->status_code == '202') {
+    // TODO Update merchant's database (i.e. update status order)
+  }
+  // Error
+  else {
+    // TODO Update merchant's database (i.e. update status order)
+  }
 }
 ```
 
