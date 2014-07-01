@@ -6,18 +6,18 @@ Veritrans::$serverKey = '<your server key>';
 
 $notif = new Veritrans_Notification();
 if ($notif->verified()) {
-  error_log("Status order ID $result->order_id: $result->status_code");
+  error_log("Status order ID $notif->order_id: $notif->status_code");
 
   // Success
-  if ($result->status_code == '200') {
+  if ($notif->status_code == '200') {
     // TODO Update merchant's database (i.e. update status order)
   }
   // Pending
-  else if ($result->status_code == '201') {
+  else if ($notif->status_code == '201') {
     // TODO Update merchant's database (i.e. update status order)
   }
   // Denied
-  else if ($result->status_code == '202') {
+  else if ($notif->status_code == '202') {
     // TODO Update merchant's database (i.e. update status order)
   }
   // Error
