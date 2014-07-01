@@ -29,13 +29,19 @@ If you are not using Composer, you can clone or [download](https://github.com/ve
 
 ### General Settings
 
-#### Set the Server Key
+#### Set Server Key
 
 ```php
 Veritrans::$serverKey = '<your server key>';
 ``` 
 
-#### Set the Environment
+#### Set Client Key (VT-Direct)
+
+```javascript
+Veritrans.client_key = "<your client key>";
+```
+
+#### Set Environment
 ```php
 // Development Environment (the default)
 Veritrans::$is_production = false;
