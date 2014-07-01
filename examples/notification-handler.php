@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../Veritrans.php');
+require_once(dirname(__FILE__) . '/../Veritrans.php');
 
 Veritrans::$serverKey = '<your server key>';
 
