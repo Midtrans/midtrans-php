@@ -2,7 +2,7 @@
 
 // This snippet due to the braintree_php.
 if (version_compare(PHP_VERSION, '5.2.1', '<')) {
-    throw new Braintree_Exception('PHP version >= 5.2.1 required');
+    throw new Exception('PHP version >= 5.2.1 required');
 }
 
 // This snippet (and some of the curl code) due to the Facebook SDK.
