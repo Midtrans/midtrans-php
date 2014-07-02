@@ -1,6 +1,6 @@
 <?php
 
-class Veritrans_Vtweb {
+class Veritrans_VtWeb {
 
   public static function getRedirectionUrl($params)
   {
