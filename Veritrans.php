@@ -14,13 +14,13 @@ if (!function_exists('json_decode')) {
 }
 
 // The singleton
-require('Veritrans/Veritrans.php');
+require_once('Veritrans/Veritrans.php');
 
 // Veritrans API Resources
-require('Veritrans/Transaction.php');
+require_once('Veritrans/Transaction.php');
 
 // Plumbing
-require('Veritrans/ApiRequestor.php');
-require('Veritrans/Notification.php');
-require('Veritrans/VtDirect.php');
-require('Veritrans/VtWeb.php');
+require_once('Veritrans/ApiRequestor.php');
+require_once('Veritrans/Notification.php');
+require_once('Veritrans/VtDirect.php');
+require_once('Veritrans/VtWeb.php');
