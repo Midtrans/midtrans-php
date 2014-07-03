@@ -1,4 +1,4 @@
-Veritrans-PHP-2
+Veritrans-PHP
 ===============
 
 Veritrans :heart: PHP!
@@ -14,7 +14,7 @@ If you are using [Composer](https://getcomposer.org), add this require line to y
 ```json
 {
 	"require": {
-		"veritrans/veritrans-php-2": "master"
+		"veritrans/veritrans-php": "master"
 	}
 }
 ```
@@ -23,7 +23,7 @@ and run `composer install` on your terminal.
 
 ### Manual Instalation
 
-If you are not using Composer, you can clone or [download](https://github.com/veritrans/veritrans-php-2/archive/master.zip) this repository.
+If you are not using Composer, you can clone or [download](https://github.com/veritrans/veritrans-php/archive/master.zip) this repository.
 
 ## How to Use
 
@@ -52,7 +52,7 @@ Veritrans::$is_production = true;
 
 ### VT-Web
 
-You can see some VT-Web examples [here](https://github.com/veritrans/veritrans-php-2/tree/master/examples/vt-web).
+You can see some VT-Web examples [here](https://github.com/veritrans/veritrans-php/tree/master/examples/vt-web).
 
 #### Get Redirection URL of a Charge
 
@@ -102,7 +102,7 @@ if ($notif->verified()) {
 
 ### VT-Direct
 
-You can see some VT-Direct examples [here](https://github.com/veritrans/veritrans-php-2/tree/master/examples/vt-direct).
+You can see some VT-Direct examples [here](https://github.com/veritrans/veritrans-php/tree/master/examples/vt-direct).
 
 #### Checkout Page
 
