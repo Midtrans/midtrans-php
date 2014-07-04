@@ -11,8 +11,7 @@ $params = array(
     'transaction_details' => array(
       'order_id' => rand(),
       'gross_amount' => 10000,
-    ),
-    'vtweb' => array()
+    )
   );
 
 try {
