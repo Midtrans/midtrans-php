@@ -4,16 +4,16 @@ class Veritrans_Notification {
 
   private $response;
 
+  public function __construct()
+  {
+    $this->response = json_decode(file_get_contents('php://input'), true);
+  }
+
   public function verified()
   {
-    if (is_null($this->response)) {
-      $this->response = json_decode(file_get_contents('php://input'), true);
-    }
-
     if ($this->response['notification_key'] != Veritrans::$serverKey) {
       return false;
     }
-
     return true;
   }
 
