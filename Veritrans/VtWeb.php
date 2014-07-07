@@ -8,7 +8,7 @@ class Veritrans_VtWeb {
         'payment_type' => 'vtweb',
         'vtweb' => array(
           'enabled_payments' => array('credit_card'),
-          'credit_card_3d_secure' => Veritrans::$is3ds
+          'credit_card_3d_secure' => Veritrans_Config::$is3ds
         )
       );
 
@@ -22,8 +22,10 @@ class Veritrans_VtWeb {
 
     $payloads = array_replace_recursive($payloads, $params);
 
-    $result = Veritrans_ApiRequestor::post(Veritrans::getBaseUrl() . '/charge',
-        Veritrans::$serverKey, $payloads);
+    $result = Veritrans_ApiRequestor::post(
+        Veritrans_Config::getBaseUrl() . '/charge',
+        Veritrans_Config::$serverKey,
+        $payloads);
 
     return $result->redirect_url;
   }

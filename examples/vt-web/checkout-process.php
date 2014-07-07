@@ -2,10 +2,10 @@
 
 require_once(dirname(__FILE__) . '/../../Veritrans.php');
 
-Veritrans::$serverKey = '<your server key>';
+Veritrans_Config::$serverKey = '<your server key>';
 
 // Uncomment for production environment
-// Veritrans::$is_production = true;
+// Veritrans_Config::$isProduction = true;
 
 $params = array(
     'transaction_details' => array(

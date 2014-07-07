@@ -18,8 +18,10 @@ class Veritrans_VtDirect {
 
     $payloads = array_replace_recursive($payloads, $params);
 
-    $result = Veritrans_ApiRequestor::post(Veritrans::getBaseUrl() . '/charge',
-        Veritrans::$serverKey, $payloads);
+    $result = Veritrans_ApiRequestor::post(
+        Veritrans_Config::getBaseUrl() . '/charge',
+        Veritrans_Config::$serverKey,
+        $payloads);
 
     return $result;
   }

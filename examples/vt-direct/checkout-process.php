@@ -6,7 +6,7 @@ if(empty($_POST['token_id'])) {
   die('Empty token_id!');
 }
 
-Veritrans::$serverKey = '<your server key>';
+Veritrans_Config::$serverKey = '<your server key>';
 
 $transaction_details = array(
   'order_id'    => time(),

@@ -13,8 +13,8 @@ if (!function_exists('json_decode')) {
   throw new Exception('Veritrans needs the JSON PHP extension.');
 }
 
-// The singleton
-require_once('Veritrans/Veritrans.php');
+// Configurations
+require_once('Veritrans/Config.php');
 
 // Veritrans API Resources
 require_once('Veritrans/Transaction.php');

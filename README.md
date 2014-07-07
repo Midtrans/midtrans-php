@@ -32,8 +32,8 @@ If you are not using Composer, you can clone or [download](https://github.com/ve
 #### Set Server Key
 
 ```php
-Veritrans::$serverKey = '<your server key>';
-``` 
+Veritrans_Config::$serverKey = '<your server key>';
+```
 
 #### Set Client Key (VT-Direct)
 
@@ -44,10 +44,10 @@ Veritrans.client_key = "<your client key>";
 #### Set Environment
 ```php
 // Development Environment (the default)
-Veritrans::$is_production = false;
+Veritrans_Config::$isProduction = false;
 
 // Production Environment
-Veritrans::$is_production = true;
+Veritrans_Config::$isProduction = true;
 ```
 
 ### VT-Web

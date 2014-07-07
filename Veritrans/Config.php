@@ -1,6 +1,6 @@
 <?php
 
-class Veritrans {
+class Veritrans_Config {
 
   public static $serverKey;
   public static $apiVersion = 2;
@@ -12,7 +12,7 @@ class Veritrans {
 
   public static function getBaseUrl()
   {
-    return Veritrans::$isProduction ?
-        Veritrans::PRODUCTION_BASE_URL : Veritrans::SANDBOX_BASE_URL;
+    return Veritrans_Config::$isProduction ?
+        Veritrans_Config::PRODUCTION_BASE_URL : Veritrans_Config::SANDBOX_BASE_URL;
   }
 }

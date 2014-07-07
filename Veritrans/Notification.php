@@ -9,12 +9,9 @@ class Veritrans_Notification {
     $this->response = json_decode(file_get_contents('php://input'), true);
   }
 
-  public function verified()
+  public function isVerified()
   {
-    if ($this->response['notification_key'] != Veritrans::$serverKey) {
-      return false;
-    }
-    return true;
+    return $this->response['notification_key'] == Veritrans_Config::$serverKey;
   }
 
   public function __get($name)
