@@ -1,0 +1,29 @@
+{
+    "name": "veritrans/veritrans-php",
+    "description": "PHP Wraper for Veritrans VT-Web Payment API.",
+    "homepage": "https://veritrans.co.id",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Andri Setiawan",
+            "email": "andri.setiawan@veritrans.co.id"
+        },
+        {
+            "name": "Alvin Litani",
+            "email": "alvin.litani@veritrans.co.id"
+        },
+        {
+            "name": "Ismail Faruqi",
+            "email": "ismail.faruqi@veritrans.co.id"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+        },
+    "autoload": {
+        "classmap": [""]
+    }
+}
