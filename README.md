@@ -50,6 +50,15 @@ Veritrans_Config::$isProduction = false;
 Veritrans_Config::$isProduction = true;
 ```
 
+#### Set Sanitization
+```php
+// Set sanitization off (default)
+Veritrans_Config::$isSanitized = false;
+
+// Set sanitization on
+Veritrans_Config::$isSanitized = true;
+```
+
 ### VT-Web
 
 You can see some VT-Web examples [here](https://github.com/veritrans/veritrans-php/tree/master/examples/vt-web).

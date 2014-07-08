@@ -18,6 +18,10 @@ class Veritrans_VtDirect {
 
     $payloads = array_replace_recursive($payloads, $params);
 
+    if (Veritrans_Config::$isSanitized) {
+      Veritrans_Sanitizer::jsonRequest($payloads);
+    }
+
     $result = Veritrans_ApiRequestor::post(
         Veritrans_Config::getBaseUrl() . '/charge',
         Veritrans_Config::$serverKey,

@@ -7,6 +7,9 @@ Veritrans_Config::$serverKey = '<your server key>';
 // Uncomment for production environment
 // Veritrans_Config::$isProduction = true;
 
+// Uncomment to enable sanitization
+// Veritrans_Config::$isSanitized = true;
+
 $params = array(
     'transaction_details' => array(
       'order_id' => rand(),

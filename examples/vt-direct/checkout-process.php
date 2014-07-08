@@ -8,6 +8,12 @@ if(empty($_POST['token_id'])) {
 
 Veritrans_Config::$serverKey = '<your server key>';
 
+// Uncomment for production environment
+// Veritrans_Config::$isProduction = true;
+
+// Uncomment to enable sanitization
+// Veritrans_Config::$isSanitized = true;
+
 $transaction_details = array(
   'order_id'    => time(),
   'gross_amount'  => 200000

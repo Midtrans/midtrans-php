@@ -24,3 +24,6 @@ require_once('Veritrans/ApiRequestor.php');
 require_once('Veritrans/Notification.php');
 require_once('Veritrans/VtDirect.php');
 require_once('Veritrans/VtWeb.php');
+
+// Sanitization
+require_once('Veritrans/Sanitizer.php');
