@@ -3,7 +3,7 @@ Veritrans-PHP
 
 Veritrans :heart: PHP!
 
-This is the all new PHP client library for Veritrans 2.0. This is the official PHP wrapper for Veritrans Payment API. Visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more information about the product and see documentation at [http://docs.veritrans.co.id](http://docs.veritrans.co.id/vtweb/index.html) for more technical details.
+This is the all new PHP client library for Veritrans 2.0. This is the official PHP wrapper for Veritrans Payment API. Visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more information about the product and see documentation at [http://docs.veritrans.co.id](http://docs.veritrans.co.id) for more technical details.
 
 ## Installation
 
@@ -70,7 +70,7 @@ $params = array(
     'transaction_details' => array(
       'order_id' => rand(),
       'gross_amount' => 10000,
-    )
+    ),
     'vtweb' => array()
   );
 
@@ -87,24 +87,31 @@ catch (Exception $e) {
 
 ```php
 $notif = new Veritrans_Notification();
-if ($notif->verified()) {
-  error_log("Status order ID $result->order_id: $result->status_code");
+if ($notif->isVerified()) {
+  $transaction = $notif->transaction_status;
+  $fraud = $notif->fraud_status;
 
-  // Success
-  if ($result->status_code == '200') {
-    // TODO Update merchant's database (i.e. update status order)
+  error_log("Order ID $notif->order_id: " .
+      "transaction status = $transaction, fraud staus = $fraud");
+
+  if ($transaction == 'capture') {
+    if ($fraud == 'challenge') {
+      // TODO Set payment status in merchant's database to 'challenge'
+    }
+    else if ($fraud == 'accept') {
+      // TODO Set payment status in merchant's database to 'success'
+    }
   }
-  // Pending
-  else if ($result->status_code == '201') {
-    // TODO Update merchant's database (i.e. update status order)
+  else if ($transaction == 'cancel') {
+    if ($fraud == 'challenge') {
+      // TODO Set payment status in merchant's database to 'failure'
+    }
+    else if ($fraud == 'accept') {
+      // TODO Set payment status in merchant's database to 'failure'
+    }
   }
-  // Denied
-  else if ($result->status_code == '202') {
-    // TODO Update merchant's database (i.e. update status order)
-  }
-  // Error
-  else {
-    // TODO Update merchant's database (i.e. update status order)
+  else if ($transaction == 'deny') {
+      // TODO Set payment status in merchant's database to 'failure'
   }
 }
 ```

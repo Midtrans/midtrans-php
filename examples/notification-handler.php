@@ -5,23 +5,30 @@ require_once(dirname(__FILE__) . '/../Veritrans.php');
 Veritrans_Config::$serverKey = '<your server key>';
 
 $notif = new Veritrans_Notification();
-if ($notif->verified()) {
-  error_log("Status order ID $notif->order_id: $notif->status_code");
+if ($notif->isVerified()) {
+  $transaction = $notif->transaction_status;
+  $fraud = $notif->fraud_status;
 
-  // Success
-  if ($notif->status_code == '200') {
-    // TODO Update merchant's database (i.e. update status order)
+  error_log("Order ID $notif->order_id: " .
+      "transaction status = $transaction, fraud staus = $fraud");
+
+  if ($transaction == 'capture') {
+    if ($fraud == 'challenge') {
+      // TODO Set payment status in merchant's database to 'challenge'
+    }
+    else if ($fraud == 'accept') {
+      // TODO Set payment status in merchant's database to 'success'
+    }
   }
-  // Pending
-  else if ($notif->status_code == '201') {
-    // TODO Update merchant's database (i.e. update status order)
+  else if ($transaction == 'cancel') {
+    if ($fraud == 'challenge') {
+      // TODO Set payment status in merchant's database to 'failure'
+    }
+    else if ($fraud == 'accept') {
+      // TODO Set payment status in merchant's database to 'failure'
+    }
   }
-  // Denied
-  else if ($notif->status_code == '202') {
-    // TODO Update merchant's database (i.e. update status order)
-  }
-  // Error
-  else {
-    // TODO Update merchant's database (i.e. update status order)
+  else if ($transaction == 'deny') {
+      // TODO Set payment status in merchant's database to 'failure'
   }
 }
