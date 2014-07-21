@@ -10,6 +10,9 @@ Veritrans_Config::$serverKey = '<your server key>';
 // Uncomment to enable sanitization
 // Veritrans_Config::$isSanitized = true;
 
+// Uncomment to enable 3D-Secure
+// Veritrans_Config::$is3ds = true;
+
 $params = array(
     'transaction_details' => array(
       'order_id' => rand(),
