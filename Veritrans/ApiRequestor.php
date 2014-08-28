@@ -40,7 +40,7 @@ class Veritrans_ApiRequestor {
         dirname(__FILE__) . "/../data/cacert.pem");
 
     $result = curl_exec($ch);
-    curl_close($ch);
+    // curl_close($ch);
 
     if ($result === FALSE) {
       throw new Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
