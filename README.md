@@ -87,12 +87,11 @@ catch (Exception $e) {
 
 ```php
 $notif = new Veritrans_Notification();
-if ($notif->isVerified()) {
-  $transaction = $notif->transaction_status;
-  $fraud = $notif->fraud_status;
 
-  error_log("Order ID $notif->order_id: " .
-      "transaction status = $transaction, fraud staus = $fraud");
+$transaction = $notif->transaction_status;
+$fraud = $notif->fraud_status;
+
+error_log("Order ID $notif->order_id: "."transaction status = $transaction, fraud staus = $fraud");
 
   if ($transaction == 'capture') {
     if ($fraud == 'challenge') {
