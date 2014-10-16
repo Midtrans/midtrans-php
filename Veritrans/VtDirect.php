@@ -29,4 +29,18 @@ class Veritrans_VtDirect {
 
     return $result;
   }
+  
+  public static function capture($param)
+  {
+	$payloads = array(
+		'transaction_id' => '$param'
+	);	
+	
+	$result = Veritrans_ApiRequestor::post(
+        Veritrans_Config::getBaseUrl() . '/capture',
+        Veritrans_Config::$serverKey,
+        $payloads);
+
+    return $result;
+  }
 }
