@@ -1,0 +1,7 @@
+image: bradrydzewski/php:5.5
+script:
+  - echo "Hello World"
+notify:
+  email:
+    recipients:
+      - radityo.shaddiqa@veritrans.co.id
