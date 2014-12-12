@@ -5,22 +5,6 @@ Veritrans :heart: PHP!
 
 This is the all new PHP client library for Veritrans 2.0. This is the official PHP wrapper for Veritrans Payment API. Visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more information about the product and see documentation at [http://docs.veritrans.co.id](http://docs.veritrans.co.id) for more technical details.
 
-## Installation
-
-### Composer Installation
-
-If you are using [Composer](https://getcomposer.org), add this require line to your `composer.json` file:
-
-```json
-{
-	"require": {
-		"veritrans/veritrans-php": "master"
-	}
-}
-```
-
-and run `composer install` on your terminal.
-
 ### Manual Instalation
 
 If you are not using Composer, you can clone or [download](https://github.com/veritrans/veritrans-php/archive/master.zip) this repository.
