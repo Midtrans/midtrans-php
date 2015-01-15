@@ -33,7 +33,7 @@ class Veritrans_VtDirect {
   public static function capture($param)
   {
 	$payloads = array(
-		'transaction_id' => '$param'
+		'transaction_id' => $param,
 	);	
 	
 	$result = Veritrans_ApiRequestor::post(
