@@ -3,6 +3,7 @@
 class Veritrans_Config {
 
   public static $serverKey;
+  public static $client_key;
   public static $apiVersion = 2;
   public static $isProduction = false;
   public static $is3ds = false;
