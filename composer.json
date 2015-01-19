@@ -2,6 +2,7 @@
     "name": "veritrans/veritrans-php",
     "description": "PHP Wraper for Veritrans VT-Web Payment API.",
     "homepage": "https://veritrans.co.id",
+    "version": "1.0.0",
     "type": "library",
     "authors": [
         {
@@ -22,7 +23,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*"
-        },
+    },
     "autoload": {
         "classmap": [""]
     }
