@@ -3,6 +3,7 @@
     "description": "PHP Wraper for Veritrans VT-Web Payment API.",
     "homepage": "https://veritrans.co.id",
     "type": "library",
+    "license":"GPL-3.0",
     "authors": [
         {
             "name": "Andri Setiawan",
