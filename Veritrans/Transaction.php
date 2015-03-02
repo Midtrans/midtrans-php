@@ -1,7 +1,14 @@
 <?php
-
+/**
+ * API methods to get transaction status, approvea and cancel transactions
+ */
 class Veritrans_Transaction {
 
+  /**
+   * Retrieve transaction status
+   * @param string $id Order ID or transaction ID
+   * @return mixed[]
+   */
   public static function status($id)
   {
     return Veritrans_ApiRequestor::get(
@@ -10,6 +17,11 @@ class Veritrans_Transaction {
         false);
   }
 
+  /**
+   * Appove challenge transaction
+   * @param string $id Order ID or transaction ID
+   * @return mixed[]
+   */
   public static function approve($id)
   {
     return Veritrans_ApiRequestor::post(
@@ -18,6 +30,11 @@ class Veritrans_Transaction {
         false)->status_code;
   }
 
+  /**
+   * Cancel transaction before it's setteled
+   * @param string $id Order ID or transaction ID
+   * @return mixed[]
+   */
   public static function cancel($id)
   {
     return Veritrans_ApiRequestor::post(

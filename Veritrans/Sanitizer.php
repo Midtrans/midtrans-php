@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Request params filters.
+ *
+ * It truncate fields that have length limit, remove not allowed characters from other fields
+ *
+ * This feature is optional, you can control it with Veritrans_Config::$isSanitized (default: false)
+ */
 class Veritrans_Sanitizer {
   private $filters;
 
@@ -8,6 +14,10 @@ class Veritrans_Sanitizer {
     $this->filters = array();
   }
 
+  /**
+   * Validates and modify data
+   * @param mixedp[] $json
+   */
   public static function jsonRequest(&$json)
   {
     $keys = array('item_details', 'customer_details');
