@@ -1,0 +1,69 @@
+<?php
+
+require_once(dirname(__FILE__) . '/VtTests.php');
+require_once(dirname(__FILE__) . '/../Veritrans.php');
+
+class VeritransVtWebTest extends PHPUnit_Framework_TestCase
+{
+
+    public function testGetRedirectionUrl() {
+      Veritrans_Config::$serverKey = 'My Very Secret Key';
+      VT_Tests::$stubHttp = true;
+      VT_Tests::$stubHttpResponse = '{
+        "status_code": 200,
+        "redirect_url": "http://host.com/pay"
+      }';
+
+      $params = array(
+        'transaction_details' => array(
+          'order_id' => "Order-111",
+          'gross_amount' => 10000,
+        )
+      );
+
+      $paymentUrl = Veritrans_Vtweb::getRedirectionUrl($params);
+
+      $this->assertEquals($paymentUrl, "http://host.com/pay");
+
+
+      $this->assertEquals(
+        VT_Tests::$lastHttpRequest["url"],
+        "https://api.veritrans.co.id/v2/charge"
+      );
+
+      $this->assertEquals(
+        VT_Tests::$lastHttpRequest["server_key"],
+        'My Very Secret Key'
+      );
+
+      $fields = VT_Tests::lastReqOptions();
+      $this->assertEquals($fields["POST"], 1);
+      $this->assertEquals($fields["POSTFIELDS"],
+        '{"payment_type":"vtweb","vtweb":{"credit_card_3d_secure":false},' . 
+        '"transaction_details":{"order_id":"Order-111","gross_amount":10000}}'
+      );
+
+      VT_Tests::reset();
+    }
+
+    public function testRealConnect() {
+      $params = array(
+        'transaction_details' => array(
+          'order_id' => rand(),
+          'gross_amount' => 10000,
+        )
+      );
+
+      try {
+        $paymentUrl = Veritrans_Vtweb::getRedirectionUrl($params);
+      } catch (Exception $error) {
+        $errorHappen = true;
+        $this->assertEquals(
+          $error->getMessage(),
+          "Veritrans Error (401): Access denied due to unauthorized transaction, please check client or server key");
+      }
+
+      $this->assertTrue($errorHappen);
+    }
+
+}

@@ -39,31 +39,38 @@ class Veritrans_ApiRequestor {
   {
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    $curl_options = array(
+      CURLOPT_URL => $url,
+      CURLOPT_HTTPHEADER => array(
         'Content-Type: application/json',
         'Accept: application/json',
         'Authorization: Basic ' . base64_encode($server_key . ':')
-      ));
+      ),
+      CURLOPT_RETURNTRANSFER => 1,
+      CURLOPT_CAINFO => dirname(__FILE__) . "/../data/cacert.pem"
+    );
 
     if ($post) {
-      curl_setopt($ch, CURLOPT_POST, 1);
+      $curl_options[CURLOPT_POST] = 1;
 
       if ($data_hash) {
         $body = json_encode($data_hash);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-      }
-      else {
-        curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+        $curl_options[CURLOPT_POSTFIELDS] = $body;
+      } else {
+        $curl_options[CURLOPT_POSTFIELDS] = '';
       }
     }
 
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt ($ch, CURLOPT_CAINFO,
-        dirname(__FILE__) . "/../data/cacert.pem");
+    curl_setopt_array($ch, $curl_options);
 
-    $result = curl_exec($ch);
-    // curl_close($ch);
+    // For testing purpose
+    if (class_exists('VT_Tests') && VT_Tests::$stubHttp) {
+      $result = self::processStubed($curl_options, $url, $server_key, $data_hash, $post);
+    } else {
+      $result = curl_exec($ch);
+      // curl_close($ch);
+    }
+
 
     if ($result === FALSE) {
       throw new Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
@@ -79,5 +86,17 @@ class Veritrans_ApiRequestor {
         return $result_array;
       }
     }
+  }
+
+  private static function processStubed($curl, $url, $server_key, $data_hash, $post) {
+    VT_Tests::$lastHttpRequest = array(
+      "url" => $url,
+      "server_key" => $server_key,
+      "data_hash" => $data_hash,
+      "post" => $post,
+      "curl" => $curl
+    );
+
+    return VT_Tests::$stubHttpResponse;
   }
 }

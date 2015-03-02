@@ -17,7 +17,7 @@ class Veritrans_VtWeb {
    *       'gross_amount' => 10000,
    *     )
    *   );
-   *   $paymentUrl = Veritrans_Vtweb::getRedirectionUrl($params)
+   *   $paymentUrl = Veritrans_Vtweb::getRedirectionUrl($params);
    *   header('Location: ' . $paymentUrl);
    * ```
    *
