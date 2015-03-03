@@ -8,6 +8,16 @@ if(empty($_POST['token_id'])) {
 
 Veritrans_Config::$serverKey = '<your server key>';
 
+if (Veritrans_Config::$serverKey == '<your server key>') {
+  echo "<code>";
+  echo "<h4>Please set real server key from sandbox</h4>";
+  echo "In file: " . __FILE__;
+  echo "<br>";
+  echo "<br>";
+  echo htmlspecialchars('Veritrans_Config::$serverKey = \'<your server key>\';');
+  die();
+}
+
 // Uncomment for production environment
 // Veritrans_Config::$isProduction = true;
 
@@ -82,7 +92,12 @@ $transaction_data = array(
     'customer_details'    => $customer_details
   );
 
-$response = Veritrans_VtDirect::charge($transaction_data);
+try {
+  $response = Veritrans_VtDirect::charge($transaction_data);
+} catch (Exception $e) {
+  echo $e->getMessage();
+  die();
+}
 
 // Success
 if($response->transaction_status == 'capture') {
