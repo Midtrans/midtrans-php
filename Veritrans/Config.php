@@ -15,17 +15,13 @@ class Veritrans_Config {
    */
   public static $clientKey;
   /**
-   * This should be 2
-   * @static
-   */
-  public static $apiVersion = 2;
-  /**
-   * Make it true to integrate with production
+   * true for production
+   * false for sandbox mode
    * @static
    */
   public static $isProduction = false;
   /**
-   * Enable 3D Secure by default
+   * Set it true to enable 3D Secure by default
    * @static
    */
   public static $is3ds = false;
