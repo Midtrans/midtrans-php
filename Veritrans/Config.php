@@ -35,6 +35,11 @@ class Veritrans_Config {
    * @static
    */
   public static $isSanitized = false;
+  /**
+   * Default options for every request
+   * @static
+   */
+  public static $curlOptions = array();
 
   const SANDBOX_BASE_URL = 'https://api.sandbox.veritrans.co.id/v2';
   const PRODUCTION_BASE_URL = 'https://api.veritrans.co.id/v2';

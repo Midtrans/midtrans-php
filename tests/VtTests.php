@@ -20,7 +20,8 @@ class VT_Tests {
       CURLOPT_RETURNTRANSFER => "RETURNTRANSFER",
       CURLOPT_CAINFO => "CAINFO",
       CURLOPT_POST => "POST",
-      CURLOPT_POSTFIELDS => "POSTFIELDS"
+      CURLOPT_POSTFIELDS => "POSTFIELDS",
+      CURLOPT_PROXY => "PROXY"
     );
 
     $options = array();

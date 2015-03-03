@@ -50,6 +50,19 @@ class Veritrans_ApiRequestor {
       CURLOPT_CAINFO => dirname(__FILE__) . "/../data/cacert.pem"
     );
 
+    // merging with Veritrans_Config::$curlOptions
+    if (count(Veritrans_Config::$curlOptions)) {
+      // We need to combine headers manually, because it's array and it will no be merged
+      if (Veritrans_Config::$curlOptions[CURLOPT_HTTPHEADER]) {
+        $mergedHeders = array_merge($curl_options[CURLOPT_HTTPHEADER], Veritrans_Config::$curlOptions[CURLOPT_HTTPHEADER]);
+        $headerOptions = array( CURLOPT_HTTPHEADER => $mergedHeders );
+      } else {
+        $mergedHeders = array();
+      }
+
+      $curl_options = array_replace_recursive($curl_options, Veritrans_Config::$curlOptions, $headerOptions);
+    }
+
     if ($post) {
       $curl_options[CURLOPT_POST] = 1;
 
