@@ -20,7 +20,7 @@ class Veritrans_Transaction {
   /**
    * Appove challenge transaction
    * @param string $id Order ID or transaction ID
-   * @return mixed[]
+   * @return string
    */
   public static function approve($id)
   {
@@ -33,7 +33,7 @@ class Veritrans_Transaction {
   /**
    * Cancel transaction before it's setteled
    * @param string $id Order ID or transaction ID
-   * @return mixed[]
+   * @return string
    */
   public static function cancel($id)
   {
