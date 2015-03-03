@@ -33,14 +33,12 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.veritrans.co.id/v2/Order-111/status"
+        "https://api.sandbox.veritrans.co.id/v2/Order-111/status"
       );
 
       $fields = VT_Tests::lastReqOptions();
       $this->assertFalse(array_key_exists("POST", $fields));
       $this->assertFalse(array_key_exists("POSTFIELDS", $fields));
-
-      VT_Tests::reset();
     }
 
     public function testFailureStatus() {
@@ -100,14 +98,12 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.veritrans.co.id/v2/Order-111/approve"
+        "https://api.sandbox.veritrans.co.id/v2/Order-111/approve"
       );
 
       $fields = VT_Tests::lastReqOptions();
       $this->assertEquals($fields["POST"], 1);
       $this->assertEquals($fields["POSTFIELDS"], null);
-
-      VT_Tests::reset();
     }
 
     public function testCancel() {
@@ -133,14 +129,15 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.veritrans.co.id/v2/Order-111/cancel"
+        "https://api.sandbox.veritrans.co.id/v2/Order-111/cancel"
       );
 
       $fields = VT_Tests::lastReqOptions();
       $this->assertEquals($fields["POST"], 1);
       $this->assertEquals($fields["POSTFIELDS"], null);
-
-      VT_Tests::reset();
     }
 
+    public function tearDown() {
+      VT_Tests::reset();
+    }
 }

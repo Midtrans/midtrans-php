@@ -17,4 +17,7 @@ class VeritransConfigTest extends PHPUnit_Framework_TestCase
             Veritrans_Config::PRODUCTION_BASE_URL);
     }
 
+    public function tearDown() {
+      Veritrans_Config::$isProduction = false;
+    }
 }

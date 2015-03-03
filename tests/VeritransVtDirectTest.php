@@ -26,7 +26,7 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.veritrans.co.id/v2/charge"
+        "https://api.sandbox.veritrans.co.id/v2/charge"
       );
 
       $fields = VT_Tests::lastReqOptions();
@@ -34,8 +34,6 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($fields["POSTFIELDS"],
         '{"payment_type":"credit_card","transaction_details":{"order_id":"Order-111","gross_amount":10000}}'
       );
-
-      VT_Tests::reset();
     }
 
     public function testRealConnect() {
@@ -81,14 +79,15 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.veritrans.co.id/v2/capture"
+        "https://api.sandbox.veritrans.co.id/v2/capture"
       );
 
       $fields = VT_Tests::lastReqOptions();
       $this->assertEquals($fields["POST"], 1);
       $this->assertEquals($fields["POSTFIELDS"], '{"transaction_id":"A27550"}');
-
-      VT_Tests::reset();
     }
 
+    public function tearDown() {
+      VT_Tests::reset();
+    }
 }

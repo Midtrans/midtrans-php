@@ -25,7 +25,7 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.veritrans.co.id/v2/charge"
+        "https://api.sandbox.veritrans.co.id/v2/charge"
       );
 
       $this->assertEquals(
@@ -39,8 +39,6 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
         '{"payment_type":"vtweb","vtweb":{"credit_card_3d_secure":false},' . 
         '"transaction_details":{"order_id":"Order-111","gross_amount":10000}}'
       );
-
-      VT_Tests::reset();
     }
 
     public function testGrossAmount() {
@@ -60,7 +58,9 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
         VT_Tests::$lastHttpRequest['data_hash']['transaction_details']['gross_amount'],
         50000
       );
+    }
 
+    public function tearDown() {
       VT_Tests::reset();
     }
 
