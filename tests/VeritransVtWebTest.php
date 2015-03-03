@@ -22,7 +22,6 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals($paymentUrl, "http://host.com/pay");
 
-
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
         "https://api.sandbox.veritrans.co.id/v2/charge"
@@ -34,6 +33,7 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
       );
 
       $fields = VT_Tests::lastReqOptions();
+
       $this->assertEquals($fields["POST"], 1);
       $this->assertEquals($fields["POSTFIELDS"],
         '{"payment_type":"vtweb","vtweb":{"credit_card_3d_secure":false},' . 
@@ -60,10 +60,6 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
       );
     }
 
-    public function tearDown() {
-      VT_Tests::reset();
-    }
-
     public function testOverrideParams() {
       $params = array(
         'vtweb' => array(
@@ -80,8 +76,6 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
         VT_Tests::$lastHttpRequest['data_hash']["vtweb"],
         array("credit_card_3d_secure" => false, "extra" => "param")
       );
-
-      VT_Tests::reset();
     }
 
     public function testRealConnect() {
@@ -102,6 +96,10 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
       }
 
       $this->assertTrue($errorHappen);
+    }
+
+    public function tearDown() {
+      VT_Tests::reset();
     }
 
 }
