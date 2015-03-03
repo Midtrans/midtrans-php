@@ -13,6 +13,16 @@ Veritrans_Config::$serverKey = '<your server key>';
 // Uncomment to enable 3D-Secure
 // Veritrans_Config::$is3ds = true;
 
+if (Veritrans_Config::$serverKey == '<your server key>') {
+  echo "<code>";
+  echo "<h4>Please set real server key from sandbox</h4>";
+  echo "In file: " . __FILE__;
+  echo "<br>";
+  echo "<br>";
+  echo htmlspecialchars('Veritrans_Config::$serverKey = \'<your server key>\';');
+  die();
+}
+
 $params = array(
     'transaction_details' => array(
       'order_id' => rand(),
