@@ -13,7 +13,7 @@ class Veritrans_Config {
    * Your merchant's client key
    * @static
    */
-  public static $client_key;
+  public static $clientKey;
   /**
    * This should be 2
    * @static
