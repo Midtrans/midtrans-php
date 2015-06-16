@@ -1,0 +1,45 @@
+{
+  "transaction_details": {
+    "order_id": "C17550",
+    "gross_amount": 145000
+  },
+
+  "item_details" : [
+    {
+      "id": "a1",
+      "price": 50000,
+      "quantity": 2,
+      "name": "Apel"
+    },
+    {
+      "id": "a2",
+      "price": 45000,
+      "quantity": 1,
+      "name": "Jeruk"
+    }
+  ],
+  "customer_details": {
+    "first_name": "Andri",
+    "last_name": "Litani",
+    "email": "andri@litani.com",
+    "phone": "081122334455",
+    "billing_address": {
+        "first_name": "Andri",
+        "last_name": "Litani",
+        "address": "Mangga 20",
+        "city": "Jakarta",
+        "postal_code": "16602",
+        "phone": "081122334455",
+        "country_code": "IDN"
+        },
+    "shipping_address": {
+        "first_name": "Obet",
+        "last_name": "Supriadi",
+        "address": "Manggis 90",
+        "city": "Jakarta",
+        "postal_code": "16601",
+        "phone": "08113366345",
+        "country_code": "IDN"
+        }
+    }
+}
