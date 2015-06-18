@@ -32,7 +32,7 @@ $params = array(
 
 try {
   // Redirect to Veritrans VTWeb page
-  header('Location: ' . Veritrans_Vtweb::getRedirectionUrl($params));
+  header('Location: ' . Veritrans_VtWeb::getRedirectionUrl($params));
 }
 catch (Exception $e) {
   echo $e->getMessage();
