@@ -3,11 +3,6 @@ require_once 'VtIntegrationTest.php';
 
 class VtTransactionIntegrationTest extends VtIntegrationTest {
 
-	public function prepareChargeParams($payment_type, $payment_data = NULL) {
-		$this->payment_type = $payment_type;
-		$this->charge_params = VtChargeFixture::build($payment_type, $payment_data);
-	}
-
 	public function testStatusPermataVa() {
 		$charge_params = VtChargeFixture::build('bank_transfer',
 			array(

@@ -24,7 +24,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 		$this->assertEquals($this->charge_response->transaction_status, 'settlement');
 	}
 
-	public function testTCash() {
+	public function testChargeTelkomselCash() {
 		$this->prepareChargeParams('telkomsel_cash',
 			array(
 				"customer" => "0811111111",
@@ -35,7 +35,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 		$this->assertEquals($this->charge_response->transaction_status, 'settlement');
 	}
 
-	public function testCimbClicks() {
+	public function testChargeCimbClicks() {
 		$this->prepareChargeParams('cimb_clicks',
 			array(
 				"description" => "Item Descriptions",
@@ -45,7 +45,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 		$this->assertTrue(isset($this->charge_response->redirect_url));
 	}
 
-	public function testPermataVa() {
+	public function testChargePermataVa() {
 		$this->prepareChargeParams('bank_transfer',
 			array(
 				"bank" => "permata",
@@ -55,14 +55,14 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 		$this->assertTrue(isset($this->charge_response->permata_va_number));
 	}
 
-	public function testEPayBri() {
+	public function testChargeEPayBri() {
 		$this->prepareChargeParams('bri_epay');
 		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'pending');
 		$this->assertTrue(isset($this->charge_response->redirect_url));
 	}
 
-	public function testXlTunai() {
+	public function testChargeXlTunai() {
 		$this->prepareChargeParams('xl_tunai');
 		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'pending');
@@ -70,7 +70,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 		$this->assertTrue(isset($this->charge_response->xl_tunai_order_id));
 	}
 
-	public function testMandiriBillPayment() {
+	public function testChargeMandiriBillPayment() {
 		$this->prepareChargeParams('echannel',
 			array(
 				"bill_info1" => "Payment for:",
@@ -89,10 +89,10 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 		$this->assertTrue(isset($this->charge_response->permata_va_number));
 	}
 
-	public function testIndomaret() {
+	public function testChargeIndomaret() {
 		$this->prepareChargeParams('cstore',
 			array(
-				"store" => "Fruit Market",
+				"store" => "indomaret",
 				"message" => "Item descriptions",
 			));
 		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
