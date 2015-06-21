@@ -101,7 +101,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 	}
 
 	public function assertPostConditions() {
-		$this->assertContains($this->charge_response->status_code, [200, 201]);
+		$this->assertContains($this->charge_response->status_code, array(200, 201));
 		$this->assertEquals($this->charge_response->order_id,
 			$this->charge_params['transaction_details']['order_id']);
 		$this->assertEquals($this->charge_response->gross_amount,

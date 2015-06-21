@@ -1,6 +1,6 @@
 <?php
 
-class VtIntegrationTest extends PHPUnit_Framework_TestCase {
+abstract class VtIntegrationTest extends PHPUnit_Framework_TestCase {
 	public static function setUpBeforeClass() {
 		Veritrans_Config::$serverKey = getenv('SERVER_KEY');
 		Veritrans_Config::$clientKey = getenv('CLIENT_KEY');
