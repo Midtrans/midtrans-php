@@ -1,8 +1,5 @@
 <?php
 
-require_once(dirname(__FILE__) . '/VtTests.php');
-require_once(dirname(__FILE__) . '/../Veritrans.php');
-
 class VeritransApiRequestorTest extends PHPUnit_Framework_TestCase
 {
 
