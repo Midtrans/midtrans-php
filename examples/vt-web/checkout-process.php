@@ -1,5 +1,5 @@
 <?php
-require_once('Veritrans.php');
+require_once(dirname(__FILE__) . '/../../Veritrans.php');
 Veritrans_Config::$serverKey = "<your server key>";
 // Uncomment for production environment
 // Veritrans_Config::$isProduction = true;
