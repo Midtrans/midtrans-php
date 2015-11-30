@@ -32,4 +32,15 @@ class VtTransactionIntegrationTest extends VtIntegrationTest {
 
 		$this->assertEquals($cancel_status_code, '200');
 	}
+
+	public function testExpirePermataVa() {
+		$charge_params = VtChargeFixture::build('bank_transfer',
+			array(
+				"bank" => "permata",
+			));
+		$charge_response = Veritrans_VtDirect::charge($charge_params);
+		$expire = Veritrans_Transaction::expire($charge_response->transaction_id);
+
+		$this->assertEquals($expire->status_code, '407');
+	}
 }

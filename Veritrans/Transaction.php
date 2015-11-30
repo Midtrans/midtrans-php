@@ -42,4 +42,17 @@ class Veritrans_Transaction {
         Veritrans_Config::$serverKey,
         false)->status_code;
   }
+  
+  /**
+   * Expire transaction before it's setteled
+   * @param string $id Order ID or transaction ID
+   * @return mixed[]
+   */
+  public static function expire($id)
+  {
+    return Veritrans_ApiRequestor::post(
+        Veritrans_Config::getBaseUrl() . '/' . $id . '/expire',
+        Veritrans_Config::$serverKey,
+        false);
+  }
 }

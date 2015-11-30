@@ -134,6 +134,35 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($fields["POSTFIELDS"], null);
     }
 
+    public function testExpire() {
+      VT_Tests::$stubHttp = true;
+      VT_Tests::$stubHttpResponse = '{
+        "status_code": "407",
+        "status_message": "Success, transaction has expired",
+        "transaction_id": "2af158d4-b82e-46ac-808b-be19aaa96ce3",
+        "order_id": "Order-111",
+        "payment_type": "echannel",
+        "transaction_time": "2014-11-27 10:05:10",
+        "transaction_status": "expire",
+        "gross_amount": "10000.00"
+      }';
+
+      $expire = Veritrans_Transaction::expire("Order-111");
+
+      $this->assertEquals($expire->status_code, "407");
+      $this->assertEquals($expire->status_message, "Success, transaction has expired");
+
+      $this->assertEquals(
+        VT_Tests::$lastHttpRequest["url"],
+        "https://api.sandbox.veritrans.co.id/v2/Order-111/expire"
+      );
+
+      $fields = VT_Tests::lastReqOptions();
+      $this->assertEquals($fields["POST"], 1);
+      $this->assertEquals($fields["POSTFIELDS"], null);
+    }
+
+
     public function tearDown() {
       VT_Tests::reset();
     }
