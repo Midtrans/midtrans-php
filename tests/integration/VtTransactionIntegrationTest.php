@@ -42,5 +42,10 @@ class VtTransactionIntegrationTest extends VtIntegrationTest {
 		$expire = Veritrans_Transaction::expire($charge_response->transaction_id);
 
 		$this->assertEquals($expire->status_code, '407');
+
+		// Verify transaction via API
+		$txn_status = Veritrans_Transaction::status($charge_response->transaction_id);
+		$this->assertEquals($txn_status->status_code, "407");
+		$this->assertEquals($txn_status->transaction_status, "expire");
 	}
 }
