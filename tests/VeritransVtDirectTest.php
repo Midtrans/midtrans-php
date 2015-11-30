@@ -45,9 +45,18 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
         $paymentUrl = Veritrans_VtDirect::charge($params);
       } catch (Exception $error) {
         $errorHappen = true;
+        $this->assertContains(
+          $error->getMessage(),
+          array(
+            "Veritrans Error (401): Access denied due to unauthorized transaction, please check client or server key",
+            "Veritrans Error (411): Token id is missing, invalid, or timed out"
+          )
+        );
+        /*
         $this->assertEquals(
           $error->getMessage(),
           "Veritrans Error (401): Access denied due to unauthorized transaction, please check client or server key");
+        */
       }
 
       $this->assertTrue($errorHappen);
