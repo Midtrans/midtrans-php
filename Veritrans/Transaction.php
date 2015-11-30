@@ -1,6 +1,6 @@
 <?php
 /**
- * API methods to get transaction status, approvea and cancel transactions
+ * API methods to get transaction status, approve and cancel transactions
  */
 class Veritrans_Transaction {
 
@@ -18,7 +18,7 @@ class Veritrans_Transaction {
   }
 
   /**
-   * Appove challenge transaction
+   * Approve challenge transaction
    * @param string $id Order ID or transaction ID
    * @return string
    */
@@ -31,7 +31,7 @@ class Veritrans_Transaction {
   }
 
   /**
-   * Cancel transaction before it's setteled
+   * Cancel transaction before it's settled
    * @param string $id Order ID or transaction ID
    * @return string
    */
@@ -41,18 +41,5 @@ class Veritrans_Transaction {
         Veritrans_Config::getBaseUrl() . '/' . $id . '/cancel',
         Veritrans_Config::$serverKey,
         false)->status_code;
-  }
-  
-  /**
-   * Expire transaction before it's setteled
-   * @param string $id Order ID or transaction ID
-   * @return mixed[]
-   */
-  public static function expire($id)
-  {
-    return Veritrans_ApiRequestor::post(
-        Veritrans_Config::getBaseUrl() . '/' . $id . '/expire',
-        Veritrans_Config::$serverKey,
-        false);
   }
 }

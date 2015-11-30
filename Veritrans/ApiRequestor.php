@@ -1,6 +1,6 @@
 <?php
 /**
- * Send reuquest to Veritrans API
+ * Send request to Veritrans API
  * Better don't use this class directly, use Veritrans_VtWeb, Veritrans_VtDirect, Veritrans_Transaction
  */
 
