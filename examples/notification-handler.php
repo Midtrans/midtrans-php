@@ -31,5 +31,3 @@ else if ($transaction == 'cancel') {
 else if ($transaction == 'deny') {
   // TODO Set payment status in merchant's database to 'failure'
 }
-
-?>

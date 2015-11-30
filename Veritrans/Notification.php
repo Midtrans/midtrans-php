@@ -28,5 +28,3 @@ class Veritrans_Notification {
     }
   }
 }
-
-?>

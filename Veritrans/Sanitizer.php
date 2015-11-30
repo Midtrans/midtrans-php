@@ -16,7 +16,7 @@ class Veritrans_Sanitizer {
 
   /**
    * Validates and modify data
-   * @param mixedp[] $json
+   * @param mixed[] $json
    */
   public static function jsonRequest(&$json)
   {
