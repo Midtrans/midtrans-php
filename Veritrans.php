@@ -21,11 +21,9 @@ require_once('Veritrans/Transaction.php');
 
 // Plumbing
 require_once('Veritrans/ApiRequestor.php');
-require_once('Veritrans/SnapApiRequestor.php');
 require_once('Veritrans/Notification.php');
 require_once('Veritrans/VtDirect.php');
 require_once('Veritrans/VtWeb.php');
-require_once('Veritrans/Snap.php');
 
 // Sanitization
 require_once('Veritrans/Sanitizer.php');
