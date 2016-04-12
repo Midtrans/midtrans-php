@@ -16,7 +16,7 @@ If you are using [Composer](https://getcomposer.org), add this require line to y
 ```json
 {
 	"require": {
-		"veritrans/veritrans-php": "dev-master"
+		"veritrans/veritrans-php": "dev-snap"
 	}
 }
 ```
