@@ -4,7 +4,6 @@ class VT_Tests {
 
   public static $stubHttp = false;
   public static $stubHttpResponse;
-  public static $stubHttpStatus;
 
   public static $lastHttpRequest;
 

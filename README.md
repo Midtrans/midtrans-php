@@ -16,7 +16,7 @@ If you are using [Composer](https://getcomposer.org), add this require line to y
 ```json
 {
 	"require": {
-		"veritrans/veritrans-php": "dev-snap"
+		"veritrans/veritrans-php": "dev-master"
 	}
 }
 ```
@@ -83,53 +83,6 @@ try {
 catch (Exception $e) {
   echo $e->getMessage();
 }
-```
-
-### Snap
-
-You can see Snap example [here](https://github.com/veritrans/veritrans-php/tree/snap/examples/snap).
-
-#### Get Snap Token
-
-```php
-$params = array(
-    'transaction_details' => array(
-      'order_id' => rand(),
-      'gross_amount' => 10000,
-    )
-  );
-
-$snapToken = Veritrans_Snap.getSnapToken($params);
-```
-
-#### Initialize Snap JS when customer click pay button
-
-```html
-<html>
-  <body>
-    <button id="pay-button">Pay!</button>
-    <div id="result-type"></div>
-    <div id="result-data"></div>
-    <script src="https://vtcheckout.sandbox.veritrans.co.id/snap.js"></script>
-    <script type="text/javascript">
-      var payButton = document.getElementById('pay-button');
-      var resultType = document.getElementById('result-type');
-      var resultData = document.getElementById('result-data');
-      function changeResult(type,data){
-        resultType.innerHTML = type;
-        resultData.innerHTML = JSON.stringify(data);
-      }
-      payButton.onclick = function(){
-        snap.pay('<?=$snapToken?>', {
-          env: 'sandbox',
-          onSuccess: function(result){changeResult('success', result)},
-          onPending: function(result){changeResult('pending', result)},
-          onError: function(result){changeResult('error', result)}
-        });
-      };
-    </script>
-  </body>
-</html>
 ```
 
 #### Handle Notification Callback

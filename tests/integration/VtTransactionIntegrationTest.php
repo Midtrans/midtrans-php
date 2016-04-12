@@ -17,7 +17,7 @@ class VtTransactionIntegrationTest extends VtIntegrationTest {
 		$this->assertEquals($status_response->gross_amount, $charge_params['transaction_details']['gross_amount']);
 		$this->assertEquals($status_response->transaction_id, $charge_response->transaction_id);
 		$this->assertEquals($status_response->transaction_time, $charge_response->transaction_time);
-		$this->assertEquals($status_response->status_message, 'Success, transaction is found');
+		$this->assertEquals($status_response->status_message, 'Success, transaction found');
 
 		$this->assertTrue(isset($status_response->signature_key));
 	}
