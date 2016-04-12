@@ -80,9 +80,8 @@ $transaction = array(
   'item_details' => $item_details,
 );
 
-$response = Veritrans_Snap::getSnapToken($transaction);
-error_log($response);
-echo $response;
+$snapToken = Veritrans_Snap::getSnapToken($transaction);
+echo $snapToken;
 ?>
 
 <!DOCTYPE html>
@@ -90,17 +89,15 @@ echo $response;
   <head>
       <meta charset="utf-8">
       <!-- Cross compatibility -->
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
       <title>Toko Buah</title>
       <meta name="description" content=""/>
   </head>
   <body>
-
     <button id="pay-button">Pay!</button>
-
     <div id="result-type"></div>
     <div id="result-data"></div>
+
     <script src="https://vtcheckout.sandbox.veritrans.co.id/snap.js"></script>
     <script type="text/javascript">
       var payButton = document.getElementById('pay-button');
@@ -111,7 +108,7 @@ echo $response;
         resultData.innerHTML = JSON.stringify(data);
       }
       payButton.onclick = function(){
-        snap.pay('<?=$response?>', {
+        snap.pay('<?=$snapToken?>', {
           env: 'sandbox',
           onSuccess: function(result){changeResult('success', result)},
           onPending: function(result){changeResult('pending', result)},
