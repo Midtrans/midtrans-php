@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/../../Veritrans.php');
 
 //Set Your server key
-Veritrans_Config::$serverKey = "VT-server-UJ4uPuXhwiNXwhpQx5-S76U1";
+Veritrans_Config::$serverKey = "<Set your ServerKey here>";
 
 // Uncomment for production environment
 // Veritrans_Config::$isProduction = true;
