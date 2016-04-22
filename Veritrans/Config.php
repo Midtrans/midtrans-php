@@ -39,8 +39,8 @@ class Veritrans_Config {
 
   const SANDBOX_BASE_URL = 'https://api.sandbox.veritrans.co.id/v2';
   const PRODUCTION_BASE_URL = 'https://api.veritrans.co.id/v2';
-  const SNAP_SANDBOX_BASE_URL = 'https://vtcheckout.sandbox.veritrans.co.id/v1';
-  const SNAP_PRODUCTION_BASE_URL = 'https://vtcheckout.veritrans.co.id/v1';
+  const SNAP_SANDBOX_BASE_URL = 'https://app.sandbox.veritrans.co.id/snap/v1';
+  const SNAP_PRODUCTION_BASE_URL = 'https://app.veritrans.co.id/snap/v1';
 
   /**
    * @return string Veritrans API URL, depends on $isProduction

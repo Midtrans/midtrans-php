@@ -98,7 +98,7 @@ echo $snapToken;
     <div id="result-type"></div>
     <div id="result-data"></div>
 
-    <script src="https://vtcheckout.sandbox.veritrans.co.id/snap.js"></script>
+    <script src="https://app.sandbox.veritrans.co.id/snap/snap.js"></script>
     <script type="text/javascript">
       var payButton = document.getElementById('pay-button');
       var resultType = document.getElementById('result-type');

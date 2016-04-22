@@ -22,7 +22,7 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://vtcheckout.sandbox.veritrans.co.id/v1/charge"
+        "https://app.sandbox.veritrans.co.id/snap/v1/charge"
       );
 
       $this->assertEquals(
