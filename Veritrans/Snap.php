@@ -48,7 +48,7 @@ class Veritrans_Snap {
     $params = array_replace_recursive($payloads, $params);
 
     $result = Veritrans_SnapApiRequestor::post(
-        Veritrans_Config::getSnapBaseUrl() . '/charge',
+        Veritrans_Config::getSnapBaseUrl() . '/transactions',
         Veritrans_Config::$serverKey,
         $params);
 
