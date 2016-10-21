@@ -6,8 +6,8 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
     public function testGetSnapToken() {
       Veritrans_Config::$serverKey = 'My Very Secret Key';
       VT_Tests::$stubHttp = true;
-      VT_Tests::$stubHttpResponse = '{ "token_id": "abcdefghijklmnopqrstuvwxyz" }';
-      VT_Tests::$stubHttpStatus = array('http_code' => 200);
+      VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
+      VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
       $params = array(
         'transaction_details' => array(
@@ -48,8 +48,8 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
       );
 
       VT_Tests::$stubHttp = true;
-      VT_Tests::$stubHttpResponse = '{ "token_id": "abcdefghijklmnopqrstuvwxyz" }';
-      VT_Tests::$stubHttpStatus = array('http_code' => 200);
+      VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
+      VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
       $tokenId = Veritrans_Snap::getSnapToken($params);
 
@@ -67,8 +67,8 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
       );
 
       VT_Tests::$stubHttp = true;
-      VT_Tests::$stubHttpResponse = '{ "token_id": "abcdefghijklmnopqrstuvwxyz" }';
-      VT_Tests::$stubHttpStatus = array('http_code' => 200);
+      VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
+      VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
       $tokenId = Veritrans_Snap::getSnapToken($params);
 
@@ -91,8 +91,8 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
       } catch (Exception $error) {
         $errorHappen = true;
         $this->assertEquals(
-          $error->getMessage(),
-          "Veritrans Error (401): Access denied due to unauthorized transaction, please check client or server key");
+          "Veritrans Error (401): Access denied, please check client or server key",
+          $error->getMessage());
       }
 
       $this->assertTrue($errorHappen);

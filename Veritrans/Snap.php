@@ -52,6 +52,6 @@ class Veritrans_Snap {
         Veritrans_Config::$serverKey,
         $params);
 
-    return $result->token_id;
+    return $result->token;
   }
 }
