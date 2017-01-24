@@ -91,8 +91,8 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
       } catch (Exception $error) {
         $errorHappen = true;
         $this->assertEquals(
-          "Veritrans Error (401): Access denied, please check client or server key",
-          $error->getMessage());
+          $error->getMessage(),
+          "Veritrans Error (401): Access denied due to unauthorized transaction, please check client or server key,Visit https://snap-docs.midtrans.com/#request-headers for more details");
       }
 
       $this->assertTrue($errorHappen);

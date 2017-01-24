@@ -109,7 +109,6 @@ echo $snapToken;
       }
       payButton.onclick = function(){
         snap.pay('<?=$snapToken?>', {
-          env: 'sandbox',
           onSuccess: function(result){changeResult('success', result)},
           onPending: function(result){changeResult('pending', result)},
           onError: function(result){changeResult('error', result)}
