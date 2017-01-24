@@ -6,7 +6,7 @@ class VeritransSnapApiRequestorTest extends PHPUnit_Framework_TestCase
     public function testConfigOptionsOverrideCurlOptions() {
       VT_Tests::$stubHttp = true;
       VT_Tests::$stubHttpResponse = '{ "status_code": "200" }';
-      VT_Tests::$stubHttpStatus = array('http_code' => 200);
+      VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
       Veritrans_Config::$curlOptions = array(
         CURLOPT_HTTPHEADER => array( "User-Agent: testing lib" ),
