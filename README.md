@@ -104,7 +104,7 @@ $snapToken = Veritrans_Snap.getSnapToken($params);
 ```
 
 #### Implement Notification Handler
-[Refer to this section](#2.3-handle-notification-callback)
+[Refer to this section](#23-handle-http-notification)
 
 ### 2.2.b VT-Web
 
@@ -130,7 +130,7 @@ catch (Exception $e) {
 }
 ```
 #### Implement Notification Handler
-[Refer to this section](#2.3-handle-notification-callback)
+[Refer to this section](#23-handle-http-notification)
 
 ### 2.2.c Core API (VT-Direct)
 
@@ -397,7 +397,7 @@ else {
 }
 ```
 #### 7. Implement Notification Handler
-[Refer to this section](#2.3-handle-notification-callback)
+[Refer to this section](#23-handle-http-notification)
 
 
 ### 2.3 Handle HTTP Notification
