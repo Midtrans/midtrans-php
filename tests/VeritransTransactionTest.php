@@ -30,7 +30,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.sandbox.veritrans.co.id/v2/Order-111/status"
+        "https://api.sandbox.midtrans.com/v2/Order-111/status"
       );
 
       $fields = VT_Tests::lastReqOptions();
@@ -95,7 +95,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.sandbox.veritrans.co.id/v2/Order-111/approve"
+        "https://api.sandbox.midtrans.com/v2/Order-111/approve"
       );
 
       $fields = VT_Tests::lastReqOptions();
@@ -126,7 +126,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.sandbox.veritrans.co.id/v2/Order-111/cancel"
+        "https://api.sandbox.midtrans.com/v2/Order-111/cancel"
       );
 
       $fields = VT_Tests::lastReqOptions();
@@ -154,7 +154,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.sandbox.veritrans.co.id/v2/Order-111/expire"
+        "https://api.sandbox.midtrans.com/v2/Order-111/expire"
       );
 
       $fields = VT_Tests::lastReqOptions();

@@ -21,7 +21,7 @@ class VeritransVtWebTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.sandbox.veritrans.co.id/v2/charge"
+        "https://api.sandbox.midtrans.com/v2/charge"
       );
 
       $this->assertEquals(
