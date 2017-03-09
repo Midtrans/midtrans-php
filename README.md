@@ -3,67 +3,112 @@ Veritrans-PHP
 
 [![Build Status](https://travis-ci.org/veritrans/veritrans-php.svg)](https://travis-ci.org/veritrans/veritrans-php)
 
-Veritrans :heart: PHP!
+Veritrans is now :arrow_right: [Midtrans](https://midtrans.com)
 
-This is the all new PHP client library for Veritrans 2.0. This is the official PHP wrapper for Veritrans Payment API. Visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more information about the product and see documentation at [http://docs.veritrans.co.id](http://docs.veritrans.co.id) for more technical details.
+Midtrans :heart: PHP!
 
-## Installation
+This is the Official PHP wrapper/library for Midtrans Payment API. Visit [https://midtrans.com](https://midtrans.com) for more information about the product and see documentation at [http://docs.midtrans.com](http://docs.midtrans) for more technical details.
 
-### Composer Installation
+## 1. Installation
+
+### 1.a Composer Installation
 
 If you are using [Composer](https://getcomposer.org), add this require line to your `composer.json` file:
 
 ```json
 {
 	"require": {
-		"veritrans/veritrans-php": "dev-master"
+		"veritrans/veritrans-php": "dev-snap"
 	}
 }
 ```
 
 and run `composer install` on your terminal.
 
-### Manual Instalation
+### 1.b Manual Instalation
 
 If you are not using Composer, you can clone or [download](https://github.com/veritrans/veritrans-php/archive/master.zip) this repository.
 
-## How to Use
+## 2. How to Use
 
-### General Settings
-
-#### Set Server Key
+### 2.1 General Settings
 
 ```php
+// Set your Merchant Server Key
 Veritrans_Config::$serverKey = '<your server key>';
-```
-
-#### Set Client Key (VT-Direct)
-
-```javascript
-Veritrans.client_key = "<your client key>";
-```
-
-#### Set Environment
-```php
-// Development Environment (the default)
+// Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
 Veritrans_Config::$isProduction = false;
-
-// Production Environment
-Veritrans_Config::$isProduction = true;
-```
-
-#### Set Sanitization
-```php
-// Set sanitization off (default)
-Veritrans_Config::$isSanitized = false;
-
-// Set sanitization on
+// Set sanitization on (default)
 Veritrans_Config::$isSanitized = true;
+// Set 3DS transaction for credit card to true
+Veritrans_Config::$is3ds = true
 ```
 
-### VT-Web
+### 2.2 Choose Product/Method
 
-You can see some VT-Web examples [here](https://github.com/veritrans/veritrans-php/tree/master/examples/vt-web).
+We have [3 different products](https://docs.midtrans.com/en/welcome/index.html) of payment that you can use:
+- [Snap](https://snap-docs.midtrans.com/) - Customizable payment popup will appear on **your web/app** (no redirection)
+- [VT-Web](https://docs.midtrans.com/en/vtweb/integration.html) - Customer need to be redirected to payment url **hosted by midtrans**
+- [Core API (VT-Direct)](https://api-docs.midtrans.com/) - Basic backend implementation, you can customize the frontend embedded on **your web/app** as you like (no redirection)
+
+Choose one that you think best for your unique needs.
+
+### 2.2.a Snap
+
+You can see Snap example [here](examples/snap).
+
+#### Get Snap Token
+
+```php
+$params = array(
+    'transaction_details' => array(
+      'order_id' => rand(),
+      'gross_amount' => 10000,
+    )
+  );
+
+$snapToken = Veritrans_Snap.getSnapToken($params);
+```
+
+#### Initialize Snap JS when customer click pay button
+
+```html
+<html>
+  <body>
+    <button id="pay-button">Pay!</button>
+    <pre><div id="result-json">JSON result will appear here after payment:<br></div></pre> 
+
+<!-- TODO: Remove ".sandbox" from script src URL for production environment. Also input your client key in "data-client-key" -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<Set your ClientKey here>"></script>
+    <script type="text/javascript">
+      document.getElementById('pay-button').onclick = function(){
+        // SnapToken acquired from previous step
+        snap.pay('<?=$snapToken?>', {
+          // Optional
+          onSuccess: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          },
+          // Optional
+          onPending: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          },
+          // Optional
+          onError: function(result){
+            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+          }
+        });
+      };
+    </script>
+  </body>
+</html>
+```
+
+#### Implement Notification Handler
+[Refer to this section](#23-handle-http-notification)
+
+### 2.2.b VT-Web
+
+You can see some VT-Web examples [here](examples/vt-web).
 
 #### Get Redirection URL of a Charge
 
@@ -84,42 +129,18 @@ catch (Exception $e) {
   echo $e->getMessage();
 }
 ```
+#### Implement Notification Handler
+[Refer to this section](#23-handle-http-notification)
 
-#### Handle Notification Callback
+### 2.2.c Core API (VT-Direct)
 
-```php
-$notif = new Veritrans_Notification();
+You can see some VT-Direct examples [here](examples/vt-direct).
 
-$transaction = $notif->transaction_status;
-$fraud = $notif->fraud_status;
+#### Set Client Key
 
-error_log("Order ID $notif->order_id: "."transaction status = $transaction, fraud staus = $fraud");
-
-  if ($transaction == 'capture') {
-    if ($fraud == 'challenge') {
-      // TODO Set payment status in merchant's database to 'challenge'
-    }
-    else if ($fraud == 'accept') {
-      // TODO Set payment status in merchant's database to 'success'
-    }
-  }
-  else if ($transaction == 'cancel') {
-    if ($fraud == 'challenge') {
-      // TODO Set payment status in merchant's database to 'failure'
-    }
-    else if ($fraud == 'accept') {
-      // TODO Set payment status in merchant's database to 'failure'
-    }
-  }
-  else if ($transaction == 'deny') {
-      // TODO Set payment status in merchant's database to 'failure'
-  }
-}
+```javascript
+Veritrans.client_key = "<your client key>";
 ```
-
-### VT-Direct
-
-You can see some VT-Direct examples [here](https://github.com/veritrans/veritrans-php/tree/master/examples/vt-direct).
 
 #### Checkout Page
 
@@ -375,25 +396,72 @@ else {
   echo "</pre>";
 }
 ```
+#### 7. Implement Notification Handler
+[Refer to this section](#23-handle-http-notification)
 
-#### Process Transaction
 
-##### Get a Transaction Status
+### 2.3 Handle HTTP Notification
+
+Create separated web endpoint (notification url) to receive HTTP POST notification callback/webhook. 
+HTTP notification will be sent whenever transaction status is changed.
+Example also available [here](examples/notification-handler.php)
+
+```php
+$notif = new Veritrans_Notification();
+
+$transaction = $notif->transaction_status;
+$fraud = $notif->fraud_status;
+
+error_log("Order ID $notif->order_id: "."transaction status = $transaction, fraud staus = $fraud");
+
+  if ($transaction == 'capture') {
+    if ($fraud == 'challenge') {
+      // TODO Set payment status in merchant's database to 'challenge'
+    }
+    else if ($fraud == 'accept') {
+      // TODO Set payment status in merchant's database to 'success'
+    }
+  }
+  else if ($transaction == 'cancel') {
+    if ($fraud == 'challenge') {
+      // TODO Set payment status in merchant's database to 'failure'
+    }
+    else if ($fraud == 'accept') {
+      // TODO Set payment status in merchant's database to 'failure'
+    }
+  }
+  else if ($transaction == 'deny') {
+      // TODO Set payment status in merchant's database to 'failure'
+  }
+}
+```
+
+### 2.4 Process Transaction
+
+#### Get Transaction Status
 
 ```php
 $status = Veritrans_Transaction::status($orderId);
 var_dump($status);
 ```
 
-##### Approve a Transaction
+#### Approve Transaction
+If transaction fraud_status == [CHALLENGE](https://support.midtrans.com/hc/en-us/articles/202710750-What-does-CHALLENGE-status-mean-What-should-I-do-if-there-is-a-CHALLENGE-transaction-), you can approve the transaction from Merchant Dashboard, or API :
 
 ```php
 $approve = Veritrans_Transaction::approve($orderId);
 var_dump($approve);
 ```
 
-##### Cancel a Transaction
+#### Cancel Transaction
+You can Cancel transaction with `fraud_status == CHALLENGE`, or credit card transaction with `transaction_status == CAPTURE` (before it become SETTLEMENT)
+```php
+$cancel = Veritrans_Transaction::cancel($orderId);
+var_dump($cancel);
+```
 
+#### Expire Transaction
+You can Expire transaction with `transaction_status == PENDING` (before it become SETTLEMENT or EXPIRE)
 ```php
 $cancel = Veritrans_Transaction::cancel($orderId);
 var_dump($cancel);

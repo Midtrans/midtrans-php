@@ -11,7 +11,10 @@ class VtFixture {
 class VtChargeFixture extends VtFixture {
 	public static function build($payment_type, $payment_data = NULL) {
 		$charge_params = self::readFixture('vt_charge.json');
-		$charge_params['payment_type'] = $payment_type;
+
+		if (!is_null($payment_type)) {
+			$charge_params['payment_type'] = $payment_type;
+		}
 
 		if (!is_null($payment_data)) {
 			$charge_params[$payment_type] = $payment_data;
