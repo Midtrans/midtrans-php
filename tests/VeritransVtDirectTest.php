@@ -23,7 +23,7 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.sandbox.veritrans.co.id/v2/charge"
+        "https://api.sandbox.midtrans.com/v2/charge"
       );
 
       $fields = VT_Tests::lastReqOptions();
@@ -85,7 +85,7 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest["url"],
-        "https://api.sandbox.veritrans.co.id/v2/capture"
+        "https://api.sandbox.midtrans.com/v2/capture"
       );
 
       $fields = VT_Tests::lastReqOptions();

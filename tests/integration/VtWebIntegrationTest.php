@@ -6,6 +6,6 @@ class VtWebIntegrationTest extends VtIntegrationTest {
 		$charge_params = VtChargeFixture::build('vtweb');
 		$redirect_url = Veritrans_VtWeb::getRedirectionUrl($charge_params);
 
-		$this->assertRegExp("/https:\/\/vtweb.sandbox.veritrans.co.id\/v2\/vtweb\/[\w\-]+/", $redirect_url);
+		$this->assertRegExp("/https:\/\/vtweb.sandbox.[\w\.]+.[\w\.]+\/v2\/vtweb\/[\w\-]+/", $redirect_url);
 	}
 }

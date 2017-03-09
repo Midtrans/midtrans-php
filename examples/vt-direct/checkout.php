@@ -19,7 +19,7 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
 </head>
 
 <body>
-  <script type="text/javascript" src="https://api.sandbox.veritrans.co.id/v2/assets/js/veritrans.js"></script>
+  <script type="text/javascript" src="https://api.sandbox.midtrans.com/v2/assets/js/veritrans.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script type="text/javascript" src="jquery.fancybox.pack.js"></script>
 
@@ -80,7 +80,7 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
   <script type="text/javascript">
     $(function () {
       // Sandbox URL
-      Veritrans.url = "https://api.sandbox.veritrans.co.id/v2/token";
+      Veritrans.url = "https://api.sandbox.midtrans.com/v2/token";
       // TODO: Change with your client key.
       Veritrans.client_key = "<?php echo Veritrans_Config::$clientKey ?>";
       var card = function () {
