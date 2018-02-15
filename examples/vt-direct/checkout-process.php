@@ -8,9 +8,9 @@ if(empty($_POST['token_id'])) {
 
 Veritrans_Config::$serverKey = '<your server key>';
 
-if (Veritrans_Config::$serverKey == '<your server key>') {
+if (strpos(Veritrans_Config::$serverKey,'your ') != false ) {
   echo "<code>";
-  echo "<h4>Please set real server key from sandbox</h4>";
+  echo "<h4>Please set your server key from sandbox</h4>";
   echo "In file: " . __FILE__;
   echo "<br>";
   echo "<br>";
@@ -84,7 +84,7 @@ $transaction_data = array(
     'payment_type' => 'credit_card',
     'credit_card'  => array(
       'token_id'      => $token_id,
-      'bank'          => 'bni',
+      // 'bank'          => 'bni', // optional acquiring bank, must be the same bank with get-token bank
       'save_token_id' => isset($_POST['save_cc'])
     ),
     'transaction_details' => $transaction_details,

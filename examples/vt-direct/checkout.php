@@ -5,7 +5,7 @@ require_once(dirname(__FILE__) . '/../../Veritrans.php');
 // can find in Merchant Portal -> Settings -> Access keys
 Veritrans_Config::$clientKey = "<your client key>";
 
-if (Veritrans_Config::$clientKey == "<your client key>") {
+if ( strpos(Veritrans_Config::$clientKey,'your ') != false ) {
   echo "<p style='background: #FFB588; padding: 10px;'>";
   echo "Please set your client key in file " . __FILE__;
   echo "</p>";
@@ -29,7 +29,7 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
       <legend>Checkout</legend>
       <p>
         <label>Card Number</label>
-        <input class="card-number" value="4011 1111 1111 1112" size="23" type="text" autocomplete="off" />
+        <input class="card-number" value="4811 1111 1111 1114" size="23" type="text" autocomplete="off" />
       </p>
       <p>
         <label>Expiration (MM/YYYY)</label>
@@ -44,7 +44,7 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
 
       <p>
         <label>3D Secure</label>
-        <input type="checkbox" name="secure" value="true">
+        <input type="checkbox" name="secure" value="true" checked>
       </p>
 
       <p>
@@ -61,18 +61,19 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
     <pre>
   <b>Testing cards:</b>
 
-  Visa success      4011 1111 1111 1112
-  Visa challenge    4111 1111 1111 1111
-  Visa deny by FDS  4211 1111 1111 1110
+    <b>For 3D Secure:</b>
+    Visa        4811 1111 1111 1114
+    MasterCard  5211 1111 1111 1117
 
-  MasterCard success      5481 1611 1111 1081
-  MasterCard challenge    5110 1111 1111 1119
-  MasterCard deny by FDS  5210 1111 1111 1118
+    <b>For Non 3D Secure:</b>
+    Visa success      4011 1111 1111 1112
+    Visa challenge    4111 1111 1111 1111
+    Visa deny by FDS  4211 1111 1111 1110
 
-  <b>3D Secure:</b>
+    MasterCard success      5481 1611 1111 1081
+    MasterCard challenge    5110 1111 1111 1119
+    MasterCard deny by FDS  5210 1111 1111 1118
 
-  Visa        4811 1111 1111 1114
-  MasterCard  5211 1111 1111 1117
     </pre>
   </code>
 
@@ -90,6 +91,7 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
           "card_exp_year": $(".card-expiry-year").val(),
           "card_cvv": $(".card-cvv").val(),
           "secure": $('[name=secure]')[0].checked,
+          // "bank": "bni", // optional acquiring bank
           "gross_amount": 200000
         }
       };
@@ -103,7 +105,6 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
 
         }
         else if (response.status_code == "200") {
-          console.log("NOT 3-D SECURE");
           // Success 3-D Secure or success normal
           closeDialog();
           // Submit form
@@ -111,6 +112,7 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
           $("#payment-form").submit();
         }
         else {
+          closeDialog();
           // Failed request token
           console.log(response.status_code);
           alert(response.status_message);
