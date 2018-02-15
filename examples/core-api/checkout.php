@@ -27,6 +27,7 @@ if ( strpos(Veritrans_Config::$clientKey,'your ') != false ) {
   <form action="checkout-process.php" method="POST" id="payment-form">
     <fieldset>
       <legend>Checkout</legend>
+      <small><strong>Field that may be presented to customer:</strong></small>
       <p>
         <label>Card Number</label>
         <input class="card-number" value="4811 1111 1111 1114" size="23" type="text" autocomplete="off" />
@@ -41,15 +42,15 @@ if ( strpos(Veritrans_Config::$clientKey,'your ') != false ) {
         <label>CVV</label>
         <input class="card-cvv" value="123" size="4" type="password" autocomplete="off" />
       </p>
-
-      <p>
-        <label>3D Secure</label>
-        <input type="checkbox" name="secure" value="true" checked>
-      </p>
-
       <p>
         <label>Save credit card</label>
         <input type="checkbox" name="save_cc" value="true">
+      </p>
+
+      <small><strong>Fields that shouldn't be presented to the customer:</strong></small>
+      <p>
+        <label>3D Secure</label>
+        <input type="checkbox" name="secure" value="true" checked>
       </p>
 
       <input id="token_id" name="token_id" type="hidden" />
