@@ -134,7 +134,7 @@ catch (Exception $e) {
 
 ### 2.2.c Core API (VT-Direct)
 
-You can see some VT-Direct examples [here](examples/vt-direct).
+You can see some Core API examples [here](examples/core-api).
 
 #### Set Client Key
 
