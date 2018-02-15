@@ -25,7 +25,7 @@ class Veritrans_Snap {
    * @throws Exception curl error or veritrans error
    */
   public static function getSnapToken($params) {
-    return (Veritrans_Snap::createTransaction($params))->token;
+    return (Veritrans_Snap::createTransaction($params)->token);
   }
 
   /**
