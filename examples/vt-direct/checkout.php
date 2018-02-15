@@ -15,13 +15,13 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
 
 <head>
   <title>Checkout</title>
-  <link rel="stylesheet" href="jquery.fancybox.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.min.css">
 </head>
 
 <body>
   <script type="text/javascript" src="https://api.sandbox.midtrans.com/v2/assets/js/veritrans.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script type="text/javascript" src="jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.min.js"></script>
 
   <h1>Checkout</h1>
   <form action="checkout-process.php" method="POST" id="payment-form">
@@ -119,19 +119,19 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
       }
 
       function openDialog(url) {
-        $.fancybox.open({
-          href: url,
-          type: "iframe",
-          autoSize: false,
-          width: 700,
-          height: 500,
-          closeBtn: false,
-          modal: true
+        $.featherlight({
+          iframe: url, 
+          iframeMaxWidth: '80%', 
+          iframeWidth: 700, 
+          iframeHeight: 500,
+          closeOnClick: false,
+          closeOnEsc: false,
+          closeIcon:''
         });
       }
 
       function closeDialog() {
-        $.fancybox.close();
+        $.featherlight.close();
       }
 
       $(".submit-button").click(function (event) {
