@@ -82,12 +82,12 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 		$this->assertTrue(isset($this->charge_response->biller_code));
 	}
 
-	public function testBbmMoney() {
-		$this->prepareChargeParams('bbm_money');
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
-		$this->assertEquals($this->charge_response->transaction_status, 'pending');
-		$this->assertTrue(isset($this->charge_response->permata_va_number));
-	}
+	// public function testBbmMoney() { // no longer exists
+	// 	$this->prepareChargeParams('bbm_money');
+	// 	$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+	// 	$this->assertEquals($this->charge_response->transaction_status, 'pending');
+	// 	$this->assertTrue(isset($this->charge_response->permata_va_number));
+	// }
 
 	public function testChargeIndomaret() {
 		$this->prepareChargeParams('cstore',
