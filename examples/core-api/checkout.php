@@ -5,7 +5,7 @@ require_once(dirname(__FILE__) . '/../../Veritrans.php');
 // can find in Merchant Portal -> Settings -> Access keys
 Veritrans_Config::$clientKey = "<your client key>";
 
-if (Veritrans_Config::$clientKey == "<your client key>") {
+if ( strpos(Veritrans_Config::$clientKey,'your ') != false ) {
   echo "<p style='background: #FFB588; padding: 10px;'>";
   echo "Please set your client key in file " . __FILE__;
   echo "</p>";
@@ -15,21 +15,22 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
 
 <head>
   <title>Checkout</title>
-  <link rel="stylesheet" href="jquery.fancybox.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.min.css">
 </head>
 
 <body>
   <script type="text/javascript" src="https://api.sandbox.midtrans.com/v2/assets/js/veritrans.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script type="text/javascript" src="jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.min.js"></script>
 
   <h1>Checkout</h1>
   <form action="checkout-process.php" method="POST" id="payment-form">
     <fieldset>
       <legend>Checkout</legend>
+      <small><strong>Field that may be presented to customer:</strong></small>
       <p>
         <label>Card Number</label>
-        <input class="card-number" value="4011 1111 1111 1112" size="23" type="text" autocomplete="off" />
+        <input class="card-number" value="4811 1111 1111 1114" size="23" type="text" autocomplete="off" />
       </p>
       <p>
         <label>Expiration (MM/YYYY)</label>
@@ -41,15 +42,15 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
         <label>CVV</label>
         <input class="card-cvv" value="123" size="4" type="password" autocomplete="off" />
       </p>
-
-      <p>
-        <label>3D Secure</label>
-        <input type="checkbox" name="secure" value="true">
-      </p>
-
       <p>
         <label>Save credit card</label>
         <input type="checkbox" name="save_cc" value="true">
+      </p>
+
+      <small><strong>Fields that shouldn't be presented to the customer:</strong></small>
+      <p>
+        <label>3D Secure</label>
+        <input type="checkbox" name="secure" value="true" checked>
       </p>
 
       <input id="token_id" name="token_id" type="hidden" />
@@ -61,18 +62,19 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
     <pre>
   <b>Testing cards:</b>
 
-  Visa success      4011 1111 1111 1112
-  Visa challenge    4111 1111 1111 1111
-  Visa deny by FDS  4211 1111 1111 1110
+    <b>For 3D Secure:</b>
+    Visa        4811 1111 1111 1114
+    MasterCard  5211 1111 1111 1117
 
-  MasterCard success      5481 1611 1111 1081
-  MasterCard challenge    5110 1111 1111 1119
-  MasterCard deny by FDS  5210 1111 1111 1118
+    <b>For Non 3D Secure:</b>
+    Visa success      4011 1111 1111 1112
+    Visa challenge    4111 1111 1111 1111
+    Visa deny by FDS  4211 1111 1111 1110
 
-  <b>3D Secure:</b>
+    MasterCard success      5481 1611 1111 1081
+    MasterCard challenge    5110 1111 1111 1119
+    MasterCard deny by FDS  5210 1111 1111 1118
 
-  Visa        4811 1111 1111 1114
-  MasterCard  5211 1111 1111 1117
     </pre>
   </code>
 
@@ -90,6 +92,7 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
           "card_exp_year": $(".card-expiry-year").val(),
           "card_cvv": $(".card-cvv").val(),
           "secure": $('[name=secure]')[0].checked,
+          // "bank": "bni", // optional acquiring bank
           "gross_amount": 200000
         }
       };
@@ -103,7 +106,6 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
 
         }
         else if (response.status_code == "200") {
-          console.log("NOT 3-D SECURE");
           // Success 3-D Secure or success normal
           closeDialog();
           // Submit form
@@ -111,6 +113,7 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
           $("#payment-form").submit();
         }
         else {
+          closeDialog();
           // Failed request token
           console.log(response.status_code);
           alert(response.status_message);
@@ -119,19 +122,19 @@ if (Veritrans_Config::$clientKey == "<your client key>") {
       }
 
       function openDialog(url) {
-        $.fancybox.open({
-          href: url,
-          type: "iframe",
-          autoSize: false,
-          width: 700,
-          height: 500,
-          closeBtn: false,
-          modal: true
+        $.featherlight({
+          iframe: url, 
+          iframeMaxWidth: '80%', 
+          iframeWidth: 700, 
+          iframeHeight: 500,
+          closeOnClick: false,
+          closeOnEsc: false,
+          closeIcon:''
         });
       }
 
       function closeDialog() {
-        $.fancybox.close();
+        $.featherlight.close();
       }
 
       $(".submit-button").click(function (event) {

@@ -24,7 +24,30 @@ class Veritrans_Snap {
    * @return string Snap token.
    * @throws Exception curl error or veritrans error
    */
-  public static function getSnapToken($params)
+  public static function getSnapToken($params) {
+    return (Veritrans_Snap::createTransaction($params)->token);
+  }
+
+  /**
+   * Create Snap payment page, with this version returning full API response
+   *
+   * Example:
+   *
+   * ```php
+   *   $params = array(
+   *     'transaction_details' => array(
+   *       'order_id' => rand(),
+   *       'gross_amount' => 10000,
+   *     )
+   *   );
+   *   $paymentUrl = Veritrans_Snap::getSnapToken($params);
+   * ```
+   *
+   * @param array $params Payment options
+   * @return object Snap response (token and redirect_url).
+   * @throws Exception curl error or veritrans error
+   */
+  public static function createTransaction($params)
   {
     $payloads = array(
       'credit_card' => array(
@@ -52,6 +75,6 @@ class Veritrans_Snap {
         Veritrans_Config::$serverKey,
         $params);
 
-    return $result->token;
-  }
+    return $result;
+  }  
 }

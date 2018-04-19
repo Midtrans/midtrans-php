@@ -4,9 +4,9 @@ require_once(dirname(__FILE__) . '/../../Veritrans.php');
 
 Veritrans_Config::$serverKey = '<your server key>';
 
-if (Veritrans_Config::$serverKey == '<your server key>') {
+if (strpos(Veritrans_Config::$serverKey,'your ') != false ) {
   echo "<code>";
-  echo "<h4>Please set real server key from sandbox</h4>";
+  echo "<h4>Please set your server key from sandbox</h4>";
   echo "In file: " . __FILE__;
   echo "<br>";
   echo "<br>";

@@ -64,9 +64,10 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
         $status = Veritrans_Transaction::status("Order-111");
       } catch (Exception $error) {
         $errorHappen = true;
-        $this->assertEquals(
-          $error->getMessage(),
-          "Veritrans Error (401): Access denied due to unauthorized transaction, please check client or server key");
+        $this->assertContains(
+          "authorized",
+          $error->getMessage()
+        );
       }
 
       $this->assertTrue($errorHappen);
