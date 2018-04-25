@@ -67,7 +67,7 @@ $params = array(
     )
   );
 
-$snapToken = Veritrans_Snap.getSnapToken($params);
+$snapToken = Veritrans_Snap::getSnapToken($params);
 ```
 
 #### Initialize Snap JS when customer click pay button
