@@ -91,10 +91,15 @@ class Veritrans_SnapApiRequestor {
       throw new Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
     }
     else {
-      $result_array = json_decode($result);
+      try {
+        $result_array = json_decode($result);
+      } catch (Exception $e) {
+        $message = "API Request Error unable to json_decode API response: ".$result . ' | Request url: '.$url;
+        throw new Exception($message);
+      }
       if ($info['http_code'] != 201) {
-        $message = 'Veritrans Error (' . $info['http_code'] . '): '
-            . implode(',', $result_array->error_messages);
+        $message = 'Midtrans Error (' . $info['http_code'] . '): '
+            . $result . ' | Request url: '.$url;
         throw new Exception($message, $info['http_code']);
       }
       else {

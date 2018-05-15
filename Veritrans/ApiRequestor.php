@@ -89,7 +89,11 @@ class Veritrans_ApiRequestor {
       throw new Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
     }
     else {
-      $result_array = json_decode($result);
+      try {
+        $result_array = json_decode($result);
+      } catch (Exception $e) {
+        throw new Exception("API Request Error unable to json_decode API response: ".$result . ' | Request url: '.$url);
+      }
       if (!in_array($result_array->status_code, array(200, 201, 202, 407))) {
         $message = 'Veritrans Error (' . $result_array->status_code . '): '
             . $result_array->status_message;
