@@ -80,7 +80,7 @@ $snapToken = Veritrans_Snap::getSnapToken($params);
 
     public function actionSnapToken() {
 
-        \Veritrans_Config::$serverKey = 'SB-Mid-server-cs1JJ-xFKy4QX3WFoh9vrkf0';
+        \Veritrans_Config::$serverKey = 'Secret Server Key Goes Here';
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
         \Veritrans_Config::$isProduction = false;
         // Set sanitization on (default)
@@ -88,14 +88,14 @@ $snapToken = Veritrans_Snap::getSnapToken($params);
         // Set 3DS transaction for credit card to true
         \Veritrans_Config::$is3ds = true;
 
-        $coba = [
+        $complete_request = [
             "transaction_details" => [
                 "order_id" => "1234",
                 "gross_amount" => 10000
             ]
         ];
 
-        $snap_token = \Veritrans_Snap::getSnapToken($coba);
+        $snap_token = \Veritrans_Snap::getSnapToken($complete_request);
         return ['snap_token' => $snap_token];
   
     }
