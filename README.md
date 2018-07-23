@@ -41,7 +41,7 @@ Veritrans_Config::$isProduction = false;
 // Set sanitization on (default)
 Veritrans_Config::$isSanitized = true;
 // Set 3DS transaction for credit card to true
-Veritrans_Config::$is3ds = true
+Veritrans_Config::$is3ds = true;
 ```
 
 ### 2.2 Choose Product/Method
@@ -67,7 +67,38 @@ $params = array(
     )
   );
 
-$snapToken = Veritrans_Snap.getSnapToken($params);
+$snapToken = Veritrans_Snap::getSnapToken($params);
+```
+
+#### Get Snap Token in Yii2
+
+```php
+    
+    //install library from composer
+    //in your controller no need to include anything
+    //make sure call class with \Class_name::method()
+
+    public function actionSnapToken() {
+
+        \Veritrans_Config::$serverKey = 'Secret Server Key Goes Here';
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        \Veritrans_Config::$isProduction = false;
+        // Set sanitization on (default)
+        \Veritrans_Config::$isSanitized = true;
+        // Set 3DS transaction for credit card to true
+        \Veritrans_Config::$is3ds = true;
+
+        $complete_request = [
+            "transaction_details" => [
+                "order_id" => "1234",
+                "gross_amount" => 10000
+            ]
+        ];
+
+        $snap_token = \Veritrans_Snap::getSnapToken($complete_request);
+        return ['snap_token' => $snap_token];
+  
+    }
 ```
 
 #### Initialize Snap JS when customer click pay button
