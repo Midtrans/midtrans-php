@@ -14,8 +14,9 @@ if (strpos(Veritrans_Config::$serverKey,'your ') != false ) {
   die();
 }
 
-$orderId = '1404189699';
+$orderId = '<your order id / transaction id>';
 
+// Get transaction status to Midtrans API
 try {
   $status = Veritrans_Transaction::status($orderId);
 } catch (Exception $e) {
@@ -25,8 +26,14 @@ try {
 
 var_dump($status);
 
+// Approve a transaction that is in Challenge status
 // $approve = Veritrans_Transaction::approve($orderId);
 // var_dump($approve);
 
+// Cancel a transaction
 // $cancel = Veritrans_Transaction::cancel($orderId);
 // var_dump($cancel);
+
+// Expire a transaction
+// $expire = Veritrans_Transaction::expire($orderId);
+// var_dump($expire);
