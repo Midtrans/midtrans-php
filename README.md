@@ -137,11 +137,14 @@ $snapToken = Veritrans_Snap::getSnapToken($params);
 #### Implement Notification Handler
 [Refer to this section](#23-handle-http-notification)
 
-### 2.2.b VT-Web
+### ~2.2.b VT-Web~
+> !!! VT-Web is DEPRECATED !!!
 
-You can see some VT-Web examples [here](examples/vt-web).
+> Please use [Snap Redirect](#22b-snap-redirect), it has the same functionality, but better. [Refer to this section](#22b-snap-redirect)
 
-#### Get Redirection URL of a Charge
+~You can see some VT-Web examples [here](examples/vt-web).~
+
+#### ~Get Redirection URL of a Charge~
 
 ```php
 $params = array(
@@ -155,6 +158,33 @@ $params = array(
 try {
   // Redirect to Veritrans VTWeb page
   header('Location: ' . Veritrans_Vtweb::getRedirectionUrl($params));
+}
+catch (Exception $e) {
+  echo $e->getMessage();
+}
+```
+
+### 2.2.b Snap Redirect
+
+You can see some Snap Redirect examples [here](examples/snap-redirect).
+
+#### Get Redirection URL of a Payment Page
+
+```php
+$params = array(
+    'transaction_details' => array(
+      'order_id' => rand(),
+      'gross_amount' => 10000,
+    ),
+    'vtweb' => array()
+  );
+
+try {
+  // Get Snap Payment Page URL
+  $paymentUrl = Veritrans_Snap::createTransaction($params)->redirect_url;
+  
+  // Redirect to Snap Payment Page
+  header('Location: ' . $paymentUrl);
 }
 catch (Exception $e) {
   echo $e->getMessage();
