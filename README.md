@@ -179,10 +179,10 @@ $params = array(
     'vtweb' => array()
   );
 
-// Get Snap Payment Page URL
-$paymentUrl = Veritrans_Snap::createTransaction($params)->redirect_url;
-
 try {
+  // Get Snap Payment Page URL
+  $paymentUrl = Veritrans_Snap::createTransaction($params)->redirect_url;
+  
   // Redirect to Snap Payment Page
   header('Location: ' . $paymentUrl);
 }
