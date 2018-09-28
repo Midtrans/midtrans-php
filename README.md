@@ -47,9 +47,9 @@ Veritrans_Config::$is3ds = true;
 ### 2.2 Choose Product/Method
 
 We have [3 different products](https://docs.midtrans.com/en/welcome/index.html) of payment that you can use:
-- [Snap](https://snap-docs.midtrans.com/) - Customizable payment popup will appear on **your web/app** (no redirection)
-- Snap Redirect - Customer need to be redirected to payment url **hosted by midtrans**
-- [Core API (VT-Direct)](https://api-docs.midtrans.com/) - Basic backend implementation, you can customize the frontend embedded on **your web/app** as you like (no redirection)
+- [Snap](#22a-snap) - Customizable payment popup will appear on **your web/app** (no redirection). [doc ref](https://snap-docs.midtrans.com/)
+- [Snap Redirect](#22b-snap-redirect) - Customer need to be redirected to payment url **hosted by midtrans**. [doc ref](https://snap-docs.midtrans.com/)
+- [Core API (VT-Direct)](#22c-core-api-vt-direct) - Basic backend implementation, you can customize the frontend embedded on **your web/app** as you like (no redirection). [doc ref](https://api-docs.midtrans.com/)
 
 Choose one that you think best for your unique needs.
 
