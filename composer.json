@@ -1,8 +1,8 @@
 {
-    "name": "veritrans/veritrans-php",
-    "description": "PHP Wraper for Veritrans VT-Web Payment API.",
+    "name": "midtrans/midtrans-php",
+    "description": "PHP Wrapper for Midtrans Payment API.",
     "homepage": "https://midtrans.com",
-    "version": "1.2.1",
+    "version": "2.0.0",
     "type": "library",
     "license":"GPL-3.0",
     "authors": [
@@ -27,6 +27,8 @@
         "psy/psysh": "0.4.*"
     },
     "autoload": {
-        "classmap": [""]
+        "psr-4": { 
+            "Midtrans\\": "Midtrans/"
+        }
     }
 }

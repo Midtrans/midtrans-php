@@ -1,6 +1,8 @@
 <?php
 
-class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
+namespace Midtrans;
+
+class MidtransVtDirectTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testCharge() {
@@ -17,7 +19,7 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
         )
       );
 
-      $charge = Veritrans_VtDirect::charge($params);
+      $charge = Midtrans_VtDirect::charge($params);
 
       $this->assertEquals($charge->status_code, "200");
 
@@ -42,20 +44,20 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
       );
 
       try {
-        $paymentUrl = Veritrans_VtDirect::charge($params);
-      } catch (Exception $error) {
+        $paymentUrl = Midtrans_VtDirect::charge($params);
+      } catch (\Exception $error) {
         $errorHappen = true;
         $this->assertContains(
           $error->getMessage(),
           array(
-            "Veritrans Error (401): Transaction cannot be authorized with the current client/server key.",
-            "Veritrans Error (411): Token id is missing, invalid, or timed out"
+            "Midtrans Error (401): Transaction cannot be authorized with the current client/server key.",
+            "Midtrans Error (411): Token id is missing, invalid, or timed out"
           )
         );
         /*
         $this->assertEquals(
           $error->getMessage(),
-          "Veritrans Error (401): Access denied due to unauthorized transaction, please check client or server key");
+          "Midtrans Error (401): Access denied due to unauthorized transaction, please check client or server key");
         */
       }
 
@@ -79,7 +81,7 @@ class VeritransVtDirectTest extends PHPUnit_Framework_TestCase
         "gross_amount": "55000.00"
       }';
 
-      $capture = Veritrans_VtDirect::capture("A27550");
+      $capture = Midtrans_VtDirect::capture("A27550");
 
       $this->assertEquals($capture->status_code, "200");
 

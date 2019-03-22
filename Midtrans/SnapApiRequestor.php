@@ -1,10 +1,13 @@
 <?php
+
+namespace Midtrans;
+
 /**
  * Send request to Snap API
- * Better don't use this class directly, use Veritrans_Snap
+ * Better don't use this class directly, use Midtrans_Snap
  */
 
-class Veritrans_SnapApiRequestor {
+class Midtrans_SnapApiRequestor {
 
   /**
    * Send GET request
@@ -50,17 +53,17 @@ class Veritrans_SnapApiRequestor {
       // CURLOPT_CAINFO => dirname(__FILE__) . "/../data/cacert.pem"
     );
 
-    // merging with Veritrans_Config::$curlOptions
-    if (count(Veritrans_Config::$curlOptions)) {
+    // merging with Midtrans_Config::$curlOptions
+    if (count(Midtrans_Config::$curlOptions)) {
       // We need to combine headers manually, because it's array and it will no be merged
-      if (Veritrans_Config::$curlOptions[CURLOPT_HTTPHEADER]) {
-        $mergedHeders = array_merge($curl_options[CURLOPT_HTTPHEADER], Veritrans_Config::$curlOptions[CURLOPT_HTTPHEADER]);
+      if (Midtrans_Config::$curlOptions[CURLOPT_HTTPHEADER]) {
+        $mergedHeders = array_merge($curl_options[CURLOPT_HTTPHEADER], Midtrans_Config::$curlOptions[CURLOPT_HTTPHEADER]);
         $headerOptions = array( CURLOPT_HTTPHEADER => $mergedHeders );
       } else {
         $mergedHeders = array();
       }
 
-      $curl_options = array_replace_recursive($curl_options, Veritrans_Config::$curlOptions, $headerOptions);
+      $curl_options = array_replace_recursive($curl_options, Midtrans_Config::$curlOptions, $headerOptions);
     }
 
     if ($post) {
@@ -77,7 +80,7 @@ class Veritrans_SnapApiRequestor {
     curl_setopt_array($ch, $curl_options);
 
     // For testing purpose
-    if (class_exists('VT_Tests') && VT_Tests::$stubHttp) {
+    if (class_exists('\Midtrans\VT_Tests') && VT_Tests::$stubHttp) {
       $result = self::processStubed($curl_options, $url, $server_key, $data_hash, $post);
       $info = VT_Tests::$stubHttpStatus;
     } else {
@@ -88,19 +91,19 @@ class Veritrans_SnapApiRequestor {
 
 
     if ($result === FALSE) {
-      throw new Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
+      throw new \Exception('CURL Error: ' . curl_error($ch), curl_errno($ch));
     }
     else {
       try {
         $result_array = json_decode($result);
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         $message = "API Request Error unable to json_decode API response: ".$result . ' | Request url: '.$url;
-        throw new Exception($message);
+        throw new \Exception($message);
       }
       if ($info['http_code'] != 201) {
         $message = 'Midtrans Error (' . $info['http_code'] . '): '
             . $result . ' | Request url: '.$url;
-        throw new Exception($message, $info['http_code']);
+        throw new \Exception($message, $info['http_code']);
       }
       else {
         return $result_array;

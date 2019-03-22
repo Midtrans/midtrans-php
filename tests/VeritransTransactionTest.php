@@ -1,10 +1,12 @@
 <?php
 
-class VeritransTransactionTest extends PHPUnit_Framework_TestCase
+namespace Midtrans;
+
+class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testStatus() {
-      Veritrans_Config::$serverKey = 'My Very Secret Key';
+      Midtrans_Config::$serverKey = 'My Very Secret Key';
       VT_Tests::$stubHttp = true;
       VT_Tests::$stubHttpResponse = '{
         "status_code": "200",
@@ -22,7 +24,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
         "gross_amount": "10000.00"
       }';
 
-      $status = Veritrans_Transaction::status("Order-111");
+      $status = Midtrans_Transaction::status("Order-111");
 
       $this->assertEquals($status->status_code, "200");
       $this->assertEquals($status->order_id, "Order-111");
@@ -39,7 +41,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
     }
 
     public function testFailureStatus() {
-      Veritrans_Config::$serverKey = 'My Very Secret Key';
+      Midtrans_Config::$serverKey = 'My Very Secret Key';
       VT_Tests::$stubHttp = true;
       VT_Tests::$stubHttpResponse = '{
         "status_code": "404",
@@ -47,12 +49,12 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
       }';
 
       try {
-        $status = Veritrans_Transaction::status("Order-111");
-      } catch (Exception $error) {
+        $status = Midtrans_Transaction::status("Order-111");
+      } catch (\Exception $error) {
         $errorHappen = true;
         $this->assertEquals(
           $error->getMessage(),
-          "Veritrans Error (404): The requested resource is not found");
+          "Midtrans Error (404): The requested resource is not found");
       }
 
       $this->assertTrue($errorHappen);
@@ -61,8 +63,8 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
 
     public function testRealStatus() {
       try {
-        $status = Veritrans_Transaction::status("Order-111");
-      } catch (Exception $error) {
+        $status = Midtrans_Transaction::status("Order-111");
+      } catch (\Exception $error) {
         $errorHappen = true;
         $this->assertContains(
           "authorized",
@@ -90,7 +92,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
         "gross_amount": "10000.00"
       }';
 
-      $approve = Veritrans_Transaction::approve("Order-111");
+      $approve = Midtrans_Transaction::approve("Order-111");
 
       $this->assertEquals($approve, "200");
 
@@ -121,7 +123,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
         "gross_amount": "10000.00"
       }';
 
-      $cancel = Veritrans_Transaction::cancel("Order-111");
+      $cancel = Midtrans_Transaction::cancel("Order-111");
 
       $this->assertEquals($cancel, "200");
 
@@ -148,7 +150,7 @@ class VeritransTransactionTest extends PHPUnit_Framework_TestCase
         "gross_amount": "10000.00"
       }';
 
-      $expire = Veritrans_Transaction::expire("Order-111");
+      $expire = Midtrans_Transaction::expire("Order-111");
 
       $this->assertEquals($expire->status_code, "407");
       $this->assertEquals($expire->status_message, "Success, transaction has expired");

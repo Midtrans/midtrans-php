@@ -1,12 +1,15 @@
 <?php
+
+namespace Midtrans;
+
 /**
  * Request params filters.
  *
  * It truncate fields that have length limit, remove not allowed characters from other fields
  *
- * This feature is optional, you can control it with Veritrans_Config::$isSanitized (default: false)
+ * This feature is optional, you can control it with Midtrans_Config::$isSanitized (default: false)
  */
-class Veritrans_Sanitizer {
+class Midtrans_Sanitizer {
   private $filters;
 
   public function __construct()

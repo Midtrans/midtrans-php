@@ -1,4 +1,7 @@
 <?php
+
+namespace Midtrans;
+
 class VtFixture {
 	protected static function readFixture($filename) {
 		$charge_json = file_get_contents(__DIR__ . '/fixture/' . $filename);

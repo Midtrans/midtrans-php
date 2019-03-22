@@ -19,7 +19,7 @@
             <directory>./tests/</directory>
         </testsuite>
         <testsuite name="Integration Test">
-            <directory>./tests/integration</directory>            
+            <directory>./tests/integration</directory>
         </testsuite>
     </testsuites>
     <php>

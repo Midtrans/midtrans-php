@@ -1,9 +1,9 @@
-Veritrans-PHP
+Midtrans-PHP
 ===============
 
 [![Build Status](https://travis-ci.org/veritrans/veritrans-php.svg)](https://travis-ci.org/veritrans/veritrans-php)
 
-Veritrans is now :arrow_right: [Midtrans](https://midtrans.com)
+Midtrans is now :arrow_right: [Midtrans](https://midtrans.com)
 
 Midtrans :heart: PHP!
 
@@ -35,13 +35,13 @@ If you are not using Composer, you can clone or [download](https://github.com/ve
 
 ```php
 // Set your Merchant Server Key
-Veritrans_Config::$serverKey = '<your server key>';
+Midtrans_Config::$serverKey = '<your server key>';
 // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-Veritrans_Config::$isProduction = false;
+Midtrans_Config::$isProduction = false;
 // Set sanitization on (default)
-Veritrans_Config::$isSanitized = true;
+Midtrans_Config::$isSanitized = true;
 // Set 3DS transaction for credit card to true
-Veritrans_Config::$is3ds = true;
+Midtrans_Config::$is3ds = true;
 ```
 
 ### 2.2 Choose Product/Method
@@ -67,7 +67,7 @@ $params = array(
     )
   );
 
-$snapToken = Veritrans_Snap::getSnapToken($params);
+$snapToken = Midtrans_Snap::getSnapToken($params);
 ```
 
 #### Get Snap Token in Yii2
@@ -80,13 +80,13 @@ $snapToken = Veritrans_Snap::getSnapToken($params);
 
     public function actionSnapToken() {
 
-        \Veritrans_Config::$serverKey = 'Secret Server Key Goes Here';
+        \Midtrans_Config::$serverKey = 'Secret Server Key Goes Here';
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Veritrans_Config::$isProduction = false;
+        \Midtrans_Config::$isProduction = false;
         // Set sanitization on (default)
-        \Veritrans_Config::$isSanitized = true;
+        \Midtrans_Config::$isSanitized = true;
         // Set 3DS transaction for credit card to true
-        \Veritrans_Config::$is3ds = true;
+        \Midtrans_Config::$is3ds = true;
 
         $complete_request = [
             "transaction_details" => [
@@ -95,7 +95,7 @@ $snapToken = Veritrans_Snap::getSnapToken($params);
             ]
         ];
 
-        $snap_token = \Veritrans_Snap::getSnapToken($complete_request);
+        $snap_token = \Midtrans_Snap::getSnapToken($complete_request);
         return ['snap_token' => $snap_token];
   
     }
@@ -156,8 +156,8 @@ $params = array(
   );
 
 try {
-  // Redirect to Veritrans VTWeb page
-  header('Location: ' . Veritrans_Vtweb::getRedirectionUrl($params));
+  // Redirect to Midtrans VTWeb page
+  header('Location: ' . Midtrans_Vtweb::getRedirectionUrl($params));
 }
 catch (Exception $e) {
   echo $e->getMessage();
@@ -181,7 +181,7 @@ $params = array(
 
 try {
   // Get Snap Payment Page URL
-  $paymentUrl = Veritrans_Snap::createTransaction($params)->redirect_url;
+  $paymentUrl = Midtrans_Snap::createTransaction($params)->redirect_url;
   
   // Redirect to Snap Payment Page
   header('Location: ' . $paymentUrl);
@@ -200,7 +200,7 @@ You can see some Core API examples [here](examples/core-api).
 #### Set Client Key
 
 ```javascript
-Veritrans.client_key = "<your client key>";
+Midtrans.client_key = "<your client key>";
 ```
 
 #### Checkout Page
@@ -296,7 +296,7 @@ $transaction_data = array(
 ##### 5. Charge
 
 ```php
-$response = Veritrans_VtDirect::charge($transaction_data);
+$response = Midtrans_VtDirect::charge($transaction_data);
 ```
 
 ##### 6. Handle Transaction Status
@@ -357,7 +357,7 @@ HTTP notification will be sent whenever transaction status is changed.
 Example also available [here](examples/notification-handler.php)
 
 ```php
-$notif = new Veritrans_Notification();
+$notif = new Midtrans_Notification();
 
 $transaction = $notif->transaction_status;
 $fraud = $notif->fraud_status;
@@ -391,7 +391,7 @@ error_log("Order ID $notif->order_id: "."transaction status = $transaction, frau
 #### Get Transaction Status
 
 ```php
-$status = Veritrans_Transaction::status($orderId);
+$status = Midtrans_Transaction::status($orderId);
 var_dump($status);
 ```
 
@@ -399,21 +399,21 @@ var_dump($status);
 If transaction fraud_status == [CHALLENGE](https://support.midtrans.com/hc/en-us/articles/202710750-What-does-CHALLENGE-status-mean-What-should-I-do-if-there-is-a-CHALLENGE-transaction-), you can approve the transaction from Merchant Dashboard, or API :
 
 ```php
-$approve = Veritrans_Transaction::approve($orderId);
+$approve = Midtrans_Transaction::approve($orderId);
 var_dump($approve);
 ```
 
 #### Cancel Transaction
 You can Cancel transaction with `fraud_status == CHALLENGE`, or credit card transaction with `transaction_status == CAPTURE` (before it become SETTLEMENT)
 ```php
-$cancel = Veritrans_Transaction::cancel($orderId);
+$cancel = Midtrans_Transaction::cancel($orderId);
 var_dump($cancel);
 ```
 
 #### Expire Transaction
 You can Expire transaction with `transaction_status == PENDING` (before it become SETTLEMENT or EXPIRE)
 ```php
-$cancel = Veritrans_Transaction::cancel($orderId);
+$cancel = Midtrans_Transaction::cancel($orderId);
 var_dump($cancel);
 ```
 
@@ -423,6 +423,6 @@ var_dump($cancel);
 
 There are several guides that must be taken care of when you develop new plugins.
 
-1. __Handling currency other than IDR.__ Veritrans `v1` and `v2` currently accepts payments in Indonesian Rupiah only. As a corrolary, there is a validation on the server to check whether the item prices are in integer or not. As much as you are tempted to round-off the price, DO NOT do that! Always prepare when your system uses currencies other than IDR, convert them to IDR accordingly, and only round the price AFTER that.
+1. __Handling currency other than IDR.__ Midtrans `v1` and `v2` currently accepts payments in Indonesian Rupiah only. As a corrolary, there is a validation on the server to check whether the item prices are in integer or not. As much as you are tempted to round-off the price, DO NOT do that! Always prepare when your system uses currencies other than IDR, convert them to IDR accordingly, and only round the price AFTER that.
 
 2. Consider using the __auto-sanitization__ feature.

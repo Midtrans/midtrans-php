@@ -1,11 +1,11 @@
 <?php
-require_once(dirname(__FILE__) . '/../../Veritrans.php');
+require_once(dirname(__FILE__) . '/../../Midtrans.php');
 
 // YOUR CLIENT KEY
 // can find in Merchant Portal -> Settings -> Access keys
-Veritrans_Config::$clientKey = "<your client key>";
+Midtrans_Config::$clientKey = "<your client key>";
 
-if ( strpos(Veritrans_Config::$clientKey,'your ') != false ) {
+if ( strpos(Midtrans_Config::$clientKey,'your ') != false ) {
   echo "<p style='background: #FFB588; padding: 10px;'>";
   echo "Please set your client key in file " . __FILE__;
   echo "</p>";
@@ -82,9 +82,9 @@ if ( strpos(Veritrans_Config::$clientKey,'your ') != false ) {
   <script type="text/javascript">
     $(function () {
       // Sandbox URL
-      Veritrans.url = "https://api.sandbox.midtrans.com/v2/token";
+      Midtrans.url = "https://api.sandbox.midtrans.com/v2/token";
       // TODO: Change with your client key.
-      Veritrans.client_key = "<?php echo Veritrans_Config::$clientKey ?>";
+      Midtrans.client_key = "<?php echo Midtrans_Config::$clientKey ?>";
       var card = function () {
         return {
           "card_number": $(".card-number").val(),
@@ -141,7 +141,7 @@ if ( strpos(Veritrans_Config::$clientKey,'your ') != false ) {
         console.log("SUBMIT");
         event.preventDefault();
         $(this).attr("disabled", "disabled");
-        Veritrans.token(card, callback);
+        Midtrans.token(card, callback);
         return false;
       });
     });

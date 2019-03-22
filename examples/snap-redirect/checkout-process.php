@@ -1,16 +1,16 @@
 <?php
-require_once(dirname(__FILE__) . '/../../Veritrans.php');
+require_once(dirname(__FILE__) . '/../../Midtrans.php');
 //Set Your server key
-Veritrans_Config::$serverKey = "<your server key>";
+Midtrans_Config::$serverKey = "<your server key>";
 
 // Uncomment for production environment
-// Veritrans_Config::$isProduction = true;
+// Midtrans_Config::$isProduction = true;
 
 // Uncomment to enable sanitization
-// Veritrans_Config::$isSanitized = true;
+// Midtrans_Config::$isSanitized = true;
 
 // Uncomment to enable 3D-Secure
-// Veritrans_Config::$is3ds = true;
+// Midtrans_Config::$is3ds = true;
 
 // Required
 $transaction_details = array(
@@ -78,7 +78,7 @@ $params = array(
 
 try {
   // Get Snap Payment Page URL
-  $paymentUrl = Veritrans_Snap::createTransaction($params)->redirect_url;
+  $paymentUrl = Midtrans_Snap::createTransaction($params)->redirect_url;
   
   // Redirect to Snap Payment Page
   header('Location: ' . $paymentUrl);

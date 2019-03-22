@@ -1,5 +1,7 @@
 <?php
 
+namespace Midtrans;
+
 class VT_Tests {
 
   public static $stubHttp = false;

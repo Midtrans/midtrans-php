@@ -1,28 +1,28 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../Veritrans.php');
+require_once(dirname(__FILE__) . '/../../Midtrans.php');
 
 if(empty($_POST['token_id'])) {
   die('Empty token_id!');
 }
 
-Veritrans_Config::$serverKey = '<your server key>';
+Midtrans_Config::$serverKey = '<your server key>';
 
-if (strpos(Veritrans_Config::$serverKey,'your ') != false ) {
+if (strpos(Midtrans_Config::$serverKey,'your ') != false ) {
   echo "<code>";
   echo "<h4>Please set your server key from sandbox</h4>";
   echo "In file: " . __FILE__;
   echo "<br>";
   echo "<br>";
-  echo htmlspecialchars('Veritrans_Config::$serverKey = \'<your server key>\';');
+  echo htmlspecialchars('Midtrans_Config::$serverKey = \'<your server key>\';');
   die();
 }
 
 // Uncomment for production environment
-// Veritrans_Config::$isProduction = true;
+// Midtrans_Config::$isProduction = true;
 
 // Uncomment to enable sanitization
-// Veritrans_Config::$isSanitized = true;
+// Midtrans_Config::$isSanitized = true;
 
 $transaction_details = array(
   'order_id'    => time(),
@@ -93,7 +93,7 @@ $transaction_data = array(
   );
 
 try {
-  $response = Veritrans_VtDirect::charge($transaction_data);
+  $response = Midtrans_VtDirect::charge($transaction_data);
 } catch (Exception $e) {
   echo $e->getMessage();
   die();

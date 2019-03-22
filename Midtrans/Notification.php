@@ -1,23 +1,26 @@
 <?php
+
+namespace Midtrans;
+
 /**
  * Read raw post input and parse as JSON. Provide getters for fields in notification object
  *
  * Example:
  *
  * ```php
- *   $notif = new Veritrans_Notification();
+ *   $notif = new Midtrans_Notification();
  *   echo $notif->order_id;
  *   echo $notif->transaction_status;
  * ```
  */
-class Veritrans_Notification {
+class Midtrans_Notification {
 
   private $response;
 
   public function __construct($input_source = "php://input")
   {
     $raw_notification = json_decode(file_get_contents($input_source), true);
-    $status_response = Veritrans_Transaction::status($raw_notification['transaction_id']);
+    $status_response = Midtrans_Transaction::status($raw_notification['transaction_id']);
     $this->response = $status_response;
   }
 

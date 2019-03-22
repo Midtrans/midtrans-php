@@ -1,4 +1,7 @@
 <?php
+
+namespace Midtrans;
+
 require_once 'VtIntegrationTest.php';
 
 class VtDirectIntegrationTest extends VtIntegrationTest {
@@ -20,7 +23,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 				"input3" => "54321",
 				"token" => "000000",
 			));
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+		$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'settlement');
 	}
 
@@ -31,7 +34,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 				"promo" => false,
 				"is_reversal" => 0,
 			));
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+		$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'settlement');
 	}
 
@@ -40,7 +43,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 			array(
 				"description" => "Item Descriptions",
 			));
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+		$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'pending');
 		$this->assertTrue(isset($this->charge_response->redirect_url));
 	}
@@ -50,21 +53,21 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 			array(
 				"bank" => "permata",
 			));
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+		$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'pending');
 		$this->assertTrue(isset($this->charge_response->permata_va_number));
 	}
 
 	public function testChargeEPayBri() {
 		$this->prepareChargeParams('bri_epay');
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+		$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'pending');
 		$this->assertTrue(isset($this->charge_response->redirect_url));
 	}
 
 	public function testChargeXlTunai() {
 		$this->prepareChargeParams('xl_tunai');
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+		$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'pending');
 		$this->assertTrue(isset($this->charge_response->xl_tunai_merchant_id));
 		$this->assertTrue(isset($this->charge_response->xl_tunai_order_id));
@@ -76,7 +79,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 				"bill_info1" => "Payment for:",
 				"bill_info2" => "Item descriptions",
 			));
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+		$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'pending');
 		$this->assertTrue(isset($this->charge_response->bill_key));
 		$this->assertTrue(isset($this->charge_response->biller_code));
@@ -84,7 +87,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 
 	// public function testBbmMoney() { // no longer exists
 	// 	$this->prepareChargeParams('bbm_money');
-	// 	$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+	// 	$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 	// 	$this->assertEquals($this->charge_response->transaction_status, 'pending');
 	// 	$this->assertTrue(isset($this->charge_response->permata_va_number));
 	// }
@@ -95,7 +98,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest {
 				"store" => "indomaret",
 				"message" => "Item descriptions",
 			));
-		$this->charge_response = Veritrans_VtDirect::charge($this->charge_params);
+		$this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
 		$this->assertEquals($this->charge_response->transaction_status, 'pending');
 		$this->assertTrue(isset($this->charge_response->payment_code));
 	}

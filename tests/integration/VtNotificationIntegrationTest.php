@@ -1,21 +1,24 @@
 <?php
+
+namespace Midtrans;
+
 require_once 'VtIntegrationTest.php';
 
-class VeritransNotificationIntegrationTest extends VtIntegrationTest {
+class MidtransNotificationIntegrationTest extends VtIntegrationTest {
 	private $status_response;
 
 	public function setUp() {
 		$charge_params = VtChargeFixture::build('bri_epay');
-		$charge_response = Veritrans_VtDirect::charge($charge_params);
-		$this->status_response = Veritrans_Transaction::status($charge_response->transaction_id);
+		$charge_response = Midtrans_VtDirect::charge($charge_params);
+		$this->status_response = Midtrans_Transaction::status($charge_response->transaction_id);
 	}
 
 	public function testValidBriEPayNotification() {
 		// Assume status response is similar to HTTP(s) notification
-		$tmpfname = tempnam(sys_get_temp_dir(), "veritrans_test");
+		$tmpfname = tempnam(sys_get_temp_dir(), "midtrans_test");
 		file_put_contents($tmpfname, json_encode($this->status_response));
 
-		$notif = new Veritrans_Notification($tmpfname);
+		$notif = new Midtrans_Notification($tmpfname);
 
 		$this->assertEquals($notif->status_code, "201");
 		$this->assertEquals($notif->transaction_status, "pending");
@@ -36,10 +39,10 @@ class VeritransNotificationIntegrationTest extends VtIntegrationTest {
 		$this->status_response->transaction_status = "settlement";
 		$this->status_response->status_code = "200";
 
-		$tmpfname = tempnam(sys_get_temp_dir(), "veritrans_test");
+		$tmpfname = tempnam(sys_get_temp_dir(), "midtrans_test");
 		file_put_contents($tmpfname, json_encode($this->status_response));
 
-		$notif = new Veritrans_Notification($tmpfname);
+		$notif = new Midtrans_Notification($tmpfname);
 
 		/*
 		Merchant should not be tricked... thanks to Get Status API

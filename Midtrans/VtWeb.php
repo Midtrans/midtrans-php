@@ -1,9 +1,12 @@
 <?php
+
+namespace Midtrans;
+
 /**
  * Create VtWeb transaction and return redirect url
  *
  */
-class Veritrans_VtWeb {
+class Midtrans_VtWeb {
 
   /**
    * Create VT-Web transaction
@@ -17,13 +20,13 @@ class Veritrans_VtWeb {
    *       'gross_amount' => 10000,
    *     )
    *   );
-   *   $paymentUrl = Veritrans_Vtweb::getRedirectionUrl($params);
+   *   $paymentUrl = Midtrans_Vtweb::getRedirectionUrl($params);
    *   header('Location: ' . $paymentUrl);
    * ```
    *
    * @param array $params Payment options
    * @return string Redirect URL to VT-Web payment page.
-   * @throws Exception curl error or veritrans error
+   * @throws Exception curl error or midtrans error
    */
   public static function getRedirectionUrl($params)
   {
@@ -31,7 +34,7 @@ class Veritrans_VtWeb {
       'payment_type' => 'vtweb',
       'vtweb' => array(
         // 'enabled_payments' => array('credit_card'),
-        'credit_card_3d_secure' => Veritrans_Config::$is3ds
+        'credit_card_3d_secure' => Midtrans_Config::$is3ds
       )
     );
 
@@ -45,13 +48,13 @@ class Veritrans_VtWeb {
 
     $payloads = array_replace_recursive($payloads, $params);
 
-    if (Veritrans_Config::$isSanitized) {
-      Veritrans_Sanitizer::jsonRequest($payloads);
+    if (Midtrans_Config::$isSanitized) {
+      Midtrans_Sanitizer::jsonRequest($payloads);
     }
 
-    $result = Veritrans_ApiRequestor::post(
-        Veritrans_Config::getBaseUrl() . '/charge',
-        Veritrans_Config::$serverKey,
+    $result = Midtrans_ApiRequestor::post(
+        Midtrans_Config::getBaseUrl() . '/charge',
+        Midtrans_Config::$serverKey,
         $payloads);
 
     return $result->redirect_url;

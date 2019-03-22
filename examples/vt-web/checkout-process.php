@@ -1,16 +1,16 @@
 <?php
-require_once(dirname(__FILE__) . '/../../Veritrans.php');
+require_once(dirname(__FILE__) . '/../../Midtrans.php');
 //Set Your server key
-Veritrans_Config::$serverKey = "<your server key>";
+Midtrans_Config::$serverKey = "<your server key>";
 
 // Uncomment for production environment
-// Veritrans_Config::$isProduction = true;
+// Midtrans_Config::$isProduction = true;
 
 // Uncomment to enable sanitization
-// Veritrans_Config::$isSanitized = true;
+// Midtrans_Config::$isSanitized = true;
 
 // Uncomment to enable 3D-Secure
-// Veritrans_Config::$is3ds = true;
+// Midtrans_Config::$is3ds = true;
 
 // Required
 $transaction_details = array(
@@ -77,8 +77,8 @@ $transaction = array(
     );
 
 try {
-  // Redirect to Veritrans VTWeb page
-  header('Location: ' . Veritrans_VtWeb::getRedirectionUrl($transaction));
+  // Redirect to Midtrans VTWeb page
+  header('Location: ' . Midtrans_VtWeb::getRedirectionUrl($transaction));
 }
 catch (Exception $e) {
   echo $e->getMessage();
@@ -88,7 +88,7 @@ catch (Exception $e) {
       echo "In file: " . __FILE__;
       echo "<br>";
       echo "<br>";
-      echo htmlspecialchars('Veritrans_Config::$serverKey = \'<your server key>\';');
+      echo htmlspecialchars('Midtrans_Config::$serverKey = \'<your server key>\';');
       die();
 }
 

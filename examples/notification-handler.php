@@ -1,9 +1,9 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../Veritrans.php');
-Veritrans_Config::$isProduction = false;
-Veritrans_Config::$serverKey = '<your serverkey>';
-$notif = new Veritrans_Notification();
+require_once(dirname(__FILE__) . '/../Midtrans.php');
+Midtrans_Config::$isProduction = false;
+Midtrans_Config::$serverKey = '<your serverkey>';
+$notif = new Midtrans_Notification();
 
 $transaction = $notif->transaction_status;
 $type = $notif->payment_type;

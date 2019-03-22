@@ -1,10 +1,10 @@
 <?php
-require_once(dirname(__FILE__) . '/../../Veritrans.php');
+require_once(dirname(__FILE__) . '/../../Midtrans.php');
 //Set Your server key
-Veritrans_Config::$serverKey = "<Set your ServerKey here>";
+Midtrans_Config::$serverKey = "<Set your ServerKey here>";
 // Uncomment for production environment
-// Veritrans_Config::$isProduction = true;
-Veritrans_Config::$isSanitized = Veritrans_Config::$is3ds = true;
+// Midtrans_Config::$isProduction = true;
+Midtrans_Config::$isSanitized = Midtrans_Config::$is3ds = true;
 
 // Required
 $transaction_details = array(
@@ -36,7 +36,7 @@ $transaction = array(
   'item_details' => $item_details,
 );
 
-$snapToken = Veritrans_Snap::getSnapToken($transaction);
+$snapToken = Midtrans_Snap::getSnapToken($transaction);
 echo "snapToken = ".$snapToken;
 ?>
 

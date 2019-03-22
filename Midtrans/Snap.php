@@ -1,9 +1,12 @@
 <?php
+
+namespace Midtrans;
+
 /**
  * Create Snap payment page and return snap token
  *
  */
-class Veritrans_Snap {
+class Midtrans_Snap {
 
   /**
    * Create Snap payment page
@@ -17,15 +20,15 @@ class Veritrans_Snap {
    *       'gross_amount' => 10000,
    *     )
    *   );
-   *   $paymentUrl = Veritrans_Snap::getSnapToken($params);
+   *   $paymentUrl = Midtrans_Snap::getSnapToken($params);
    * ```
    *
    * @param array $params Payment options
    * @return string Snap token.
-   * @throws Exception curl error or veritrans error
+   * @throws Exception curl error or midtrans error
    */
   public static function getSnapToken($params) {
-    return (Veritrans_Snap::createTransaction($params)->token);
+    return (Midtrans_Snap::createTransaction($params)->token);
   }
 
   /**
@@ -40,19 +43,19 @@ class Veritrans_Snap {
    *       'gross_amount' => 10000,
    *     )
    *   );
-   *   $paymentUrl = Veritrans_Snap::getSnapToken($params);
+   *   $paymentUrl = Midtrans_Snap::getSnapToken($params);
    * ```
    *
    * @param array $params Payment options
    * @return object Snap response (token and redirect_url).
-   * @throws Exception curl error or veritrans error
+   * @throws Exception curl error or midtrans error
    */
   public static function createTransaction($params)
   {
     $payloads = array(
       'credit_card' => array(
         // 'enabled_payments' => array('credit_card'),
-        'secure' => Veritrans_Config::$is3ds
+        'secure' => Midtrans_Config::$is3ds
       )
     );
 
@@ -64,15 +67,15 @@ class Veritrans_Snap {
       $params['transaction_details']['gross_amount'] = $gross_amount;
     }
 
-    if (Veritrans_Config::$isSanitized) {
-      Veritrans_Sanitizer::jsonRequest($params);
+    if (Midtrans_Config::$isSanitized) {
+      Midtrans_Sanitizer::jsonRequest($params);
     }
 
     $params = array_replace_recursive($payloads, $params);
 
-    $result = Veritrans_SnapApiRequestor::post(
-        Veritrans_Config::getSnapBaseUrl() . '/transactions',
-        Veritrans_Config::$serverKey,
+    $result = Midtrans_SnapApiRequestor::post(
+        Midtrans_Config::getSnapBaseUrl() . '/transactions',
+        Midtrans_Config::$serverKey,
         $params);
 
     return $result;

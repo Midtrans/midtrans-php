@@ -1,10 +1,12 @@
 <?php
 
-class VeritransSnapTest extends PHPUnit_Framework_TestCase
+namespace Midtrans;
+
+class MidtransSnapTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testGetSnapToken() {
-      Veritrans_Config::$serverKey = 'My Very Secret Key';
+      Midtrans_Config::$serverKey = 'My Very Secret Key';
       VT_Tests::$stubHttp = true;
       VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
       VT_Tests::$stubHttpStatus = array('http_code' => 201);
@@ -16,7 +18,7 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
         )
       );
 
-      $tokenId = Veritrans_Snap::getSnapToken($params);
+      $tokenId = Midtrans_Snap::getSnapToken($params);
 
       $this->assertEquals($tokenId, "abcdefghijklmnopqrstuvwxyz");
 
@@ -51,7 +53,7 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
       VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
       VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
-      $tokenId = Veritrans_Snap::getSnapToken($params);
+      $tokenId = Midtrans_Snap::getSnapToken($params);
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest['data_hash']['transaction_details']['gross_amount'],
@@ -70,7 +72,7 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
       VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
       VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
-      $tokenId = Veritrans_Snap::getSnapToken($params);
+      $tokenId = Midtrans_Snap::getSnapToken($params);
 
       $this->assertEquals(
         VT_Tests::$lastHttpRequest['data_hash']['echannel'],
@@ -87,8 +89,8 @@ class VeritransSnapTest extends PHPUnit_Framework_TestCase
       );
 
       try {
-        $tokenId = Veritrans_Snap::getSnapToken($params);
-      } catch (Exception $error) {
+        $tokenId = Midtrans_Snap::getSnapToken($params);
+      } catch (\Exception $error) {
         $errorHappen = true;
         $this->assertContains(
           "authorized",

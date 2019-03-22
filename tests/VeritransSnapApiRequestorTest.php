@@ -1,6 +1,8 @@
 <?php
 
-class VeritransSnapApiRequestorTest extends PHPUnit_Framework_TestCase
+namespace Midtrans;
+
+class MidtransSnapApiRequestorTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testConfigOptionsOverrideCurlOptions() {
@@ -8,12 +10,12 @@ class VeritransSnapApiRequestorTest extends PHPUnit_Framework_TestCase
       VT_Tests::$stubHttpResponse = '{ "status_code": "200" }';
       VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
-      Veritrans_Config::$curlOptions = array(
+      Midtrans_Config::$curlOptions = array(
         CURLOPT_HTTPHEADER => array( "User-Agent: testing lib" ),
         CURLOPT_PROXY => "http://proxy.com"
       );
 
-      $resp = Veritrans_SnapApiRequestor::post("http://example.com", "", "");
+      $resp = Midtrans_SnapApiRequestor::post("http://example.com", "", "");
 
       $fields = VT_Tests::lastReqOptions();
       $this->assertTrue(in_array("User-Agent: testing lib", $fields["HTTPHEADER"]));
@@ -24,7 +26,7 @@ class VeritransSnapApiRequestorTest extends PHPUnit_Framework_TestCase
 
     public function tearDown() {
       VT_Tests::reset();
-      Veritrans_Config::$curlOptions = array();
+      Midtrans_Config::$curlOptions = array();
     }
 
 }

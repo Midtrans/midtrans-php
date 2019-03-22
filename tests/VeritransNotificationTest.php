@@ -1,10 +1,12 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../Veritrans.php');
+namespace Midtrans;
+
+require_once(dirname(__FILE__) . '/../Midtrans.php');
 
 define('TEST_CAPTURE_JSON', '{
     "status_code" : "200",
-    "status_message" : "Veritrans payment notification",
+    "status_message" : "Midtrans payment notification",
     "transaction_id" : "826acc53-14e0-4ae7-95e2-845bf0311579",
     "order_id" : "2014040745",
     "payment_type" : "credit_card",
@@ -15,17 +17,17 @@ define('TEST_CAPTURE_JSON', '{
     "gross_amount" : "2700"
 }');
 
-class VeritransNotificationTest extends PHPUnit_Framework_TestCase
+class MidtransNotificationTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testCanWorkWithJSON() {
-        $tmpfname = tempnam(sys_get_temp_dir(), "veritrans_test");
+        $tmpfname = tempnam(sys_get_temp_dir(), "midtrans_test");
         file_put_contents($tmpfname, TEST_CAPTURE_JSON);
 
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = TEST_CAPTURE_JSON;
 
-        $notif = new Veritrans_Notification($tmpfname);
+        $notif = new Midtrans_Notification($tmpfname);
 
         $this->assertEquals($notif->transaction_status, "capture");
         $this->assertEquals($notif->payment_type, "credit_card");
