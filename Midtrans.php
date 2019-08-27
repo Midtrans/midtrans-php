@@ -1,6 +1,7 @@
 <?php
-
-// Check PHP version.
+/** 
+ * Check PHP version.
+ */
 if (version_compare(PHP_VERSION, '5.4', '<')) {
     throw new Exception('PHP version >= 5.4 required');
 }
@@ -14,18 +15,17 @@ if (!function_exists('json_decode')) {
 }
 
 // Configurations
-require_once('Midtrans/Config.php');
+require_once 'Midtrans/Config.php';
 
 // Midtrans API Resources
-require_once('Midtrans/Transaction.php');
+require_once 'Midtrans/Transaction.php';
 
 // Plumbing
-require_once('Midtrans/ApiRequestor.php');
-require_once('Midtrans/SnapApiRequestor.php');
-require_once('Midtrans/Notification.php');
-require_once('Midtrans/VtDirect.php');
-require_once('Midtrans/VtWeb.php');
-require_once('Midtrans/Snap.php');
+require_once 'Midtrans/ApiRequestor.php';
+require_once 'Midtrans/SnapApiRequestor.php';
+require_once 'Midtrans/Notification.php';
+require_once 'Midtrans/VtDirect.php';
+require_once 'Midtrans/Snap.php';
 
 // Sanitization
-require_once('Midtrans/Sanitizer.php');
+require_once 'Midtrans/Sanitizer.php';

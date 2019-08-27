@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/../../Midtrans.php');
+require_once dirname(__FILE__) . '/../../Midtrans.php';
 //Set Your server key
 Midtrans_Config::$serverKey = "<your server key>";
 
@@ -14,9 +14,9 @@ Midtrans_Config::$serverKey = "<your server key>";
 
 // Required
 $transaction_details = array(
-  'order_id' => rand(),
-  'gross_amount' => 145000, // no decimal allowed for creditcard
-  );
+    'order_id' => rand(),
+    'gross_amount' => 145000, // no decimal allowed for creditcard
+);
 
 // Optional
 $item1_details = array(
@@ -24,7 +24,7 @@ $item1_details = array(
     'price' => 50000,
     'quantity' => 2,
     'name' => "Apple"
-    );
+);
 
 // Optional
 $item2_details = array(
@@ -32,7 +32,7 @@ $item2_details = array(
     'price' => 45000,
     'quantity' => 1,
     'name' => "Orange"
-    );
+);
 
 // Optional
 $item_details = array ($item1_details, $item2_details);
@@ -46,7 +46,7 @@ $billing_address = array(
     'postal_code'   => "16602",
     'phone'         => "081122334455",
     'country_code'  => 'IDN'
-    );
+);
 
 // Optional
 $shipping_address = array(
@@ -57,7 +57,7 @@ $shipping_address = array(
     'postal_code'   => "16601",
     'phone'         => "08113366345",
     'country_code'  => 'IDN'
-    );
+);
 
 // Optional
 $customer_details = array(
@@ -67,22 +67,22 @@ $customer_details = array(
     'phone'         => "081122334455",
     'billing_address'  => $billing_address,
     'shipping_address' => $shipping_address
-    );
+);
 
 // Fill SNAP API parameter
 $params = array(
     'transaction_details' => $transaction_details,
     'customer_details' => $customer_details,
     'item_details' => $item_details,
-    );
+);
 
 try {
-  // Get Snap Payment Page URL
-  $paymentUrl = Midtrans_Snap::createTransaction($params)->redirect_url;
+    // Get Snap Payment Page URL
+    $paymentUrl = Midtrans_Snap::createTransaction($params)->redirect_url;
   
-  // Redirect to Snap Payment Page
-  header('Location: ' . $paymentUrl);
+    // Redirect to Snap Payment Page
+    header('Location: ' . $paymentUrl);
 }
 catch (Exception $e) {
-  echo $e->getMessage();
+    echo $e->getMessage();
 }

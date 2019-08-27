@@ -2,25 +2,28 @@
 
 namespace Midtrans;
 
-require_once(dirname(__FILE__) . '/../Midtrans.php');
+require_once dirname(__FILE__) . '/../Midtrans.php';
 
-define('TEST_CAPTURE_JSON', '{
-    "status_code" : "200",
-    "status_message" : "Midtrans payment notification",
-    "transaction_id" : "826acc53-14e0-4ae7-95e2-845bf0311579",
-    "order_id" : "2014040745",
-    "payment_type" : "credit_card",
-    "transaction_time" : "2014-04-07 16:22:36",
-    "transaction_status" : "capture",
-    "fraud_status" : "accept",
-    "masked_card" : "411111-1111",
-    "gross_amount" : "2700"
-}');
+define(
+    'TEST_CAPTURE_JSON', '{
+        "status_code" : "200",
+        "status_message" : "Midtrans payment notification",
+        "transaction_id" : "826acc53-14e0-4ae7-95e2-845bf0311579",
+        "order_id" : "2014040745",
+        "payment_type" : "credit_card",
+        "transaction_time" : "2014-04-07 16:22:36",
+        "transaction_status" : "capture",
+        "fraud_status" : "accept",
+        "masked_card" : "411111-1111",
+        "gross_amount" : "2700"
+    }'
+);
 
 class MidtransNotificationTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testCanWorkWithJSON() {
+    public function testCanWorkWithJSON()
+    {
         $tmpfname = tempnam(sys_get_temp_dir(), "midtrans_test");
         file_put_contents($tmpfname, TEST_CAPTURE_JSON);
 
@@ -37,7 +40,8 @@ class MidtransNotificationTest extends \PHPUnit_Framework_TestCase
         unlink($tmpfname);
     }
 
-    public function tearDown() {
-      VT_Tests::reset();
+    public function tearDown()
+    {
+        VT_Tests::reset();
     }
 }

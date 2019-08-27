@@ -9,13 +9,14 @@ namespace Midtrans;
 
 class Midtrans_ApiRequestor
 {
-
-  /**
-   * Send GET request
-   * @param string  $url
-   * @param string  $server_key
-   * @param mixed[] $data_hash
-   */
+    
+    /**
+     * Send GET request
+     * 
+     * @param string  $url
+     * @param string  $server_key
+     * @param mixed[] $data_hash
+     */
     public static function get($url, $server_key, $data_hash)
     {
         return self::remoteCall($url, $server_key, $data_hash, false);
@@ -23,6 +24,7 @@ class Midtrans_ApiRequestor
 
     /**
      * Send POST request
+     * 
      * @param string  $url
      * @param string  $server_key
      * @param mixed[] $data_hash
@@ -34,6 +36,7 @@ class Midtrans_ApiRequestor
 
     /**
      * Actually send request to API server
+     * 
      * @param string  $url
      * @param string  $server_key
      * @param mixed[] $data_hash
@@ -44,15 +47,14 @@ class Midtrans_ApiRequestor
         $ch = curl_init();
 
         $curl_options = array(
-      CURLOPT_URL => $url,
-      CURLOPT_HTTPHEADER => array(
-        'Content-Type: application/json',
-        'Accept: application/json',
-        'Authorization: Basic ' . base64_encode($server_key . ':')
-      ),
-      CURLOPT_RETURNTRANSFER => 1,
-      // CURLOPT_CAINFO => dirname(__FILE__) . "/../data/cacert.pem"
-    );
+            CURLOPT_URL => $url,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Accept: application/json',
+                'Authorization: Basic ' . base64_encode($server_key . ':')
+            ),
+            CURLOPT_RETURNTRANSFER => 1
+        );
 
         // merging with Midtrans_Config::$curlOptions
         if (count(Midtrans_Config::$curlOptions)) {
@@ -99,7 +101,7 @@ class Midtrans_ApiRequestor
             }
             if (!in_array($result_array->status_code, array(200, 201, 202, 407))) {
                 $message = 'Midtrans Error (' . $result_array->status_code . '): '
-            . $result_array->status_message;
+                . $result_array->status_message;
                 if (isset($result_array->validation_messages)) {
                     $message .= '. Validation Messages (' . implode(", ", $result_array->validation_messages) . ')';
                 }
@@ -116,12 +118,12 @@ class Midtrans_ApiRequestor
     private static function processStubed($curl, $url, $server_key, $data_hash, $post)
     {
         VT_Tests::$lastHttpRequest = array(
-      "url" => $url,
-      "server_key" => $server_key,
-      "data_hash" => $data_hash,
-      "post" => $post,
-      "curl" => $curl
-    );
+            "url" => $url,
+            "server_key" => $server_key,
+            "data_hash" => $data_hash,
+            "post" => $post,
+            "curl" => $curl
+        );
 
         return VT_Tests::$stubHttpResponse;
     }

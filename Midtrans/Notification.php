@@ -13,21 +13,21 @@ namespace Midtrans;
  *   echo $notif->transaction_status;
  * ```
  */
-class Midtrans_Notification {
+class Midtrans_Notification
+{
+    private $response;
 
-  private $response;
-
-  public function __construct($input_source = "php://input")
-  {
-    $raw_notification = json_decode(file_get_contents($input_source), true);
-    $status_response = Midtrans_Transaction::status($raw_notification['transaction_id']);
-    $this->response = $status_response;
-  }
-
-  public function __get($name)
-  {
-    if (array_key_exists($name, $this->response)) {
-      return $this->response->$name;
+    public function __construct($input_source = "php://input")
+    {
+        $raw_notification = json_decode(file_get_contents($input_source), true);
+        $status_response = Midtrans_Transaction::status($raw_notification['transaction_id']);
+        $this->response = $status_response;
     }
-  }
+
+    public function __get($name)
+    {
+        if (array_key_exists($name, $this->response)) {
+            return $this->response->$name;
+        }
+    }
 }

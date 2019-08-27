@@ -8,35 +8,41 @@ namespace Midtrans;
 class Midtrans_Config
 {
 
-  /**
-   * Your merchant's server key
-   * @static
-   */
+    /**
+     * Your merchant's server key
+     * 
+     * @static
+     */
     public static $serverKey;
     /**
      * Your merchant's client key
+     * 
      * @static
      */
     public static $clientKey;
     /**
-     * true for production
+     * True for production
      * false for sandbox mode
+     * 
      * @static
      */
     public static $isProduction = false;
     /**
      * Set it true to enable 3D Secure by default
+     * 
      * @static
      */
     public static $is3ds = false;
     /**
      * Enable request params sanitizer (validate and modify charge request params).
      * See Midtrans_Sanitizer for more details
+     * 
      * @static
      */
     public static $isSanitized = false;
     /**
      * Default options for every request
+     * 
      * @static
      */
     public static $curlOptions = array();
@@ -47,6 +53,8 @@ class Midtrans_Config
     const SNAP_PRODUCTION_BASE_URL = 'https://app.midtrans.com/snap/v1';
 
     /**
+     * Get baseUrl
+     * 
      * @return string Midtrans API URL, depends on $isProduction
      */
     public static function getBaseUrl()
@@ -56,6 +64,8 @@ class Midtrans_Config
     }
 
     /**
+     * Get snapBaseUrl
+     * 
      * @return string Snap API URL, depends on $isProduction
      */
     public static function getSnapBaseUrl()
