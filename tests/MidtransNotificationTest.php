@@ -30,7 +30,7 @@ class MidtransNotificationTest extends \PHPUnit_Framework_TestCase
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = TEST_CAPTURE_JSON;
 
-        $notif = new Midtrans_Notification($tmpfname);
+        $notif = new Notification($tmpfname);
 
         $this->assertEquals($notif->transaction_status, "capture");
         $this->assertEquals($notif->payment_type, "credit_card");

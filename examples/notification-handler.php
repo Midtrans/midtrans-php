@@ -1,9 +1,11 @@
 <?php
 
+namespace Midtrans;
+
 require_once dirname(__FILE__) . '/../Midtrans.php';
-Midtrans_Config::$isProduction = false;
-Midtrans_Config::$serverKey = '<your serverkey>';
-$notif = new Midtrans_Notification();
+Config::$isProduction = false;
+Config::$serverKey = '<your serverkey>';
+$notif = new Notification();
 
 $transaction = $notif->transaction_status;
 $type = $notif->payment_type;

@@ -22,7 +22,7 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
 </head>
 
 <body>
-    <script type="text/javascript" src="https://api.sandbox.midtrans.com/v2/assets/js/midtrans.min.js"></script>
+    <script id="midtrans-script" type="text/javascript" src="https://api.midtrans.com/v2/assets/js/midtrans-new-3ds.min.js" data-environment="sandbox" data-client-key="VT-client-0N5ngRfFPbOhBa7k"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.min.js"></script>
 
@@ -85,43 +85,60 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
     <script type="text/javascript">
         $(function () {
             // Sandbox URL
-            Veritrans.url = "https://api.sandbox.midtrans.com/v2/token";
+            MidtransNew3ds.url = "https://api.sandbox.midtrans.com/v2/token";
             // TODO: Change with your client key.
-            Veritrans.client_key = "<?php echo Config::$clientKey ?>";
-            var card = function () {
-                return {
-                    "card_number": $(".card-number").val(),
-                    "card_exp_month": $(".card-expiry-month").val(),
-                    "card_exp_year": $(".card-expiry-year").val(),
-                    "card_cvv": $(".card-cvv").val(),
-                    "secure": $('[name=secure]')[0].checked,
-                    // "bank": "bni", // optional acquiring bank
-                    "gross_amount": 200000
-                }
+            MidtransNew3ds.clientKey = "<?php echo Config::$clientKey ?>";
+
+            var card = {
+                "card_number": $(".card-number").val(),
+                "card_exp_month": $(".card-expiry-month").val(),
+                "card_exp_year": $(".card-expiry-year").val(),
+                "card_cvv": $(".card-cvv").val(),
+                "secure": $('[name=secure]')[0].checked,
+                // "bank": "bni", // optional acquiring bank
+                "gross_amount": 200000
             };
 
-            function callback(response) {
-                console.log(response);
-                if (response.redirect_url) {
-                    console.log("3D SECURE");
-                    // 3D Secure transaction, please open this popup
-                    openDialog(response.redirect_url);
-                }
-                else if (response.status_code == "200") {
-                    // Success 3-D Secure or success normal
+            var options = {
+                performAuthentication: function(redirect_url){
+                    openDialog(redirect_url);
+                },
+                onSuccess: function(response){
+                    console.log('sukses');
+                    console.log('response:',response);
                     closeDialog();
                     // Submit form
                     $("#token_id").val(response.token_id);
                     $("#payment-form").submit();
-                }
-                else {
+                },
+                onFailure: function(response){
+                    console.log('gagal');
+                    console.log('response:',response);
                     closeDialog();
-                    // Failed request token
-                    console.log(response.status_code);
                     alert(response.status_message);
                     $('button').removeAttr("disabled");
+                },
+                onPending: function(response){
+                    console.log('pending');
+                    console.log('response:',response);
+                    closeDialog();
                 }
-            }
+            };
+
+            // callback functions
+            var callback = {
+                onSuccess: function(response){
+                    // Success to get card token_id, implement as you wish here
+                    console.log('Success to get card token_id, response:', response);
+                    MidtransNew3ds.authenticate(response.redirect_url, options);
+                },
+                onFailure: function(response){
+                    // Fail to get card token_id, implement as you wish here
+                    console.log('Fail to get card token_id, response:', response);
+                    closeDialog();
+                    $('button').removeAttr("disabled");
+                }
+            };
 
             function openDialog(url) {
                 $.featherlight({
@@ -143,7 +160,7 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
                 console.log("SUBMIT");
                 event.preventDefault();
                 $(this).attr("disabled", "disabled");
-                Veritrans.token(card, callback);
+                MidtransNew3ds.getCardToken(card, callback);
                 return false;
             });
         });

@@ -7,9 +7,9 @@ namespace Midtrans;
  *
  * It truncate fields that have length limit, remove not allowed characters from other fields
  *
- * This feature is optional, you can control it with Midtrans_Config::$isSanitized (default: false)
+ * This feature is optional, you can control it with Config::$isSanitized (default: false)
  */
-class Midtrans_Sanitizer
+class Sanitizer
 {
     private $filters;
 
@@ -68,14 +68,17 @@ class Midtrans_Sanitizer
 
         static::fieldPhone($field['phone']);
 
-        $keys = array('billing_address', 'shipping_address');
-        foreach ($keys as $key) {
-            if (!array_key_exists($key, $field)) continue;
+        if (!empty($field['billing_address']) || !empty($field['shipping_address'])) {
+            $keys = array('billing_address', 'shipping_address');
+            foreach ($keys as $key) {
+                if (!array_key_exists($key, $field)) continue;
 
-            $camel = static::upperCamelize($key);
-            $function = "field$camel";
-            static::$function($field[$key]);
+                $camel = static::upperCamelize($key);
+                $function = "field$camel";
+                static::$function($field[$key]);
+            }
         }
+        
     }
 
     private static function fieldBillingAddress(&$field)

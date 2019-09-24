@@ -5,7 +5,7 @@ namespace Midtrans;
 /**
  * API methods to get transaction status, approve and cancel transactions
  */
-class Midtrans_Transaction
+class Transaction
 {
 
     /**
@@ -17,9 +17,9 @@ class Midtrans_Transaction
      */
     public static function status($id)
     {
-        return Midtrans_ApiRequestor::get(
-            Midtrans_Config::getBaseUrl() . '/' . $id . '/status',
-            Midtrans_Config::$serverKey,
+        return ApiRequestor::get(
+            Config::getBaseUrl() . '/' . $id . '/status',
+            Config::$serverKey,
             false
         );
     }
@@ -33,9 +33,9 @@ class Midtrans_Transaction
      */
     public static function approve($id)
     {
-        return Midtrans_ApiRequestor::post(
-            Midtrans_Config::getBaseUrl() . '/' . $id . '/approve',
-            Midtrans_Config::$serverKey,
+        return ApiRequestor::post(
+            Config::getBaseUrl() . '/' . $id . '/approve',
+            Config::$serverKey,
             false
         )->status_code;
     }
@@ -49,9 +49,9 @@ class Midtrans_Transaction
      */
     public static function cancel($id)
     {
-        return Midtrans_ApiRequestor::post(
-            Midtrans_Config::getBaseUrl() . '/' . $id . '/cancel',
-            Midtrans_Config::$serverKey,
+        return ApiRequestor::post(
+            Config::getBaseUrl() . '/' . $id . '/cancel',
+            Config::$serverKey,
             false
         )->status_code;
     }
@@ -65,9 +65,9 @@ class Midtrans_Transaction
      */
     public static function expire($id)
     {
-        return Midtrans_ApiRequestor::post(
-            Midtrans_Config::getBaseUrl() . '/' . $id . '/expire',
-            Midtrans_Config::$serverKey,
+        return ApiRequestor::post(
+            Config::getBaseUrl() . '/' . $id . '/expire',
+            Config::$serverKey,
             false
         );
     }

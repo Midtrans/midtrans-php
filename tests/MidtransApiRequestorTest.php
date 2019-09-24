@@ -10,12 +10,12 @@ class MidtransApiRequestorTest extends \PHPUnit_Framework_TestCase
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{ "status_code": "200" }';
 
-        Midtrans_Config::$curlOptions = array(
+        Config::$curlOptions = array(
             CURLOPT_HTTPHEADER => array( "User-Agent: testing lib" ),
             CURLOPT_PROXY => "http://proxy.com"
         );
 
-        $resp = Midtrans_ApiRequestor::post("http://example.com", "", "");
+        $resp = ApiRequestor::post("http://example.com", "", "");
 
         $fields = VT_Tests::lastReqOptions();
         $this->assertTrue(in_array("User-Agent: testing lib", $fields["HTTPHEADER"]));
@@ -27,7 +27,7 @@ class MidtransApiRequestorTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         VT_Tests::reset();
-        Midtrans_Config::$curlOptions = array();
+        Config::$curlOptions = array();
     }
 
 }

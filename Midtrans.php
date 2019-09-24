@@ -24,7 +24,7 @@ require_once 'Midtrans/Transaction.php';
 require_once 'Midtrans/ApiRequestor.php';
 require_once 'Midtrans/SnapApiRequestor.php';
 require_once 'Midtrans/Notification.php';
-require_once 'Midtrans/VtDirect.php';
+require_once 'Midtrans/CoreApi.php';
 require_once 'Midtrans/Snap.php';
 
 // Sanitization

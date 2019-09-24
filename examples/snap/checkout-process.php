@@ -1,17 +1,20 @@
 <?php
+
+namespace Midtrans;
+
 require_once dirname(__FILE__) . '/../../Midtrans.php';
 
 //Set Your server key
-Midtrans_Config::$serverKey = "<Set your ServerKey here>";
+Config::$serverKey = "<your server key>";
 
 // Uncomment for production environment
-// Midtrans_Config::$isProduction = true;
+// Config::$isProduction = true;
 
 // Enable sanitization
-Midtrans_Config::$isSanitized = true;
+Config::$isSanitized = true;
 
 // Enable 3D-Secure
-Midtrans_Config::$is3ds = true;
+Config::$is3ds = true;
 
 // Required
 $transaction_details = array(
@@ -81,7 +84,7 @@ $transaction = array(
     'item_details' => $item_details,
 );
 
-$snapToken = Midtrans_Snap::getSnapToken($transaction);
+$snapToken = Snap::getSnapToken($transaction);
 echo "snapToken = ".$snapToken;
 ?>
 

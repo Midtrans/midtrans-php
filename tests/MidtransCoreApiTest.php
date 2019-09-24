@@ -2,7 +2,7 @@
 
 namespace Midtrans;
 
-class MidtransVtDirectTest extends \PHPUnit_Framework_TestCase
+class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testCharge()
@@ -20,7 +20,7 @@ class MidtransVtDirectTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $charge = Midtrans_VtDirect::charge($params);
+        $charge = CoreApi::charge($params);
 
         $this->assertEquals($charge->status_code, "200");
 
@@ -47,14 +47,15 @@ class MidtransVtDirectTest extends \PHPUnit_Framework_TestCase
         );
 
         try {
-            $paymentUrl = Midtrans_VtDirect::charge($params);
+            $paymentUrl = CoreApi::charge($params);
         } catch (\Exception $error) {
             $errorHappen = true;
             $this->assertContains(
                 $error->getMessage(),
                 array(
                     "Midtrans Error (401): Transaction cannot be authorized with the current client/server key.",
-                    "Midtrans Error (411): Token id is missing, invalid, or timed out"
+                    "Midtrans Error (411): Token id is missing, invalid, or timed out",
+                    "Midtrans Error (401): Operation is not allowed due to unauthorized payload."
                 )
             );
         }
@@ -80,7 +81,7 @@ class MidtransVtDirectTest extends \PHPUnit_Framework_TestCase
             "gross_amount": "55000.00"
         }';
 
-        $capture = Midtrans_VtDirect::capture("A27550");
+        $capture = CoreApi::capture("A27550");
 
         $this->assertEquals($capture->status_code, "200");
 

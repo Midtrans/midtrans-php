@@ -3,12 +3,12 @@
 namespace Midtrans;
 
 /**
- * Provide charge and capture functions for VT-Direct
+ * Provide charge and capture functions for Core API
  */
-class Midtrans_VtDirect
+class CoreApi
 {
     /**
-     * Create VT-Direct transaction.
+     * Create transaction.
      *
      * @param mixed[] $params Transaction options
      */
@@ -28,13 +28,13 @@ class Midtrans_VtDirect
 
         $payloads = array_replace_recursive($payloads, $params);
 
-        if (Midtrans_Config::$isSanitized) {
-            Midtrans_Sanitizer::jsonRequest($payloads);
+        if (Config::$isSanitized) {
+            Sanitizer::jsonRequest($payloads);
         }
 
-        $result = Midtrans_ApiRequestor::post(
-            Midtrans_Config::getBaseUrl() . '/charge',
-            Midtrans_Config::$serverKey,
+        $result = ApiRequestor::post(
+            Config::getBaseUrl() . '/charge',
+            Config::$serverKey,
             $payloads
         );
 
@@ -52,9 +52,9 @@ class Midtrans_VtDirect
         'transaction_id' => $param,
         );
 
-        $result = Midtrans_ApiRequestor::post(
-            Midtrans_Config::getBaseUrl() . '/capture',
-            Midtrans_Config::$serverKey,
+        $result = ApiRequestor::post(
+            Config::getBaseUrl() . '/capture',
+            Config::$serverKey,
             $payloads
         );
 

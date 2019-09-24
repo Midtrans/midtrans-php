@@ -1,16 +1,19 @@
 <?php
+
+namespace Midtrans;
+
 require_once dirname(__FILE__) . '/../../Midtrans.php';
 //Set Your server key
-Midtrans_Config::$serverKey = "<your server key>";
+Config::$serverKey = "<your server key>";
 
 // Uncomment for production environment
-// Midtrans_Config::$isProduction = true;
+// Config::$isProduction = true;
 
 // Uncomment to enable sanitization
-// Midtrans_Config::$isSanitized = true;
+// Config::$isSanitized = true;
 
 // Uncomment to enable 3D-Secure
-// Midtrans_Config::$is3ds = true;
+// Config::$is3ds = true;
 
 // Required
 $transaction_details = array(
@@ -78,7 +81,7 @@ $params = array(
 
 try {
     // Get Snap Payment Page URL
-    $paymentUrl = Midtrans_Snap::createTransaction($params)->redirect_url;
+    $paymentUrl = Snap::createTransaction($params)->redirect_url;
   
     // Redirect to Snap Payment Page
     header('Location: ' . $paymentUrl);

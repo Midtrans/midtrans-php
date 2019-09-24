@@ -4,10 +4,10 @@ namespace Midtrans;
 
 /**
  * Send request to Midtrans API
- * Better don't use this class directly, use Midtrans_VtWeb, Midtrans_VtDirect, Midtrans_Transaction
+ * Better don't use this class directly, use CoreApi, Transaction
  */
 
-class Midtrans_ApiRequestor
+class ApiRequestor
 {
     
     /**
@@ -56,17 +56,17 @@ class Midtrans_ApiRequestor
             CURLOPT_RETURNTRANSFER => 1
         );
 
-        // merging with Midtrans_Config::$curlOptions
-        if (count(Midtrans_Config::$curlOptions)) {
+        // merging with Config::$curlOptions
+        if (count(Config::$curlOptions)) {
             // We need to combine headers manually, because it's array and it will no be merged
-            if (Midtrans_Config::$curlOptions[CURLOPT_HTTPHEADER]) {
-                $mergedHeders = array_merge($curl_options[CURLOPT_HTTPHEADER], Midtrans_Config::$curlOptions[CURLOPT_HTTPHEADER]);
+            if (Config::$curlOptions[CURLOPT_HTTPHEADER]) {
+                $mergedHeders = array_merge($curl_options[CURLOPT_HTTPHEADER], Config::$curlOptions[CURLOPT_HTTPHEADER]);
                 $headerOptions = array( CURLOPT_HTTPHEADER => $mergedHeders );
             } else {
                 $mergedHeders = array();
             }
 
-            $curl_options = array_replace_recursive($curl_options, Midtrans_Config::$curlOptions, $headerOptions);
+            $curl_options = array_replace_recursive($curl_options, Config::$curlOptions, $headerOptions);
         }
 
         if ($post) {

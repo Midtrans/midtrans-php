@@ -8,19 +8,22 @@ namespace Midtrans;
  * Example:
  *
  * ```php
- *   $notif = new Midtrans_Notification();
+ * 
+ *   namespace Midtrans;
+ * 
+ *   $notif = new Notification();
  *   echo $notif->order_id;
  *   echo $notif->transaction_status;
  * ```
  */
-class Midtrans_Notification
+class Notification
 {
     private $response;
 
     public function __construct($input_source = "php://input")
     {
         $raw_notification = json_decode(file_get_contents($input_source), true);
-        $status_response = Midtrans_Transaction::status($raw_notification['transaction_id']);
+        $status_response = Transaction::status($raw_notification['transaction_id']);
         $this->response = $status_response;
     }
 

@@ -5,7 +5,7 @@ namespace Midtrans;
 /**
  * Create Snap payment page and return snap token
  */
-class Midtrans_Snap
+class Snap
 {
     /**
      * Create Snap payment page
@@ -13,13 +13,16 @@ class Midtrans_Snap
      * Example:
      *
      * ```php
+     *   
+     *   namespace Midtrans;
+     * 
      *   $params = array(
      *     'transaction_details' => array(
      *       'order_id' => rand(),
      *       'gross_amount' => 10000,
      *     )
      *   );
-     *   $paymentUrl = Midtrans_Snap::getSnapToken($params);
+     *   $paymentUrl = Snap::getSnapToken($params);
      * ```
      *
      * @param  array $params Payment options
@@ -28,7 +31,7 @@ class Midtrans_Snap
      */
     public static function getSnapToken($params)
     {
-        return (Midtrans_Snap::createTransaction($params)->token);
+        return (Snap::createTransaction($params)->token);
     }
 
     /**
@@ -43,7 +46,7 @@ class Midtrans_Snap
      *       'gross_amount' => 10000,
      *     )
      *   );
-     *   $paymentUrl = Midtrans_Snap::getSnapToken($params);
+     *   $paymentUrl = Snap::getSnapToken($params);
      * ```
      *
      * @param  array $params Payment options
@@ -55,7 +58,7 @@ class Midtrans_Snap
         $payloads = array(
         'credit_card' => array(
             // 'enabled_payments' => array('credit_card'),
-            'secure' => Midtrans_Config::$is3ds
+            'secure' => Config::$is3ds
         )
         );
 
@@ -67,15 +70,15 @@ class Midtrans_Snap
             $params['transaction_details']['gross_amount'] = $gross_amount;
         }
 
-        if (Midtrans_Config::$isSanitized) {
-            Midtrans_Sanitizer::jsonRequest($params);
+        if (Config::$isSanitized) {
+            Sanitizer::jsonRequest($params);
         }
 
         $params = array_replace_recursive($payloads, $params);
 
-        $result = Midtrans_SnapApiRequestor::post(
-            Midtrans_Config::getSnapBaseUrl() . '/transactions',
-            Midtrans_Config::$serverKey,
+        $result = SnapApiRequestor::post(
+            Config::getSnapBaseUrl() . '/transactions',
+            Config::$serverKey,
             $params
         );
 

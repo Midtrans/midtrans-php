@@ -4,7 +4,7 @@ namespace Midtrans;
 
 require_once 'VtIntegrationTest.php';
 
-class VtDirectIntegrationTest extends VtIntegrationTest
+class CoreApiIntegrationTest extends VtIntegrationTest
 {
     private $payment_type;
     private $charge_params;
@@ -28,21 +28,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest
                 "token" => "000000",
             )
         );
-        $this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
-        $this->assertEquals($this->charge_response->transaction_status, 'settlement');
-    }
-
-    public function testChargeTelkomselCash()
-    {
-        $this->prepareChargeParams(
-            'telkomsel_cash',
-            array(
-                "customer" => "0811111111",
-                "promo" => false,
-                "is_reversal" => 0,
-            )
-        );
-        $this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
+        $this->charge_response = CoreApi::charge($this->charge_params);
         $this->assertEquals($this->charge_response->transaction_status, 'settlement');
     }
 
@@ -54,7 +40,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest
                 "description" => "Item Descriptions",
             )
         );
-        $this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
+        $this->charge_response = CoreApi::charge($this->charge_params);
         $this->assertEquals($this->charge_response->transaction_status, 'pending');
         $this->assertTrue(isset($this->charge_response->redirect_url));
     }
@@ -67,7 +53,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest
                 "bank" => "permata",
             )
         );
-        $this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
+        $this->charge_response = CoreApi::charge($this->charge_params);
         $this->assertEquals($this->charge_response->transaction_status, 'pending');
         $this->assertTrue(isset($this->charge_response->permata_va_number));
     }
@@ -75,7 +61,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest
     public function testChargeEPayBri()
     {
         $this->prepareChargeParams('bri_epay');
-        $this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
+        $this->charge_response = CoreApi::charge($this->charge_params);
         $this->assertEquals($this->charge_response->transaction_status, 'pending');
         $this->assertTrue(isset($this->charge_response->redirect_url));
     }
@@ -89,7 +75,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest
                 "bill_info2" => "Item descriptions",
             )
         );
-        $this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
+        $this->charge_response = CoreApi::charge($this->charge_params);
         $this->assertEquals($this->charge_response->transaction_status, 'pending');
         $this->assertTrue(isset($this->charge_response->bill_key));
         $this->assertTrue(isset($this->charge_response->biller_code));
@@ -104,7 +90,7 @@ class VtDirectIntegrationTest extends VtIntegrationTest
                 "message" => "Item descriptions",
             )
         );
-        $this->charge_response = Midtrans_VtDirect::charge($this->charge_params);
+        $this->charge_response = CoreApi::charge($this->charge_params);
         $this->assertEquals($this->charge_response->transaction_status, 'pending');
         $this->assertTrue(isset($this->charge_response->payment_code));
     }

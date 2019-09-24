@@ -7,7 +7,7 @@ class MidtransSnapTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSnapToken()
     {
-        Midtrans_Config::$serverKey = 'My Very Secret Key';
+        Config::$serverKey = 'My Very Secret Key';
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
         VT_Tests::$stubHttpStatus = array('http_code' => 201);
@@ -19,7 +19,7 @@ class MidtransSnapTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $tokenId = Midtrans_Snap::getSnapToken($params);
+        $tokenId = Snap::getSnapToken($params);
 
         $this->assertEquals($tokenId, "abcdefghijklmnopqrstuvwxyz");
 
@@ -56,7 +56,7 @@ class MidtransSnapTest extends \PHPUnit_Framework_TestCase
         VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
         VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
-        $tokenId = Midtrans_Snap::getSnapToken($params);
+        $tokenId = Snap::getSnapToken($params);
 
         $this->assertEquals(
             VT_Tests::$lastHttpRequest['data_hash']['transaction_details']['gross_amount'],
@@ -76,7 +76,7 @@ class MidtransSnapTest extends \PHPUnit_Framework_TestCase
         VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
         VT_Tests::$stubHttpStatus = array('http_code' => 201);
 
-        $tokenId = Midtrans_Snap::getSnapToken($params);
+        $tokenId = Snap::getSnapToken($params);
 
         $this->assertEquals(
             VT_Tests::$lastHttpRequest['data_hash']['echannel'],
@@ -94,7 +94,7 @@ class MidtransSnapTest extends \PHPUnit_Framework_TestCase
         );
 
         try {
-            $tokenId = Midtrans_Snap::getSnapToken($params);
+            $tokenId = Snap::getSnapToken($params);
         } catch (\Exception $error) {
             $errorHappen = true;
             $this->assertContains(

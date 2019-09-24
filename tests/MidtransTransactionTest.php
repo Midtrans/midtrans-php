@@ -7,7 +7,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
     public function testStatus()
     {
-        Midtrans_Config::$serverKey = 'My Very Secret Key';
+        Config::$serverKey = 'My Very Secret Key';
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": "200",
@@ -25,7 +25,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
             "gross_amount": "10000.00"
         }';
 
-        $status = Midtrans_Transaction::status("Order-111");
+        $status = Transaction::status("Order-111");
 
         $this->assertEquals($status->status_code, "200");
         $this->assertEquals($status->order_id, "Order-111");
@@ -43,7 +43,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
     public function testFailureStatus()
     {
-        Midtrans_Config::$serverKey = 'My Very Secret Key';
+        Config::$serverKey = 'My Very Secret Key';
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": "404",
@@ -51,7 +51,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
         }';
 
         try {
-            $status = Midtrans_Transaction::status("Order-111");
+            $status = Transaction::status("Order-111");
         } catch (\Exception $error) {
             $errorHappen = true;
             $this->assertEquals(
@@ -67,7 +67,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
     public function testRealStatus()
     {
         try {
-            $status = Midtrans_Transaction::status("Order-111");
+            $status = Transaction::status("Order-111");
         } catch (\Exception $error) {
             $errorHappen = true;
             $this->assertContains(
@@ -97,7 +97,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
             "gross_amount": "10000.00"
         }';
 
-        $approve = Midtrans_Transaction::approve("Order-111");
+        $approve = Transaction::approve("Order-111");
 
         $this->assertEquals($approve, "200");
 
@@ -129,7 +129,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
             "gross_amount": "10000.00"
         }';
 
-        $cancel = Midtrans_Transaction::cancel("Order-111");
+        $cancel = Transaction::cancel("Order-111");
 
         $this->assertEquals($cancel, "200");
 
@@ -157,7 +157,7 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
             "gross_amount": "10000.00"
         }';
 
-        $expire = Midtrans_Transaction::expire("Order-111");
+        $expire = Transaction::expire("Order-111");
 
         $this->assertEquals($expire->status_code, "407");
         $this->assertEquals($expire->status_message, "Success, transaction has expired");

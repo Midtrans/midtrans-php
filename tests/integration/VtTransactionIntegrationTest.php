@@ -15,8 +15,8 @@ class VtTransactionIntegrationTest extends VtIntegrationTest
                 "bank" => "permata",
             )
         );
-        $charge_response = Midtrans_VtDirect::charge($charge_params);
-        $status_response = Midtrans_Transaction::status($charge_response->transaction_id);
+        $charge_response = CoreApi::charge($charge_params);
+        $status_response = Transaction::status($charge_response->transaction_id);
 
         $this->assertEquals($status_response->status_code, '201');
         $this->assertEquals($status_response->transaction_status, 'pending');
@@ -37,8 +37,8 @@ class VtTransactionIntegrationTest extends VtIntegrationTest
                 "bank" => "permata",
             )
         );
-        $charge_response = Midtrans_VtDirect::charge($charge_params);
-        $cancel_status_code = Midtrans_Transaction::cancel($charge_response->transaction_id);
+        $charge_response = CoreApi::charge($charge_params);
+        $cancel_status_code = Transaction::cancel($charge_response->transaction_id);
 
         $this->assertEquals($cancel_status_code, '200');
     }
@@ -51,13 +51,13 @@ class VtTransactionIntegrationTest extends VtIntegrationTest
                 "bank" => "permata",
             )
         );
-        $charge_response = Midtrans_VtDirect::charge($charge_params);
-        $expire = Midtrans_Transaction::expire($charge_response->transaction_id);
+        $charge_response = CoreApi::charge($charge_params);
+        $expire = Transaction::expire($charge_response->transaction_id);
 
         $this->assertEquals($expire->status_code, '407');
 
         // Verify transaction via API
-        $txn_status = Midtrans_Transaction::status($charge_response->transaction_id);
+        $txn_status = Transaction::status($charge_response->transaction_id);
         $this->assertEquals($txn_status->status_code, "407");
         $this->assertEquals($txn_status->transaction_status, "expire");
     }

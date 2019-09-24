@@ -5,7 +5,7 @@ namespace Midtrans;
 /**
  * Midtrans Configuration
  */
-class Midtrans_Config
+class Config
 {
 
     /**
@@ -59,8 +59,8 @@ class Midtrans_Config
      */
     public static function getBaseUrl()
     {
-        return Midtrans_Config::$isProduction ?
-        Midtrans_Config::PRODUCTION_BASE_URL : Midtrans_Config::SANDBOX_BASE_URL;
+        return Config::$isProduction ?
+        Config::PRODUCTION_BASE_URL : Config::SANDBOX_BASE_URL;
     }
 
     /**
@@ -70,7 +70,7 @@ class Midtrans_Config
      */
     public static function getSnapBaseUrl()
     {
-        return Midtrans_Config::$isProduction ?
-        Midtrans_Config::SNAP_PRODUCTION_BASE_URL : Midtrans_Config::SNAP_SANDBOX_BASE_URL;
+        return Config::$isProduction ?
+        Config::SNAP_PRODUCTION_BASE_URL : Config::SNAP_SANDBOX_BASE_URL;
     }
 }

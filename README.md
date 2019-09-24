@@ -1,7 +1,7 @@
 Midtrans-PHP
 ===============
 
-[![Build Status](https://travis-ci.org/veritrans/veritrans-php.svg)](https://travis-ci.org/veritrans/veritrans-php)
+[![Build Status](https://travis-ci.org/midtrans/midtrans-php.svg)](https://travis-ci.org/midtrans/midtrans-php)
 
 Midtrans is now :arrow_right: [Midtrans](https://midtrans.com)
 
@@ -17,9 +17,9 @@ If you are using [Composer](https://getcomposer.org), add this require line to y
 
 ```json
 {
-	"require": {
-		"veritrans/veritrans-php": "dev-master"
-	}
+    "require": {
+        "midtrans/midtrans-php": "master"
+    }
 }
 ```
 
@@ -27,7 +27,7 @@ and run `composer install` on your terminal.
 
 ### 1.b Manual Instalation
 
-If you are not using Composer, you can clone or [download](https://github.com/veritrans/veritrans-php/archive/master.zip) this repository.
+If you are not using Composer, you can clone or [download](https://github.com/midtrans/midtrans-php/archive/master.zip) this repository.
 
 ## 2. How to Use
 
@@ -35,13 +35,13 @@ If you are not using Composer, you can clone or [download](https://github.com/ve
 
 ```php
 // Set your Merchant Server Key
-Midtrans_Config::$serverKey = '<your server key>';
+Config::$serverKey = '<your server key>';
 // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-Midtrans_Config::$isProduction = false;
+Config::$isProduction = false;
 // Set sanitization on (default)
-Midtrans_Config::$isSanitized = true;
+Config::$isSanitized = true;
 // Set 3DS transaction for credit card to true
-Midtrans_Config::$is3ds = true;
+Config::$is3ds = true;
 ```
 
 ### 2.2 Choose Product/Method
@@ -62,12 +62,12 @@ You can see Snap example [here](examples/snap).
 ```php
 $params = array(
     'transaction_details' => array(
-      'order_id' => rand(),
-      'gross_amount' => 10000,
+        'order_id' => rand(),
+        'gross_amount' => 10000,
     )
-  );
+);
 
-$snapToken = Midtrans_Snap::getSnapToken($params);
+$snapToken = Snap::getSnapToken($params);
 ```
 
 #### Get Snap Token in Yii2
@@ -76,17 +76,17 @@ $snapToken = Midtrans_Snap::getSnapToken($params);
     
     //install library from composer
     //in your controller no need to include anything
-    //make sure call class with \Class_name::method()
+    //make sure call class with \Mindtrans\Class_name::method()
 
     public function actionSnapToken() {
 
-        \Midtrans_Config::$serverKey = 'Secret Server Key Goes Here';
+        \Midtrans\Config::$serverKey = 'Secret Server Key Goes Here';
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans_Config::$isProduction = false;
+        \Midtrans\Config::$isProduction = false;
         // Set sanitization on (default)
-        \Midtrans_Config::$isSanitized = true;
+        \Midtrans\Config::$isSanitized = true;
         // Set 3DS transaction for credit card to true
-        \Midtrans_Config::$is3ds = true;
+        \Midtrans\Config::$is3ds = true;
 
         $complete_request = [
             "transaction_details" => [
@@ -95,7 +95,7 @@ $snapToken = Midtrans_Snap::getSnapToken($params);
             ]
         ];
 
-        $snap_token = \Midtrans_Snap::getSnapToken($complete_request);
+        $snap_token = \Midtrans\Snap::getSnapToken($complete_request);
         return ['snap_token' => $snap_token];
   
     }
@@ -137,33 +137,6 @@ $snapToken = Midtrans_Snap::getSnapToken($params);
 #### Implement Notification Handler
 [Refer to this section](#23-handle-http-notification)
 
-### ~2.2.b VT-Web~
-> !!! VT-Web is DEPRECATED !!!
-
-> Please use [Snap Redirect](#22b-snap-redirect), it has the same functionality, but better. [Refer to this section](#22b-snap-redirect)
-
-~You can see some VT-Web examples [here](examples/vt-web).~
-
-#### ~Get Redirection URL of a Charge~
-
-```php
-$params = array(
-    'transaction_details' => array(
-      'order_id' => rand(),
-      'gross_amount' => 10000,
-    ),
-    'vtweb' => array()
-  );
-
-try {
-  // Redirect to Midtrans VTWeb page
-  header('Location: ' . Midtrans_Vtweb::getRedirectionUrl($params));
-}
-catch (Exception $e) {
-  echo $e->getMessage();
-}
-```
-
 ### 2.2.b Snap Redirect
 
 You can see some Snap Redirect examples [here](examples/snap-redirect).
@@ -173,15 +146,14 @@ You can see some Snap Redirect examples [here](examples/snap-redirect).
 ```php
 $params = array(
     'transaction_details' => array(
-      'order_id' => rand(),
-      'gross_amount' => 10000,
-    ),
-    'vtweb' => array()
-  );
+        'order_id' => rand(),
+        'gross_amount' => 10000,
+    )
+);
 
 try {
   // Get Snap Payment Page URL
-  $paymentUrl = Midtrans_Snap::createTransaction($params)->redirect_url;
+  $paymentUrl = \Midtrans\Snap::createTransaction($params)->redirect_url;
   
   // Redirect to Snap Payment Page
   header('Location: ' . $paymentUrl);
@@ -200,12 +172,12 @@ You can see some Core API examples [here](examples/core-api).
 #### Set Client Key
 
 ```javascript
-Midtrans.client_key = "<your client key>";
+MidtransNew3ds.clientKey = "<your client key>";
 ```
 
 #### Checkout Page
 
-Please refer to [this file](examples/core-api/checkout.php)
+Please refer to [this file](examples/core-api/checkout-new-3ds.php)
 
 #### Checkout Process
 
@@ -224,17 +196,18 @@ $transaction_details = array(
 // Populate items
 $items = array(
     array(
-      'id'       => 'item1',
-      'price'    => 100000,
-      'quantity' => 1,
-      'name'     => 'Adidas f50'
+        'id'       => 'item1',
+        'price'    => 100000,
+        'quantity' => 1,
+        'name'     => 'Adidas f50'
     ),
     array(
-      'id'       => 'item2',
-      'price'    => 50000,
-      'quantity' => 2,
-      'name'     => 'Nike N90'
-    ));
+        'id'       => 'item2',
+        'price'    => 50000,
+        'quantity' => 2,
+        'name'     => 'Nike N90'
+    )
+);
 
 // Populate customer's billing address
 $billing_address = array(
@@ -245,7 +218,7 @@ $billing_address = array(
     'postal_code'  => "51161",
     'phone'        => "081322311801",
     'country_code' => 'IDN'
-  );
+);
 
 // Populate customer's shipping address
 $shipping_address = array(
@@ -256,7 +229,7 @@ $shipping_address = array(
     'postal_code'  => "51162",
     'phone'        => "081322311801",
     'country_code' => 'IDN'
-  );
+);
 
 // Populate customer's info
 $customer_details = array(
@@ -266,7 +239,7 @@ $customer_details = array(
     'phone'            => "081322311801",
     'billing_address'  => $billing_address,
     'shipping_address' => $shipping_address
-  );
+);
 ```
 
 ##### 3. Get Token ID from Checkout Page
@@ -283,20 +256,20 @@ $token_id = $_POST['token_id'];
 $transaction_data = array(
     'payment_type' => 'credit_card',
     'credit_card'  => array(
-      'token_id'      => $token_id,
-      'bank'          => 'bni',
-      'save_token_id' => isset($_POST['save_cc'])
+        'token_id'      => $token_id,
+        'bank'          => 'bni',
+        'save_token_id' => isset($_POST['save_cc'])
     ),
     'transaction_details' => $transaction_details,
     'item_details'        => $items,
     'customer_details'    => $customer_details
-  );
+);
 ```
 
 ##### 5. Charge
 
 ```php
-$response = Midtrans_VtDirect::charge($transaction_data);
+$response = \Midtrans\CoreApi::charge($transaction_data);
 ```
 
 ##### 6. Handle Transaction Status
@@ -304,46 +277,46 @@ $response = Midtrans_VtDirect::charge($transaction_data);
 ```php
 // Success
 if($response->transaction_status == 'capture') {
-  echo "<p>Transaksi berhasil.</p>";
-  echo "<p>Status transaksi untuk order id $response->order_id: " .
-      "$response->transaction_status</p>";
+    echo "<p>Transaksi berhasil.</p>";
+    echo "<p>Status transaksi untuk order id $response->order_id: " .
+        "$response->transaction_status</p>";
 
-  echo "<h3>Detail transaksi:</h3>";
-  echo "<pre>";
-  var_dump($response);
-  echo "</pre>";
+    echo "<h3>Detail transaksi:</h3>";
+    echo "<pre>";
+    var_dump($response);
+    echo "</pre>";
 }
 // Deny
 else if($response->transaction_status == 'deny') {
-  echo "<p>Transaksi ditolak.</p>";
-  echo "<p>Status transaksi untuk order id .$response->order_id: " .
-      "$response->transaction_status</p>";
+    echo "<p>Transaksi ditolak.</p>";
+    echo "<p>Status transaksi untuk order id .$response->order_id: " .
+        "$response->transaction_status</p>";
 
-  echo "<h3>Detail transaksi:</h3>";
-  echo "<pre>";
-  var_dump($response);
-  echo "</pre>";
+    echo "<h3>Detail transaksi:</h3>";
+    echo "<pre>";
+    var_dump($response);
+    echo "</pre>";
 }
 // Challenge
 else if($response->transaction_status == 'challenge') {
-  echo "<p>Transaksi challenge.</p>";
-  echo "<p>Status transaksi untuk order id $response->order_id: " .
-      "$response->transaction_status</p>";
+    echo "<p>Transaksi challenge.</p>";
+    echo "<p>Status transaksi untuk order id $response->order_id: " .
+        "$response->transaction_status</p>";
 
-  echo "<h3>Detail transaksi:</h3>";
-  echo "<pre>";
-  var_dump($response);
-  echo "</pre>";
+    echo "<h3>Detail transaksi:</h3>";
+    echo "<pre>";
+    var_dump($response);
+    echo "</pre>";
 }
 // Error
 else {
-  echo "<p>Terjadi kesalahan pada data transaksi yang dikirim.</p>";
-  echo "<p>Status message: [$response->status_code] " .
-      "$response->status_message</p>";
+    echo "<p>Terjadi kesalahan pada data transaksi yang dikirim.</p>";
+    echo "<p>Status message: [$response->status_code] " .
+        "$response->status_message</p>";
 
-  echo "<pre>";
-  var_dump($response);
-  echo "</pre>";
+    echo "<pre>";
+    var_dump($response);
+    echo "</pre>";
 }
 ```
 #### 7. Implement Notification Handler
@@ -357,32 +330,31 @@ HTTP notification will be sent whenever transaction status is changed.
 Example also available [here](examples/notification-handler.php)
 
 ```php
-$notif = new Midtrans_Notification();
+$notif = new \Midtrans\Notification();
 
 $transaction = $notif->transaction_status;
 $fraud = $notif->fraud_status;
 
 error_log("Order ID $notif->order_id: "."transaction status = $transaction, fraud staus = $fraud");
 
-  if ($transaction == 'capture') {
+if ($transaction == 'capture') {
     if ($fraud == 'challenge') {
       // TODO Set payment status in merchant's database to 'challenge'
     }
     else if ($fraud == 'accept') {
       // TODO Set payment status in merchant's database to 'success'
     }
-  }
-  else if ($transaction == 'cancel') {
+}
+else if ($transaction == 'cancel') {
     if ($fraud == 'challenge') {
       // TODO Set payment status in merchant's database to 'failure'
     }
     else if ($fraud == 'accept') {
       // TODO Set payment status in merchant's database to 'failure'
     }
-  }
-  else if ($transaction == 'deny') {
+}
+else if ($transaction == 'deny') {
       // TODO Set payment status in merchant's database to 'failure'
-  }
 }
 ```
 
@@ -391,7 +363,7 @@ error_log("Order ID $notif->order_id: "."transaction status = $transaction, frau
 #### Get Transaction Status
 
 ```php
-$status = Midtrans_Transaction::status($orderId);
+$status = \Midtrans\Transaction::status($orderId);
 var_dump($status);
 ```
 
@@ -399,21 +371,21 @@ var_dump($status);
 If transaction fraud_status == [CHALLENGE](https://support.midtrans.com/hc/en-us/articles/202710750-What-does-CHALLENGE-status-mean-What-should-I-do-if-there-is-a-CHALLENGE-transaction-), you can approve the transaction from Merchant Dashboard, or API :
 
 ```php
-$approve = Midtrans_Transaction::approve($orderId);
+$approve = \Midtrans\Transaction::approve($orderId);
 var_dump($approve);
 ```
 
 #### Cancel Transaction
 You can Cancel transaction with `fraud_status == CHALLENGE`, or credit card transaction with `transaction_status == CAPTURE` (before it become SETTLEMENT)
 ```php
-$cancel = Midtrans_Transaction::cancel($orderId);
+$cancel = \Midtrans\Transaction::cancel($orderId);
 var_dump($cancel);
 ```
 
 #### Expire Transaction
 You can Expire transaction with `transaction_status == PENDING` (before it become SETTLEMENT or EXPIRE)
 ```php
-$cancel = Midtrans_Transaction::cancel($orderId);
+$cancel = \Midtrans\Transaction::cancel($orderId);
 var_dump($cancel);
 ```
 

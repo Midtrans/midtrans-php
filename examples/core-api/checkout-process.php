@@ -1,28 +1,30 @@
 <?php
 
+namespace Midtrans;
+
 require_once dirname(__FILE__) . '/../../Midtrans.php';
 
 if (empty($_POST['token_id'])) {
     die('Empty token_id!');
 }
 
-Midtrans_Config::$serverKey = '<your server key>';
+Config::$serverKey = '<your server key>';
 
-if (strpos(Midtrans_Config::$serverKey, 'your ') != false ) {
+if (strpos(Config::$serverKey, 'your ') != false ) {
     echo "<code>";
     echo "<h4>Please set your server key from sandbox</h4>";
     echo "In file: " . __FILE__;
     echo "<br>";
     echo "<br>";
-    echo htmlspecialchars('Midtrans_Config::$serverKey = \'<your server key>\';');
+    echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
     die();
 }
 
 // Uncomment for production environment
-// Midtrans_Config::$isProduction = true;
+// Config::$isProduction = true;
 
 // Uncomment to enable sanitization
-// Midtrans_Config::$isSanitized = true;
+// Config::$isSanitized = true;
 
 $transaction_details = array(
     'order_id'    => time(),
@@ -93,7 +95,7 @@ $transaction_data = array(
   );
 
 try {
-    $response = Midtrans_VtDirect::charge($transaction_data);
+    $response = CoreApi::charge($transaction_data);
 } catch (Exception $e) {
     echo $e->getMessage();
     die();
