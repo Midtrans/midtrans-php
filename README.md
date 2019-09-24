@@ -388,6 +388,15 @@ You can Expire transaction with `transaction_status == PENDING` (before it becom
 $cancel = \Midtrans\Transaction::cancel($orderId);
 var_dump($cancel);
 ```
+## Unit Test
+### Integration Test (sandbox real transactions)
+Please change server key and client key on `phpunit.xml` to your own.
+
+### All Test
+`vendor/bin/phpunit`
+
+### Specific Test
+`vendor/bin/phpunit tests/integration/CoreApiIntegrationTest.php`
 
 ## Contributing
 
