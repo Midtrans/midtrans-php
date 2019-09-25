@@ -1,14 +1,19 @@
 <?php
 
-abstract class VtIntegrationTest extends PHPUnit_Framework_TestCase {
-	public static function setUpBeforeClass() {
-		Veritrans_Config::$serverKey = getenv('SERVER_KEY');
-		Veritrans_Config::$clientKey = getenv('CLIENT_KEY');
-		Veritrans_Config::$isProduction = false;
-	}
+namespace Midtrans;
 
-	public function tearDown() {
-		// One second interval to avoid throttle
-		sleep(1);
-	}
+abstract class VtIntegrationTest extends \PHPUnit_Framework_TestCase
+{
+    public static function setUpBeforeClass()
+    {
+        Config::$serverKey = getenv('SERVER_KEY');
+        Config::$clientKey = getenv('CLIENT_KEY');
+        Config::$isProduction = false;
+    }
+
+    public function tearDown()
+    {
+        // One second interval to avoid throttle
+        sleep(1);
+    }
 }
