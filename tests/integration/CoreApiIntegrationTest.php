@@ -95,6 +95,20 @@ class CoreApiIntegrationTest extends VtIntegrationTest
         $this->assertTrue(isset($this->charge_response->payment_code));
     }
 
+    public function testChargeGopay()
+    {
+        $this->prepareChargeParams(
+            'gopay',
+            array(
+                "enable_callback" => true,
+                "callback_url" => "someapps://callback",
+            )
+        );
+        $this->charge_response = CoreApi::charge($this->charge_params);
+        $this->assertEquals($this->charge_response->status_code, '201');
+        $this->assertEquals($this->charge_response->transaction_status, 'pending');
+    }
+
     public function assertPostConditions()
     {
         $this->assertContains($this->charge_response->status_code, array(200, 201));
