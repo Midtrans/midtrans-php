@@ -3,11 +3,9 @@ Midtrans-PHP
 
 [![Build Status](https://travis-ci.org/midtrans/midtrans-php.svg)](https://travis-ci.org/midtrans/midtrans-php)
 
-Midtrans is now :arrow_right: [Midtrans](https://midtrans.com)
+[Midtrans](https://midtrans.com) :heart: PHP!
 
-Midtrans :heart: PHP!
-
-This is the Official PHP wrapper/library for Midtrans Payment API. Visit [https://midtrans.com](https://midtrans.com) for more information about the product and see documentation at [http://docs.midtrans.com](http://docs.midtrans) for more technical details.
+This is the Official PHP wrapper/library for Midtrans Payment API, that is compatible with Composer. Visit [https://midtrans.com](https://midtrans.com) for more information about the product and see documentation at [http://docs.midtrans.com](http://docs.midtrans) for more technical details.
 
 ## 1. Installation
 
@@ -27,7 +25,7 @@ and run `composer install` on your terminal.
 
 ### 1.b Manual Instalation
 
-If you are not using Composer, you can clone or [download](https://github.com/midtrans/midtrans-php/archive/master.zip) this repository.
+If you are not using Composer, you can clone or [download](https://github.com/midtrans/midtrans-php/archive/master.zip) this repository. And try to require/autoload `Midtrans.php`.
 
 ## 2. How to Use
 
@@ -68,37 +66,6 @@ $params = array(
 );
 
 $snapToken = Snap::getSnapToken($params);
-```
-
-#### Get Snap Token in Yii2
-
-```php
-    
-    //install library from composer
-    //in your controller no need to include anything
-    //make sure call class with \Mindtrans\Class_name::method()
-
-    public function actionSnapToken() {
-
-        \Midtrans\Config::$serverKey = 'Secret Server Key Goes Here';
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = false;
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = true;
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = true;
-
-        $complete_request = [
-            "transaction_details" => [
-                "order_id" => "1234",
-                "gross_amount" => 10000
-            ]
-        ];
-
-        $snap_token = \Midtrans\Snap::getSnapToken($complete_request);
-        return ['snap_token' => $snap_token];
-  
-    }
 ```
 
 #### Initialize Snap JS when customer click pay button
@@ -177,7 +144,7 @@ MidtransNew3ds.clientKey = "<your client key>";
 
 #### Checkout Page
 
-Please refer to [this file](examples/core-api/checkout-new-3ds.php)
+Please refer to [this file](examples/core-api/checkout.php)
 
 #### Checkout Process
 
@@ -257,8 +224,9 @@ $transaction_data = array(
     'payment_type' => 'credit_card',
     'credit_card'  => array(
         'token_id'      => $token_id,
-        'bank'          => 'bni',
-        'save_token_id' => isset($_POST['save_cc'])
+        'authentication'=> true,
+//        'bank'          => 'bni', // optional to set acquiring bank
+//        'save_token_id' => true   // optional for one/two clicks feature
     ),
     'transaction_details' => $transaction_details,
     'item_details'        => $items,
@@ -272,7 +240,15 @@ $transaction_data = array(
 $response = \Midtrans\CoreApi::charge($transaction_data);
 ```
 
-##### 6. Handle Transaction Status
+
+##### 6. Credit Card 3DS Authentication
+
+The credit card charge result may contains `redirect_url` for 3DS authentication. 3DS Authentication should be handled on Frontend please refer to [API docs](https://api-docs.midtrans.com/#card-features-3d-secure)
+
+For full example on Credit Card 3DS transaction refer to:
+- [Core API examples](/examples/core-api/)
+
+##### 7. Handle Transaction Status
 
 ```php
 // Success
@@ -319,7 +295,7 @@ else {
     echo "</pre>";
 }
 ```
-#### 7. Implement Notification Handler
+#### 8. Implement Notification Handler
 [Refer to this section](#23-handle-http-notification)
 
 
