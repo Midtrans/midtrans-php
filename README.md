@@ -18,7 +18,7 @@ If you are using [Composer](https://getcomposer.org), add this require line to y
 ```json
 {
     "require": {
-        "midtrans/midtrans-php": "master"
+        "midtrans/midtrans-php"
     }
 }
 ```
@@ -31,17 +31,23 @@ If you are not using Composer, you can clone or [download](https://github.com/mi
 
 ## 2. How to Use
 
+If you are not using php framework, you must include `Midtrans.php` file on your code.
+
+```php
+require_once dirname(__FILE__) . '/pathofproject/Midtrans.php';
+```
+
 ### 2.1 General Settings
 
 ```php
 // Set your Merchant Server Key
-Config::$serverKey = '<your server key>';
+\Midtrans\Config::$serverKey = '<your server key>';
 // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-Config::$isProduction = false;
+\Midtrans\Config::$isProduction = false;
 // Set sanitization on (default)
-Config::$isSanitized = true;
+\Midtrans\Config::$isSanitized = true;
 // Set 3DS transaction for credit card to true
-Config::$is3ds = true;
+\Midtrans\Config::$is3ds = true;
 ```
 
 ### 2.2 Choose Product/Method
@@ -67,7 +73,7 @@ $params = array(
     )
 );
 
-$snapToken = Snap::getSnapToken($params);
+$snapToken = \Midtrans\Snap::getSnapToken($params);
 ```
 
 #### Get Snap Token in Yii2
