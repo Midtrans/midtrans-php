@@ -11,12 +11,20 @@ This is the Official PHP wrapper/library for Midtrans Payment API, that is compa
 
 ### 1.a Composer Installation
 
-If you are using [Composer](https://getcomposer.org), add this require line to your `composer.json` file:
+If you are using [Composer](https://getcomposer.org), you can install via composer CLI:
+
+```
+composer require midtrans/midtrans-php
+```
+
+**or**
+
+add this require line to your `composer.json` file:
 
 ```json
 {
     "require": {
-        "midtrans/midtrans-php"
+        "midtrans/midtrans-php": "2.*"
     }
 }
 ```
