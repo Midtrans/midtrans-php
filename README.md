@@ -1,7 +1,11 @@
 Midtrans-PHP
 ===============
 
-[![Build Status](https://travis-ci.org/midtrans/midtrans-php.svg)](https://travis-ci.org/midtrans/midtrans-php)
+[![PHP version](https://badge.fury.io/ph/midtrans%2Fmidtrans-php.svg)](https://badge.fury.io/ph/midtrans%2Fmidtrans-php)
+[![Latest Stable Version](https://poser.pugx.org/midtrans/midtrans-php/v/stable)](https://packagist.org/packages/midtrans/midtrans-php)
+[![Monthly Downloads](https://poser.pugx.org/midtrans/midtrans-php/d/monthly)](https://packagist.org/packages/midtrans/midtrans-php)
+[![Total Downloads](https://poser.pugx.org/midtrans/midtrans-php/downloads)](https://packagist.org/packages/midtrans/midtrans-php)
+<!-- [![Build Status](https://travis-ci.org/midtrans/midtrans-php.svg)](https://travis-ci.org/midtrans/midtrans-php) -->
 
 [Midtrans](https://midtrans.com) :heart: PHP!
 
