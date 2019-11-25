@@ -2,7 +2,7 @@
     "name": "midtrans/midtrans-php",
     "description": "PHP Wrapper for Midtrans Payment API.",
     "homepage": "https://midtrans.com",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "type": "library",
     "license":"GPL-3.0",
     "authors": [
