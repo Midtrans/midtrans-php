@@ -27,7 +27,7 @@ class Sanitizer
     {
         $keys = array('item_details', 'customer_details');
         foreach ($keys as $key) {
-            if (!array_key_exists($key, $json)) continue;
+            if (!isset($key, $json)) continue;
 
             $camel = static::upperCamelize($key);
             $function = "field$camel";
@@ -55,7 +55,7 @@ class Sanitizer
         $field['first_name'] = $first_name
             ->maxLength(20)
             ->apply($field['first_name']);
-        if (array_key_exists('last_name', $field)) {
+        if (isset('last_name', $field)) {
             $last_name = new self;
             $field['last_name'] = $last_name
                 ->maxLength(20)
@@ -71,7 +71,7 @@ class Sanitizer
         if (!empty($field['billing_address']) || !empty($field['shipping_address'])) {
             $keys = array('billing_address', 'shipping_address');
             foreach ($keys as $key) {
-                if (!array_key_exists($key, $field)) continue;
+                if (!isset($key, $field)) continue;
 
                 $camel = static::upperCamelize($key);
                 $function = "field$camel";
@@ -92,7 +92,7 @@ class Sanitizer
         );
 
         foreach ($fields as $key => $value) {
-            if (array_key_exists($key, $field)) {
+            if (isset($key, $field)) {
                 $self = new self;
                 $field[$key] = $self
                     ->maxLength($value)
@@ -100,14 +100,14 @@ class Sanitizer
             }
         }
 
-        if (array_key_exists('postal_code', $field)) {
+        if (isset('postal_code', $field)) {
             $postal_code = new self;
             $field['postal_code'] = $postal_code
                 ->whitelist('A-Za-z0-9\\- ')
                 ->maxLength(10)
                 ->apply($field['postal_code']);
         }
-        if (array_key_exists('phone', $field)) {
+        if (isset('phone', $field)) {
             static::fieldPhone($field['phone']);
         }
     }

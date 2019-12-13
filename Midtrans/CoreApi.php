@@ -18,7 +18,7 @@ class CoreApi
             'payment_type' => 'credit_card'
         );
 
-        if (array_key_exists('item_details', $params)) {
+        if (isset('item_details', $params)) {
             $gross_amount = 0;
             foreach ($params['item_details'] as $item) {
                 $gross_amount += $item['quantity'] * $item['price'];
