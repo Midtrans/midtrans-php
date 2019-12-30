@@ -29,7 +29,7 @@ class Notification
 
     public function __get($name)
     {
-        if (array_key_exists($name, $this->response)) {
+        if (isset($this->response->$name)) {
             return $this->response->$name;
         }
     }
