@@ -4,9 +4,9 @@ php:
   - 7.2
   - 7.0
   - 5.6
-  # - 5.5
-  # - 5.4
-  - hhvm
+  # - 5.5 # PHP version too old
+  # - 5.4 # PHP version too old
+  # - hhvm # HHVM officially drop PHP support
 
 before_script:
   - composer install
