@@ -189,13 +189,54 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
             "refund_key": "reference1"
         }';
 
-        $refund = Transaction::refund("Order-111");
+        $params = array(
+            'refund_key' => 'order1-ref1',
+            'amount' => 10000,
+            'reason' => 'Item out of stock'
+        );
+        $refund = Transaction::refund("Order-111", $params);
 
         $this->assertEquals($refund->status_code, "200");
 
         $this->assertEquals(
             VT_Tests::$lastHttpRequest["url"],
             "https://api.sandbox.midtrans.com/v2/Order-111/refund"
+        );
+
+        $fields = VT_Tests::lastReqOptions();
+        $this->assertEquals($fields["POST"], 1);
+        $this->assertEquals($fields["POSTFIELDS"], null);
+    }
+
+    public function testRefundDirect()
+    {
+        VT_Tests::$stubHttp = true;
+        VT_Tests::$stubHttpResponse = '{
+            "status_code": "200",
+            "status_message": "Success, refund request is approved",
+            "transaction_id": "447e846a-403e-47db-a5da-d7f3f06375d6",
+            "order_id": "Order-111",
+            "payment_type": "credit_card",
+            "transaction_time": "2015-06-15 13:36:24",
+            "transaction_status": "refund",
+            "gross_amount": "10000.00",
+            "refund_chargeback_id": 1,
+            "refund_amount": "10000.00",
+            "refund_key": "reference1"
+        }';
+        
+        $params = array(
+            'refund_key' => 'order1-ref1',
+            'amount' => 10000,
+            'reason' => 'Item out of stock'
+        );
+        $refund = Transaction::refundDirect("Order-111", $params);
+
+        $this->assertEquals($refund->status_code, "200");
+
+        $this->assertEquals(
+            VT_Tests::$lastHttpRequest["url"],
+            "https://api.sandbox.midtrans.com/v2/Order-111/refund/online/direct"
         );
 
         $fields = VT_Tests::lastReqOptions();

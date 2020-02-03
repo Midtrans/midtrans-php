@@ -81,10 +81,28 @@ class Transaction
      * 
      * @return mixed[]
      */
-    public static function refund($id)
+    public static function refund($id, $params)
     {
         return ApiRequestor::post(
             Config::getBaseUrl() . '/' . $id . '/refund',
+            Config::$serverKey,
+            false
+        );
+    }
+
+    /**
+     * Transaction status can be updated into refund
+     * if the customer decides to cancel completed/settlement payment.
+     * The same refund id cannot be reused again.
+     * 
+     * @param string $id Order ID or transaction ID
+     * 
+     * @return mixed[]
+     */
+    public static function refundDirect($id, $params)
+    {
+        return ApiRequestor::post(
+            Config::getBaseUrl() . '/' . $id . '/refund/online/direct',
             Config::$serverKey,
             false
         );

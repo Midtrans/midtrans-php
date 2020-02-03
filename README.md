@@ -382,6 +382,33 @@ You can Expire transaction with `transaction_status == PENDING` (before it becom
 $cancel = \Midtrans\Transaction::cancel($orderId);
 var_dump($cancel);
 ```
+
+#### Refund Transaction
+Refund a transaction (not all payment channel allow refund via API)
+You can Refund transaction with `transaction_status == settlement`
+```php
+$params = array(
+    'refund_key' => 'order1-ref1',
+    'amount' => 10000,
+    'reason' => 'Item out of stock'
+);
+$refund = \Midtrans\Transaction::refund($orderId, $params);
+var_dump($refund);
+```
+
+#### Direct Refund Transaction
+Refund a transaction via Direct Refund API
+You can Refund transaction with `transaction_status == settlement`
+```php
+$params = array(
+    'refund_key' => 'order1-ref1',
+    'amount' => 10000,
+    'reason' => 'Item out of stock'
+);
+$direct_refund = \Midtrans\Transaction::refundDirect($orderId, $params);
+var_dump($direct_refund);
+```
+
 ## Unit Test
 ### Integration Test (sandbox real transactions)
 Please change server key and client key on `phpunit.xml` to your own.
