@@ -190,11 +190,11 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
         }';
 
         $params = array(
-            'refund_key' => 'order1-ref1',
+            'refund_key' => 'reference1',
             'amount' => 10000,
             'reason' => 'Item out of stock'
         );
-        $refund = Transaction::refund("Order-111", $params);
+        $refund = Transaction::refund("Order-111",$params);
 
         $this->assertEquals($refund->status_code, "200");
 
@@ -205,7 +205,9 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
         $fields = VT_Tests::lastReqOptions();
         $this->assertEquals($fields["POST"], 1);
-        $this->assertEquals($fields["POSTFIELDS"], null);
+        $this->assertEquals(
+            $fields["POSTFIELDS"],
+            '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}');
     }
 
     public function testRefundDirect()
@@ -226,22 +228,22 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
         }';
         
         $params = array(
-            'refund_key' => 'order1-ref1',
+            'refund_key' => 'reference1',
             'amount' => 10000,
             'reason' => 'Item out of stock'
         );
         $refund = Transaction::refundDirect("Order-111", $params);
-
         $this->assertEquals($refund->status_code, "200");
 
         $this->assertEquals(
             VT_Tests::$lastHttpRequest["url"],
             "https://api.sandbox.midtrans.com/v2/Order-111/refund/online/direct"
         );
-
-        $fields = VT_Tests::lastReqOptions();
+        $fields = VT_Tests::lastReqOptions();     
         $this->assertEquals($fields["POST"], 1);
-        $this->assertEquals($fields["POSTFIELDS"], null);
+        $this->assertEquals(
+            $fields["POSTFIELDS"],
+            '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}');
     }
 
     public function testDeny()

@@ -86,7 +86,7 @@ class Transaction
         return ApiRequestor::post(
             Config::getBaseUrl() . '/' . $id . '/refund',
             Config::$serverKey,
-            false
+            $params
         );
     }
 
@@ -104,7 +104,7 @@ class Transaction
         return ApiRequestor::post(
             Config::getBaseUrl() . '/' . $id . '/refund/online/direct',
             Config::$serverKey,
-            false
+            $params
         );
     }
 
