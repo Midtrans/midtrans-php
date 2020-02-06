@@ -33,4 +33,9 @@ class Notification
             return $this->response->$name;
         }
     }
+
+    public function getResponse()
+    {
+        return $this->response;
+    }
 }
