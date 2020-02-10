@@ -9,7 +9,7 @@ Midtrans-PHP
 
 [Midtrans](https://midtrans.com) :heart: PHP!
 
-This is the Official PHP wrapper/library for Midtrans Payment API, that is compatible with Composer. Visit [https://midtrans.com](https://midtrans.com) for more information about the product and see documentation at [http://docs.midtrans.com](http://docs.midtrans) for more technical details.
+This is the Official PHP wrapper/library for Midtrans Payment API, that is compatible with Composer. Visit [https://midtrans.com](https://midtrans.com) for more information about the product and see documentation at [http://docs.midtrans.com](https://docs.midtrans.com) for more technical details.
 
 ## 1. Installation
 
