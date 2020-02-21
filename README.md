@@ -35,17 +35,23 @@ add this require line to your `composer.json` file:
 
 and run `composer install` on your terminal.
 
+> **Note:** If you are using Laravel framework, in [some](https://laracasts.com/discuss/channels/general-discussion/using-non-laravel-composer-package-with-laravel?page=1#reply=461608) [case](https://stackoverflow.com/a/23675376) you also need to run `composer dumpautoload`
+
+> `/Midtrans` will then be available (auto loaded) as Object in your Laravel project.
+
 ### 1.b Manual Instalation
 
-If you are not using Composer, you can clone or [download](https://github.com/midtrans/midtrans-php/archive/master.zip) this repository. And try to require/autoload `Midtrans.php`.
+If you are not using Composer, you can clone or [download](https://github.com/midtrans/midtrans-php/archive/master.zip) this repository.
 
-## 2. How to Use
-
-If you are not using php framework, you must include `Midtrans.php` file on your code.
+Then you should require/autoload `Midtrans.php` file on your code.
 
 ```php
 require_once dirname(__FILE__) . '/pathofproject/Midtrans.php';
+
+// my code goes here
 ```
+
+## 2. How to Use
 
 ### 2.1 General Settings
 
