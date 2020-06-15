@@ -9,6 +9,9 @@ if (empty($_POST['token_id'])) {
 }
 
 Config::$serverKey = '<your server key>';
+// Uncomment for append and override notification URL
+// Config::$appendNotifUrl = "https://example.com";
+// Config::$overrideNotifUrl = "https://example.com";
 
 if (strpos(Config::$serverKey, 'your ') != false ) {
     echo "<code>";

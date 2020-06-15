@@ -16,6 +16,10 @@ Config::$isSanitized = true;
 // Enable 3D-Secure
 Config::$is3ds = true;
 
+// Uncomment for append and override notification URL
+// Config::$appendNotifUrl = "https://example.com";
+// Config::$overrideNotifUrl = "https://example.com";
+
 // Required
 $transaction_details = array(
     'order_id' => rand(),

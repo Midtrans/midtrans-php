@@ -32,6 +32,12 @@ class CoreApi
             Sanitizer::jsonRequest($payloads);
         }
 
+        if (Config::$appendNotifUrl)
+            Config::$curlOptions[CURLOPT_HTTPHEADER][] = 'X-Append-Notification: ' . Config::$appendNotifUrl;
+
+        if (Config::$overrideNotifUrl)
+            Config::$curlOptions[CURLOPT_HTTPHEADER][] = 'X-Override-Notification: ' . Config::$overrideNotifUrl;
+
         $result = ApiRequestor::post(
             Config::getBaseUrl() . '/charge',
             Config::$serverKey,

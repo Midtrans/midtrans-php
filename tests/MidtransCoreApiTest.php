@@ -7,6 +7,8 @@ class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase
 
     public function testCharge()
     {
+        Config::$appendNotifUrl = "https://example.com";
+        Config::$overrideNotifUrl = "https://example.com";
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{
             "status_code": 200,
@@ -35,6 +37,8 @@ class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase
             $fields["POSTFIELDS"],
             '{"payment_type":"credit_card","transaction_details":{"order_id":"Order-111","gross_amount":10000}}'
         );
+        $this->assertTrue(in_array('X-Append-Notification: https://example.com', $fields["HTTPHEADER"]));
+        $this->assertTrue(in_array('X-Override-Notification: https://example.com', $fields["HTTPHEADER"]));
     }
 
     public function testRealConnect()
