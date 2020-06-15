@@ -66,6 +66,23 @@ require_once dirname(__FILE__) . '/pathofproject/Midtrans.php';
 \Midtrans\Config::$is3ds = true;
 ```
 
+#### Override Notification URL
+
+You can opt to change or add custom notification urls on every transaction. It can be achieved by adding additional HTTP headers into charge request.
+
+```php
+// Add new notification url(s) alongside the settings on Midtrans Dashboard Portal (MAP)
+Config::$appendNotifUrl = "https://example.com/test1,https://example.com/test2";
+// Use new notification url(s) disregarding the settings on Midtrans Dashboard Portal (MAP)
+Config::$overrideNotifUrl = "https://example.com/test1";
+```
+
+[More details](https://api-docs.midtrans.com/#override-notification-url)
+
+> **Note:** When both `appendNotifUrl` and `overrideNotifUrl` are used together then only `overrideNotifUrl` will be used.
+
+> Both header can only receive up to maximum of **3 urls**.
+
 ### 2.2 Choose Product/Method
 
 We have [3 different products](https://docs.midtrans.com/en/welcome/index.html) of payment that you can use:

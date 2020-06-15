@@ -8,6 +8,8 @@ class MidtransSnapTest extends \PHPUnit_Framework_TestCase
     public function testGetSnapToken()
     {
         Config::$serverKey = 'My Very Secret Key';
+        Config::$appendNotifUrl = "https://example.com";
+        Config::$overrideNotifUrl = "https://example.com";
         VT_Tests::$stubHttp = true;
         VT_Tests::$stubHttpResponse = '{ "token": "abcdefghijklmnopqrstuvwxyz" }';
         VT_Tests::$stubHttpStatus = array('http_code' => 201);
@@ -36,6 +38,8 @@ class MidtransSnapTest extends \PHPUnit_Framework_TestCase
         $fields = VT_Tests::lastReqOptions();
 
         $this->assertEquals($fields["POST"], 1);
+        $this->assertTrue(in_array('X-Append-Notification: https://example.com', $fields["HTTPHEADER"]));
+        $this->assertTrue(in_array('X-Override-Notification: https://example.com', $fields["HTTPHEADER"]));
         $this->assertEquals(
             $fields["POSTFIELDS"],
             '{"credit_card":{"secure":false},' .
