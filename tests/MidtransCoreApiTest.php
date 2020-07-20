@@ -41,8 +41,9 @@ class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(in_array('X-Override-Notification: https://example.com', $fields["HTTPHEADER"]));
     }
 
-    public function testRealConnect()
+    public function testRealConnectWithInvalidKey()
     {
+        Config::$serverKey = 'invalid-server-key';
         $params = array(
             'transaction_details' => array(
             'order_id' => rand(),
