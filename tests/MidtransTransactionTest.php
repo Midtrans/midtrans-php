@@ -37,8 +37,8 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
         );
 
         $fields = VT_Tests::lastReqOptions();
-        $this->assertFalse(array_key_exists("POST", $fields));
-        $this->assertFalse(array_key_exists("POSTFIELDS", $fields));
+        $this->assertFalse(isset($fields['POST']));
+        $this->assertFalse(isset($fields['POSTFIELDS']));
     }
 
     public function testFailureStatus()
