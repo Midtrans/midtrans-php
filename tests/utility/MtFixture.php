@@ -1,8 +1,8 @@
 <?php
 
-namespace Midtrans;
+namespace utility;
 
-class VtFixture
+class MtFixture
 {
     protected static function readFixture($filename)
     {
@@ -13,11 +13,11 @@ class VtFixture
     }
 }
 
-class VtChargeFixture extends VtFixture
+class MtChargeFixture extends MtFixture
 {
     public static function build($payment_type, $payment_data = null)
     {
-        $charge_params = self::readFixture('vt_charge.json');
+        $charge_params = self::readFixture('mt_charge.json');
 
         if (!is_null($payment_type)) {
             $charge_params['payment_type'] = $payment_type;
