@@ -46,6 +46,13 @@ class Config
      */
     public static $overrideNotifUrl;
     /**
+     *  Set Payment IdempotencyKey
+     *  for details (http://api-docs.midtrans.com/#idempotent-requests)
+     *
+     * @static
+     */
+    public static $paymentIdempotencyKey;
+    /**
      * Enable request params sanitizer (validate and modify charge request params).
      * See Midtrans_Sanitizer for more details
      * 
