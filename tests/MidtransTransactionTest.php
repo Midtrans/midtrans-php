@@ -1,15 +1,16 @@
 <?php
 
-namespace Midtrans;
+use Midtrans\Config;
+use Midtrans\Transaction;
 
 class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testStatus()
     {
-        Config::$serverKey = 'My Very Secret Key';
-        VT_Tests::$stubHttp = true;
-        VT_Tests::$stubHttpResponse = '{
+        Config::$serverKey = 'MyVerySecretKey';
+        MT_Tests::$stubHttp = true;
+        MT_Tests::$stubHttpResponse = '{
             "status_code": "200",
             "status_message": "Success, transaction found",
             "transaction_id": "e3b8c383-55b4-4223-bd77-15c48c0245ca",
@@ -27,25 +28,25 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
         $status = Transaction::status("Order-111");
 
-        $this->assertEquals($status->status_code, "200");
-        $this->assertEquals($status->order_id, "Order-111");
-        $this->assertEquals($status->approval_code, "1416550071152");
+        $this->assertEquals("200", $status->status_code);
+        $this->assertEquals("Order-111", $status->order_id);
+        $this->assertEquals("1416550071152", $status->approval_code);
 
         $this->assertEquals(
-            VT_Tests::$lastHttpRequest["url"],
-            "https://api.sandbox.midtrans.com/v2/Order-111/status"
+            "https://api.sandbox.midtrans.com/v2/Order-111/status",
+            MT_Tests::$lastHttpRequest["url"]
         );
 
-        $fields = VT_Tests::lastReqOptions();
+        $fields = MT_Tests::lastReqOptions();
         $this->assertFalse(isset($fields['POST']));
         $this->assertFalse(isset($fields['POSTFIELDS']));
     }
 
     public function testFailureStatus()
     {
-        Config::$serverKey = 'My Very Secret Key';
-        VT_Tests::$stubHttp = true;
-        VT_Tests::$stubHttpResponse = '{
+        Config::$serverKey = 'MyVerySecretKey';
+        MT_Tests::$stubHttp = true;
+        MT_Tests::$stubHttpResponse = '{
             "status_code": "404",
             "status_message": "The requested resource is not found"
         }';
@@ -54,26 +55,21 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
             $status = Transaction::status("Order-111");
         } catch (\Exception $error) {
             $errorHappen = true;
-            $this->assertEquals(
-                $error->getMessage(),
-                "Midtrans Error (404): The requested resource is not found"
-            );
+            $this->assertEquals(404, $error->getCode());
         }
 
         $this->assertTrue($errorHappen);
-        VT_Tests::reset();
+        MT_Tests::reset();
     }
 
     public function testRealStatus()
     {
+        Config::$serverKey = 'MyVerySecretKey';
         try {
             $status = Transaction::status("Order-111");
         } catch (\Exception $error) {
             $errorHappen = true;
-            $this->assertContains(
-                "authorized",
-                $error->getMessage()
-            );
+            $this->assertContains("Midtrans API is returning API error. HTTP status code: 401", $error->getMessage());
         }
 
         $this->assertTrue($errorHappen);
@@ -81,8 +77,9 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
     public function testApprove()
     {
-        VT_Tests::$stubHttp = true;
-        VT_Tests::$stubHttpResponse = '{
+        Config::$serverKey = 'MyVerySecretKey';
+        MT_Tests::$stubHttp = true;
+        MT_Tests::$stubHttpResponse = '{
             "status_code": "200",
             "status_message": "Success, transaction is approved",
             "transaction_id": "2af158d4-b82e-46ac-808b-be19aaa96ce3",
@@ -99,22 +96,23 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
         $approve = Transaction::approve("Order-111");
 
-        $this->assertEquals($approve, "200");
+        $this->assertEquals("200", $approve);
 
         $this->assertEquals(
-            VT_Tests::$lastHttpRequest["url"],
-            "https://api.sandbox.midtrans.com/v2/Order-111/approve"
+            "https://api.sandbox.midtrans.com/v2/Order-111/approve",
+            MT_Tests::$lastHttpRequest["url"]
         );
 
-        $fields = VT_Tests::lastReqOptions();
-        $this->assertEquals($fields["POST"], 1);
-        $this->assertEquals($fields["POSTFIELDS"], null);
+        $fields = MT_Tests::lastReqOptions();
+        $this->assertEquals(1, $fields["POST"]);
+        $this->assertEquals(null, $fields["POSTFIELDS"]);
     }
 
     public function testCancel()
     {
-        VT_Tests::$stubHttp = true;
-        VT_Tests::$stubHttpResponse = '{
+        Config::$serverKey = 'MyVerySecretKey';
+        MT_Tests::$stubHttp = true;
+        MT_Tests::$stubHttpResponse = '{
             "status_code": "200",
             "status_message": "Success, transaction is canceled",
             "transaction_id": "2af158d4-b82e-46ac-808b-be19aaa96ce3",
@@ -131,22 +129,23 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
         $cancel = Transaction::cancel("Order-111");
 
-        $this->assertEquals($cancel, "200");
+        $this->assertEquals("200", $cancel);
 
         $this->assertEquals(
-            VT_Tests::$lastHttpRequest["url"],
-            "https://api.sandbox.midtrans.com/v2/Order-111/cancel"
+            "https://api.sandbox.midtrans.com/v2/Order-111/cancel",
+            MT_Tests::$lastHttpRequest["url"]
         );
 
-        $fields = VT_Tests::lastReqOptions();
-        $this->assertEquals($fields["POST"], 1);
-        $this->assertEquals($fields["POSTFIELDS"], null);
+        $fields = MT_Tests::lastReqOptions();
+        $this->assertEquals(1, $fields["POST"]);
+        $this->assertEquals(null, $fields["POSTFIELDS"]);
     }
 
     public function testExpire()
     {
-        VT_Tests::$stubHttp = true;
-        VT_Tests::$stubHttpResponse = '{
+        Config::$serverKey = 'MyVerySecretKey';
+        MT_Tests::$stubHttp = true;
+        MT_Tests::$stubHttpResponse = '{
             "status_code": "407",
             "status_message": "Success, transaction has expired",
             "transaction_id": "2af158d4-b82e-46ac-808b-be19aaa96ce3",
@@ -159,23 +158,24 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
         $expire = Transaction::expire("Order-111");
 
-        $this->assertEquals($expire->status_code, "407");
-        $this->assertEquals($expire->status_message, "Success, transaction has expired");
+        $this->assertEquals("407", $expire->status_code);
+        $this->assertEquals("Success, transaction has expired", $expire->status_message);
 
         $this->assertEquals(
-            VT_Tests::$lastHttpRequest["url"],
-            "https://api.sandbox.midtrans.com/v2/Order-111/expire"
+            "https://api.sandbox.midtrans.com/v2/Order-111/expire",
+            MT_Tests::$lastHttpRequest["url"]
         );
 
-        $fields = VT_Tests::lastReqOptions();
-        $this->assertEquals($fields["POST"], 1);
-        $this->assertEquals($fields["POSTFIELDS"], null);
+        $fields = MT_Tests::lastReqOptions();
+        $this->assertEquals(1, $fields["POST"]);
+        $this->assertEquals(null, $fields["POSTFIELDS"]);
     }
 
     public function testRefund()
     {
-        VT_Tests::$stubHttp = true;
-        VT_Tests::$stubHttpResponse = '{
+        Config::$serverKey = 'MyVerySecretKey';
+        MT_Tests::$stubHttp = true;
+        MT_Tests::$stubHttpResponse = '{
             "status_code": "200",
             "status_message": "Success, refund request is approved",
             "transaction_id": "447e846a-403e-47db-a5da-d7f3f06375d6",
@@ -196,24 +196,25 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
         );
         $refund = Transaction::refund("Order-111",$params);
 
-        $this->assertEquals($refund->status_code, "200");
+        $this->assertEquals("200", $refund->status_code);
 
         $this->assertEquals(
-            VT_Tests::$lastHttpRequest["url"],
-            "https://api.sandbox.midtrans.com/v2/Order-111/refund"
+            "https://api.sandbox.midtrans.com/v2/Order-111/refund",
+            MT_Tests::$lastHttpRequest["url"]
         );
 
-        $fields = VT_Tests::lastReqOptions();
-        $this->assertEquals($fields["POST"], 1);
+        $fields = MT_Tests::lastReqOptions();
+        $this->assertEquals(1, $fields["POST"]);
         $this->assertEquals(
-            $fields["POSTFIELDS"],
-            '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}');
+            '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}',
+            $fields["POSTFIELDS"]);
     }
 
     public function testRefundDirect()
     {
-        VT_Tests::$stubHttp = true;
-        VT_Tests::$stubHttpResponse = '{
+        Config::$serverKey = 'MyVerySecretKey';
+        MT_Tests::$stubHttp = true;
+        MT_Tests::$stubHttpResponse = '{
             "status_code": "200",
             "status_message": "Success, refund request is approved",
             "transaction_id": "447e846a-403e-47db-a5da-d7f3f06375d6",
@@ -233,23 +234,24 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
             'reason' => 'Item out of stock'
         );
         $refund = Transaction::refundDirect("Order-111", $params);
-        $this->assertEquals($refund->status_code, "200");
+        $this->assertEquals("200", $refund->status_code);
 
         $this->assertEquals(
-            VT_Tests::$lastHttpRequest["url"],
-            "https://api.sandbox.midtrans.com/v2/Order-111/refund/online/direct"
+            "https://api.sandbox.midtrans.com/v2/Order-111/refund/online/direct",
+            MT_Tests::$lastHttpRequest["url"]
         );
-        $fields = VT_Tests::lastReqOptions();     
-        $this->assertEquals($fields["POST"], 1);
+        $fields = MT_Tests::lastReqOptions();
+        $this->assertEquals(1, $fields["POST"]);
         $this->assertEquals(
-            $fields["POSTFIELDS"],
-            '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}');
+            '{"refund_key":"reference1","amount":10000,"reason":"Item out of stock"}',
+            $fields["POSTFIELDS"]);
     }
 
     public function testDeny()
     {
-        VT_Tests::$stubHttp = true;
-        VT_Tests::$stubHttpResponse = '{
+        Config::$serverKey = 'MyVerySecretKey';
+        MT_Tests::$stubHttp = true;
+        MT_Tests::$stubHttpResponse = '{
             "status_code" : "200",
             "status_message" : "Success, transaction is denied",
             "transaction_id" : "ca297170-be4c-45ed-9dc9-be5ba99d30ee",
@@ -265,20 +267,20 @@ class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 
         $deny = Transaction::deny("Order-111");
 
-        $this->assertEquals($deny->status_code, "200");
+        $this->assertEquals("200", $deny->status_code);
 
         $this->assertEquals(
-            VT_Tests::$lastHttpRequest["url"],
-            "https://api.sandbox.midtrans.com/v2/Order-111/deny"
+            "https://api.sandbox.midtrans.com/v2/Order-111/deny",
+            MT_Tests::$lastHttpRequest["url"]
         );
 
-        $fields = VT_Tests::lastReqOptions();
-        $this->assertEquals($fields["POST"], 1);
-        $this->assertEquals($fields["POSTFIELDS"], null);
+        $fields = MT_Tests::lastReqOptions();
+        $this->assertEquals(1, $fields["POST"]);
+        $this->assertEquals(null, $fields["POSTFIELDS"]);
     }
 
     public function tearDown()
     {
-        VT_Tests::reset();
+        MT_Tests::reset();
     }
 }
