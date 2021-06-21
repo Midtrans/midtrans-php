@@ -1,8 +1,6 @@
 <?php
 
-namespace Midtrans;
-
-class VT_Tests
+class MT_Tests
 {
     public static $stubHttp = false;
     public static $stubHttpResponse;
@@ -11,9 +9,9 @@ class VT_Tests
 
     public static function reset()
     {
-            VT_Tests::$stubHttp = false;
-            VT_Tests::$stubHttpResponse = null;
-            VT_Tests::$lastHttpRequest = null;
+            MT_Tests::$stubHttp = false;
+            MT_Tests::$stubHttpResponse = null;
+            MT_Tests::$lastHttpRequest = null;
     }
 
     public static function lastReqOptions()
@@ -29,7 +27,7 @@ class VT_Tests
         );
 
         $options = array();
-        foreach (VT_Tests::$lastHttpRequest["curl"] as $intValue => $value) {
+        foreach (MT_Tests::$lastHttpRequest["curl"] as $intValue => $value) {
             $key = $consts[$intValue] ? $consts[$intValue] : $intValue;
             $options[$key] = $value;
         }

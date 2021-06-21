@@ -1,8 +1,10 @@
 <?php
 
-namespace Midtrans;
+namespace integration;
 
-abstract class VtIntegrationTest extends \PHPUnit_Framework_TestCase
+use Midtrans\Config;
+
+abstract class IntegrationTest extends \PHPUnit_Framework_TestCase
 {
     public static function setUpBeforeClass()
     {

@@ -2,6 +2,7 @@
 
 namespace Midtrans;
 
+use Exception;
 /**
  * API methods to get transaction status, approve and cancel transactions
  */
@@ -10,10 +11,11 @@ class Transaction
 
     /**
      * Retrieve transaction status
-     * 
+     *
      * @param string $id Order ID or transaction ID
-     * 
+     *
      * @return mixed[]
+     * @throws Exception
      */
     public static function status($id)
     {
@@ -25,11 +27,29 @@ class Transaction
     }
 
     /**
-     * Approve challenge transaction
-     * 
+     * Retrieve B2B transaction status
+     *
      * @param string $id Order ID or transaction ID
-     * 
+     *
+     * @return mixed[]
+     * @throws Exception
+     */
+    public static function statusB2b($id)
+    {
+        return ApiRequestor::get(
+            Config::getBaseUrl() . '/' . $id . '/status/b2b',
+            Config::$serverKey,
+            false
+        );
+    }
+
+    /**
+     * Approve challenge transaction
+     *
+     * @param string $id Order ID or transaction ID
+     *
      * @return string
+     * @throws Exception
      */
     public static function approve($id)
     {
@@ -42,10 +62,11 @@ class Transaction
 
     /**
      * Cancel transaction before it's settled
-     * 
+     *
      * @param string $id Order ID or transaction ID
-     * 
+     *
      * @return string
+     * @throws Exception
      */
     public static function cancel($id)
     {
@@ -55,13 +76,14 @@ class Transaction
             false
         )->status_code;
     }
-  
+
     /**
      * Expire transaction before it's setteled
-     * 
+     *
      * @param string $id Order ID or transaction ID
-     * 
+     *
      * @return mixed[]
+     * @throws Exception
      */
     public static function expire($id)
     {
@@ -76,10 +98,12 @@ class Transaction
      * Transaction status can be updated into refund
      * if the customer decides to cancel completed/settlement payment.
      * The same refund id cannot be reused again.
-     * 
+     *
      * @param string $id Order ID or transaction ID
-     * 
+     *
+     * @param $params
      * @return mixed[]
+     * @throws Exception
      */
     public static function refund($id, $params)
     {
@@ -94,10 +118,11 @@ class Transaction
      * Transaction status can be updated into refund
      * if the customer decides to cancel completed/settlement payment.
      * The same refund id cannot be reused again.
-     * 
+     *
      * @param string $id Order ID or transaction ID
-     * 
+     *
      * @return mixed[]
+     * @throws Exception
      */
     public static function refundDirect($id, $params)
     {
@@ -111,10 +136,11 @@ class Transaction
     /**
      * Deny method can be triggered to immediately deny card payment transaction
      * in which fraud_status is challenge.
-     * 
+     *
      * @param string $id Order ID or transaction ID
-     * 
+     *
      * @return mixed[]
+     * @throws Exception
      */
     public static function deny($id)
     {

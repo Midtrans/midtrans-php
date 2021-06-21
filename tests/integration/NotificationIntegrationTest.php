@@ -1,16 +1,21 @@
 <?php
 
-namespace Midtrans;
+namespace integration;
 
-require_once 'VtIntegrationTest.php';
+use Midtrans\CoreApi;
+use utility\MtChargeFixture;
+use Midtrans\Notification;
+use Midtrans\Transaction;
+require_once 'IntegrationTest.php';
 
-class MidtransNotificationIntegrationTest extends VtIntegrationTest
+
+class NotificationIntegrationTest extends IntegrationTest
 {
     private $status_response;
 
     public function setUp()
     {
-        $charge_params = VtChargeFixture::build('bri_epay');
+        $charge_params = MtChargeFixture::build('bri_epay');
         $charge_response = CoreApi::charge($charge_params);
         $this->status_response = Transaction::status($charge_response->transaction_id);
     }
@@ -51,12 +56,12 @@ class MidtransNotificationIntegrationTest extends VtIntegrationTest
         /*
         Merchant should not be tricked... thanks to Get Status API
          */
-        $this->assertEquals($notif->status_code, "201");
-        $this->assertEquals($notif->transaction_status, "pending");
-        $this->assertEquals($notif->payment_type, "bri_epay");
-        $this->assertEquals($notif->order_id, $this->status_response->order_id);
-        $this->assertEquals($notif->transaction_id, $this->status_response->transaction_id);
-        $this->assertEquals($notif->gross_amount, $this->status_response->gross_amount);
+        $this->assertEquals("201", $notif->status_code);
+        $this->assertEquals("pending", $notif->transaction_status);
+        $this->assertEquals("bri_epay", $notif->payment_type);
+        $this->assertEquals($this->status_response->order_id, $notif->order_id);
+        $this->assertEquals($this->status_response->transaction_id, $notif->transaction_id);
+        $this->assertEquals($this->status_response->gross_amount, $notif->gross_amount);
 
         unlink($tmpfname);
     }

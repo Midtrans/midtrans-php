@@ -83,6 +83,17 @@ Config::$overrideNotifUrl = "https://example.com/test1";
 
 > Both header can only receive up to maximum of **3 urls**.
 
+#### Idempotency-Key
+You can opt to add idempotency key on charge transaction. It can be achieved by adding additional HTTP headers into charge request. 
+Is a unique value that is put on header on API request. Midtrans API accept Idempotency-Key on header to safely handle retry request 
+without performing the same operation twice. This is helpful for cases where merchant didn't receive the response because of network issue or other unexpected error.
+
+```php
+Config::$paymentIdempotencyKey = "Unique-ID";
+```
+
+[More details](http://api-docs.midtrans.com/#idempotent-requests)
+
 ### 2.2 Choose Product/Method
 
 We have [3 different products](https://docs.midtrans.com/en/welcome/index.html) of payment that you can use:

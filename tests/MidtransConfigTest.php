@@ -1,6 +1,6 @@
 <?php
 
-namespace Midtrans;
+use Midtrans\Config;
 
 class MidtransConfigTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,10 +14,7 @@ class MidtransConfigTest extends \PHPUnit_Framework_TestCase
         );
 
         Config::$isProduction = true;
-        $this->assertEquals(
-            Config::getBaseUrl(),
-            Config::PRODUCTION_BASE_URL
-        );
+        $this->assertEquals(Config::PRODUCTION_BASE_URL, Config::getBaseUrl());
     }
 
     public function tearDown()

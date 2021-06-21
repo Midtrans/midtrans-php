@@ -1,10 +1,12 @@
 <?php
 
-namespace Midtrans;
+namespace integration;
 
-require_once 'VtIntegrationTest.php';
+use Midtrans\CoreApi;
+use utility\MtChargeFixture;
+require_once 'IntegrationTest.php';
 
-class CoreApiIntegrationTest extends VtIntegrationTest
+class CoreApiIntegrationTest extends IntegrationTest
 {
     private $payment_type;
     private $charge_params;
@@ -13,23 +15,26 @@ class CoreApiIntegrationTest extends VtIntegrationTest
     public function prepareChargeParams($payment_type, $payment_data = null)
     {
         $this->payment_type = $payment_type;
-        $this->charge_params = VtChargeFixture::build($payment_type, $payment_data);
+        $this->charge_params = MtChargeFixture::build($payment_type, $payment_data);
     }
 
-    public function testChargeMandiriClickpay()
+    public function testCardRegister()
     {
-        $this->prepareChargeParams(
-            'mandiri_clickpay',
-            array(
-                "card_number" => "4111111111111111",
-                "input1" => "1111111111",
-                "input2" => "145000",
-                "input3" => "54321",
-                "token" => "000000",
-            )
-        );
-        $this->charge_response = CoreApi::charge($this->charge_params);
-        $this->assertEquals($this->charge_response->transaction_status, 'settlement');
+        $this->charge_response = CoreApi::cardRegister("4811111111111114", "12", "2026");
+        $this->assertEquals('200', $this->charge_response->status_code);
+    }
+
+    public function testCardToken()
+    {
+        $this->charge_response = CoreApi::cardToken("4811111111111114", "12", "2026", "123");
+        $this->assertEquals('200', $this->charge_response->status_code);
+    }
+
+    public function testCardPointInquiry()
+    {
+        $this->charge_response = CoreApi::cardToken("4617006959746656", "12", "2026", "123");
+        $cardPointResponse = CoreApi::cardPointInquiry($this->charge_response->token_id);
+        $this->assertEquals('200', $cardPointResponse->status_code);
     }
 
     public function testChargeCimbClicks()
@@ -41,7 +46,7 @@ class CoreApiIntegrationTest extends VtIntegrationTest
             )
         );
         $this->charge_response = CoreApi::charge($this->charge_params);
-        $this->assertEquals($this->charge_response->transaction_status, 'pending');
+        $this->assertEquals('pending', $this->charge_response->transaction_status);
         $this->assertTrue(isset($this->charge_response->redirect_url));
     }
 
@@ -54,7 +59,7 @@ class CoreApiIntegrationTest extends VtIntegrationTest
             )
         );
         $this->charge_response = CoreApi::charge($this->charge_params);
-        $this->assertEquals($this->charge_response->transaction_status, 'pending');
+        $this->assertEquals('pending', $this->charge_response->transaction_status);
         $this->assertTrue(isset($this->charge_response->permata_va_number));
     }
 
@@ -62,7 +67,7 @@ class CoreApiIntegrationTest extends VtIntegrationTest
     {
         $this->prepareChargeParams('bri_epay');
         $this->charge_response = CoreApi::charge($this->charge_params);
-        $this->assertEquals($this->charge_response->transaction_status, 'pending');
+        $this->assertEquals('pending', $this->charge_response->transaction_status);
         $this->assertTrue(isset($this->charge_response->redirect_url));
     }
 
@@ -76,9 +81,7 @@ class CoreApiIntegrationTest extends VtIntegrationTest
             )
         );
         $this->charge_response = CoreApi::charge($this->charge_params);
-        $this->assertEquals($this->charge_response->transaction_status, 'pending');
-        $this->assertTrue(isset($this->charge_response->bill_key));
-        $this->assertTrue(isset($this->charge_response->biller_code));
+        $this->assertEquals('pending', $this->charge_response->transaction_status);
     }
 
     public function testChargeIndomaret()
@@ -91,7 +94,7 @@ class CoreApiIntegrationTest extends VtIntegrationTest
             )
         );
         $this->charge_response = CoreApi::charge($this->charge_params);
-        $this->assertEquals($this->charge_response->transaction_status, 'pending');
+        $this->assertEquals('pending', $this->charge_response->transaction_status);
         $this->assertTrue(isset($this->charge_response->payment_code));
     }
 
@@ -105,27 +108,7 @@ class CoreApiIntegrationTest extends VtIntegrationTest
             )
         );
         $this->charge_response = CoreApi::charge($this->charge_params);
-        $this->assertEquals($this->charge_response->status_code, '201');
-        $this->assertEquals($this->charge_response->transaction_status, 'pending');
-    }
-
-    public function assertPostConditions()
-    {
-        $this->assertContains($this->charge_response->status_code, array(200, 201));
-        $this->assertEquals(
-            $this->charge_response->order_id, 
-            $this->charge_params['transaction_details']['order_id']
-        );
-        $this->assertEquals(
-            $this->charge_response->gross_amount,
-            $this->charge_params['transaction_details']['gross_amount']
-        );
-        $this->assertEquals(
-            $this->charge_response->payment_type,
-            $this->payment_type
-        );
-        $this->assertTrue(isset($this->charge_response->transaction_id));
-        $this->assertTrue(isset($this->charge_response->transaction_time));
-        $this->assertTrue(isset($this->charge_response->status_message));
+        $this->assertEquals('201', $this->charge_response->status_code);
+        $this->assertEquals('pending', $this->charge_response->transaction_status);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Midtrans;
 
+use Exception;
 /**
  * Provide charge and capture functions for Core API
  */
@@ -11,6 +12,8 @@ class CoreApi
      * Create transaction.
      *
      * @param mixed[] $params Transaction options
+     * @return mixed
+     * @throws Exception
      */
     public static function charge($params)
     {
@@ -32,38 +35,94 @@ class CoreApi
             Sanitizer::jsonRequest($payloads);
         }
 
-        if (Config::$appendNotifUrl)
-            Config::$curlOptions[CURLOPT_HTTPHEADER][] = 'X-Append-Notification: ' . Config::$appendNotifUrl;
-
-        if (Config::$overrideNotifUrl)
-            Config::$curlOptions[CURLOPT_HTTPHEADER][] = 'X-Override-Notification: ' . Config::$overrideNotifUrl;
-
-        $result = ApiRequestor::post(
+        return ApiRequestor::post(
             Config::getBaseUrl() . '/charge',
             Config::$serverKey,
             $payloads
         );
-
-        return $result;
     }
 
     /**
      * Capture pre-authorized transaction
      *
      * @param string $param Order ID or transaction ID, that you want to capture
+     * @return mixed
+     * @throws Exception
      */
     public static function capture($param)
     {
         $payloads = array(
-        'transaction_id' => $param,
+            'transaction_id' => $param,
         );
 
-        $result = ApiRequestor::post(
+        return ApiRequestor::post(
             Config::getBaseUrl() . '/capture',
             Config::$serverKey,
             $payloads
         );
+    }
 
-        return $result;
+    /**
+     * Do `/card/register` API request to Core API
+     *
+     * @param $cardNumber
+     * @param $expMoth
+     * @param $expYear
+     * @return mixed
+     * @throws Exception
+     */
+    public static function cardRegister($cardNumber, $expMoth, $expYear)
+    {
+        $path = "/card/register?card_number=" . $cardNumber
+            . "&card_exp_month=" . $expMoth
+            . "&card_exp_year=" . $expYear
+            . "&client_key=" . Config::$clientKey;
+
+        return ApiRequestor::get(
+            Config::getBaseUrl() . $path,
+            Config::$clientKey,
+            false
+        );
+    }
+
+    /**
+     * Do `/token` API request to Core API
+     *
+     * @param $cardNumber
+     * @param $expMoth
+     * @param $expYear
+     * @param $cvv
+     * @return mixed
+     * @throws Exception
+     */
+    public static function cardToken($cardNumber, $expMoth, $expYear, $cvv)
+    {
+        $path = "/token?card_number=" . $cardNumber
+            . "&card_exp_month=" . $expMoth
+            . "&card_exp_year=" . $expYear
+            . "&card_cvv=" . $cvv
+            . "&client_key=" . Config::$clientKey;
+
+        return ApiRequestor::get(
+            Config::getBaseUrl() . $path,
+            Config::$clientKey,
+            false
+        );
+    }
+
+    /**
+     * Do `/point_inquiry/<tokenId>` API request to Core API
+     *
+     * @param string tokenId - tokenId of credit card (more params detail refer to: https://api-docs.midtrans.com)
+     * @return mixed
+     * @throws Exception
+     */
+    public static function cardPointInquiry($tokenId)
+    {
+        return ApiRequestor::get(
+            Config::getBaseUrl() . '/point_inquiry/' . $tokenId,
+            Config::$serverKey,
+            false
+        );
     }
 }
