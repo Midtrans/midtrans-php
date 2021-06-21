@@ -29,6 +29,9 @@ if (strpos(Config::$serverKey, 'your ') != false ) {
 // Uncomment to enable sanitization
 // Config::$isSanitized = true;
 
+// Uncomment to enable idempotency-key, more details: (http://api-docs.midtrans.com/#idempotent-requests)
+// Config::$paymentIdempotencyKey = "Unique-ID";
+
 $transaction_details = array(
     'order_id'    => time(),
     'gross_amount'  => 200000
