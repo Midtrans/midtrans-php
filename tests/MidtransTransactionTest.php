@@ -1,7 +1,5 @@
 <?php
-
-use Midtrans\Config;
-use Midtrans\Transaction;
+namespace Midtrans;
 
 class MidtransTransactionTest extends \PHPUnit_Framework_TestCase
 {

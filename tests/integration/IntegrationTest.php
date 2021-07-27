@@ -1,6 +1,6 @@
 <?php
 
-namespace integration;
+namespace Midtrans\integration;
 
 use Midtrans\Config;
 

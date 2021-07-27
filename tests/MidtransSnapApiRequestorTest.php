@@ -1,7 +1,6 @@
 <?php
 
-use Midtrans\ApiRequestor;
-use Midtrans\Config;
+namespace Midtrans;
 
 class MidtransSnapApiRequestorTest extends \PHPUnit_Framework_TestCase
 {

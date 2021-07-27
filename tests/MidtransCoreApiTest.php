@@ -1,7 +1,6 @@
 <?php
 
-use Midtrans\Config;
-use Midtrans\CoreApi;
+namespace Midtrans;
 
 class MidtransCoreApiTest extends \PHPUnit_Framework_TestCase
 {

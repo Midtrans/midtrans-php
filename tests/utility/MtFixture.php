@@ -1,6 +1,6 @@
 <?php
 
-namespace utility;
+namespace Midtrans\utility;
 
 class MtFixture
 {

@@ -1,7 +1,6 @@
 <?php
 
-use Midtrans\Config;
-use Midtrans\Notification;
+namespace Midtrans;
 
 require_once dirname(__FILE__) . '/../Midtrans.php';
 

@@ -1,11 +1,12 @@
 <?php
 
-namespace integration;
+namespace Midtrans\integration;
 
 use Midtrans\CoreApi;
-use utility\MtChargeFixture;
 use Midtrans\Notification;
 use Midtrans\Transaction;
+use Midtrans\utility\MtChargeFixture;
+
 require_once 'IntegrationTest.php';
 
 
