@@ -1,9 +1,10 @@
 <?php
 
-namespace integration;
+namespace Midtrans\integration;
 
 use Midtrans\Snap;
-use utility\MtChargeFixture;
+use Midtrans\utility\MtChargeFixture;
+
 require_once 'IntegrationTest.php';
 
 class SnapIntegrationTest extends IntegrationTest

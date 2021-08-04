@@ -1,7 +1,6 @@
 <?php
 
-use Midtrans\Config;
-use Midtrans\Snap;
+namespace Midtrans;
 
 class MidtransSnapTest extends \PHPUnit_Framework_TestCase
 {
