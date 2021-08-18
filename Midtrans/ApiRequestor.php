@@ -22,7 +22,7 @@ class ApiRequestor
      */
     public static function get($url, $server_key, $data_hash)
     {
-        return self::remoteCall($url, $server_key, $data_hash, false);
+        return self::remoteCall($url, $server_key, $data_hash, 'GET');
     }
 
     /**
@@ -36,7 +36,21 @@ class ApiRequestor
      */
     public static function post($url, $server_key, $data_hash)
     {
-        return self::remoteCall($url, $server_key, $data_hash, true);
+        return self::remoteCall($url, $server_key, $data_hash, 'POST');
+    }
+
+    /**
+     * Send PATCH request
+     *
+     * @param string $url
+     * @param string $server_key
+     * @param mixed[] $data_hash
+     * @return mixed
+     * @throws Exception
+     */
+    public static function patch($url, $server_key, $data_hash)
+    {
+        return self::remoteCall($url, $server_key, $data_hash, 'PATCH');
     }
 
     /**
@@ -49,7 +63,7 @@ class ApiRequestor
      * @return mixed
      * @throws Exception
      */
-    public static function remoteCall($url, $server_key, $data_hash, $post = true)
+    public static function remoteCall($url, $server_key, $data_hash, $method)
     {
         $ch = curl_init();
 
@@ -84,7 +98,7 @@ class ApiRequestor
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Accept: application/json',
-                'User-Agent: midtrans-php-v2.4.4',
+                'User-Agent: midtrans-php-v2.5.0',
                 'Authorization: Basic ' . base64_encode($server_key . ':')
             ),
             CURLOPT_RETURNTRANSFER => 1
@@ -111,8 +125,17 @@ class ApiRequestor
             $curl_options = array_replace_recursive($curl_options, Config::$curlOptions, $headerOptions);
         }
 
-        if ($post) {
+        if ($method == 'POST') {
             $curl_options[CURLOPT_POST] = 1;
+
+            if ($data_hash) {
+                $body = json_encode($data_hash);
+                $curl_options[CURLOPT_POSTFIELDS] = $body;
+            } else {
+                $curl_options[CURLOPT_POSTFIELDS] = '';
+            }
+        } elseif ($method == 'PATCH') {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
 
             if ($data_hash) {
                 $body = json_encode($data_hash);
@@ -126,7 +149,7 @@ class ApiRequestor
 
         // For testing purpose
         if (class_exists('\Midtrans\MT_Tests') && MT_Tests::$stubHttp) {
-            $result = self::processStubed($curl_options, $url, $server_key, $data_hash, $post);
+            $result = self::processStubed($curl_options, $url, $server_key, $data_hash, $method);
         } else {
             $result = curl_exec($ch);
             // curl_close($ch);
@@ -152,13 +175,13 @@ class ApiRequestor
         }
     }
 
-    private static function processStubed($curl, $url, $server_key, $data_hash, $post)
+    private static function processStubed($curl, $url, $server_key, $data_hash, $method)
     {
         MT_Tests::$lastHttpRequest = array(
             "url" => $url,
             "server_key" => $server_key,
             "data_hash" => $data_hash,
-            "post" => $post,
+            $method => $method,
             "curl" => $curl
         );
 
