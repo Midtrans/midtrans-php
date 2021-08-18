@@ -112,4 +112,111 @@ class CoreApiIntegrationTest extends IntegrationTest
         $this->assertEquals('201', $this->charge_response->status_code);
         $this->assertEquals('pending', $this->charge_response->transaction_status);
     }
+
+    public function testCreatePayAccount()
+    {
+        $params = array(
+            "payment_type" => "gopay",
+            "gopay_partner" => array(
+                "phone_number" => 874567446788,
+                "redirect_url" => "https://www.google.com"
+            )
+        );
+        $this->charge_response = CoreApi::linkPaymentAccount($params);
+        $this->assertEquals('201', $this->charge_response->status_code);
+        $this->assertEquals('PENDING', $this->charge_response->account_status);
+    }
+
+    public function testGetPaymentAccount()
+    {
+        try {
+            $this->charge_response = CoreApi::getPaymentAccount("dummy");
+        } catch (\Exception $e) {
+            $this->assertContains("Midtrans API is returning API error.", $e->getMessage());
+        }
+    }
+
+    public function testUnlinkPaymentAccount()
+    {
+        try {
+            $this->charge_response = CoreApi::unlinkPaymentAccount("dummy");
+        } catch (\Exception $e) {
+            $this->assertContains("Account doesn't exist.", $e->getMessage());
+        }
+    }
+
+    public function testCreateSubscription()
+    {
+        $param = array(
+            "name" => "Monthly_2021",
+            "amount" => "10000",
+            "currency" => "IDR",
+            "payment_type" => "credit_card",
+            "token" => "dummy",
+            "schedule" => array(
+                "interval" => 1,
+                "interval_unit" => "month",
+                "max_interval" => "12",
+                "start_time" => "2022-08-17 10:00:01 +0700"
+            ),
+            "metadata" => array(
+                "description" => "Recurring payment for user a"
+            ),
+            "customer_details" => array(
+                "first_name" => "John",
+                "last_name" => "Doe",
+                "email" => "johndoe@gmail.com",
+                "phone_number" => "+628987654321"
+            )
+        );
+        $this->charge_response = CoreApi::createSubscription($param);
+        $this->assertEquals('active', $this->charge_response->status);
+        $this->subscriptionId = $this->charge_response->id;
+    }
+
+    public function testGetSubscription()
+    {
+        try {
+            $this->charge_response = CoreApi::getSubscription("dummy");
+        } catch (\Exception $e) {
+            $this->assertContains("Subscription doesn't exist.", $e->getMessage());
+        }
+    }
+
+    public function testDisableSubscription()
+    {
+        try {
+            $this->charge_response = CoreApi::disableSubscription("dummy");
+        } catch (\Exception $e) {
+            $this->assertContains("Subscription doesn't exist.", $e->getMessage());
+        }
+    }
+
+    public function testEnableSubscription()
+    {
+        try {
+            $this->charge_response = CoreApi::enableSubscription("dummy");
+        } catch (\Exception $e) {
+            $this->assertContains("Subscription doesn't exist.", $e->getMessage());
+        }
+    }
+
+    public function testUpdateSubscription()
+    {
+        $param = array(
+            "name" => "Monthly_2021",
+            "amount" => "25000",
+            "currency" => "IDR",
+            "token" => "dummy",
+            "schedule" => array(
+                "interval" => 1
+            )
+        );
+
+        try {
+            $this->charge_response = CoreApi::updateSubscription("dummy", $param);
+        } catch (\Exception $e) {
+            $this->assertContains("Subscription doesn't exist.", $e->getMessage());
+        }
+    }
 }
