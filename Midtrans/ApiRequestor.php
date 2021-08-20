@@ -125,8 +125,7 @@ class ApiRequestor
             $curl_options = array_replace_recursive($curl_options, Config::$curlOptions, $headerOptions);
         }
 
-        if ($method == 'POST') {
-            $curl_options[CURLOPT_POST] = 1;
+        if ($method != 'GET') {
 
             if ($data_hash) {
                 $body = json_encode($data_hash);
@@ -134,14 +133,11 @@ class ApiRequestor
             } else {
                 $curl_options[CURLOPT_POSTFIELDS] = '';
             }
-        } elseif ($method == 'PATCH') {
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
 
-            if ($data_hash) {
-                $body = json_encode($data_hash);
-                $curl_options[CURLOPT_POSTFIELDS] = $body;
-            } else {
-                $curl_options[CURLOPT_POSTFIELDS] = '';
+            if ($method == 'POST') {
+                $curl_options[CURLOPT_POST] = 1;
+            } elseif ($method == 'PATCH') {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
             }
         }
 
