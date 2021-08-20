@@ -125,9 +125,22 @@ class CoreApiIntegrationTest extends IntegrationTest
         $this->charge_response = CoreApi::linkPaymentAccount($params);
         $this->assertEquals('201', $this->charge_response->status_code);
         $this->assertEquals('PENDING', $this->charge_response->account_status);
+        $account_id = $this->charge_response->account_id;
+        return $account_id;
     }
 
-    public function testGetPaymentAccount()
+    /**
+     * @depends testCreatePayAccount
+     */
+    public function testGetPaymentAccount($account_id)
+    {
+        $this->charge_response = CoreApi::getPaymentAccount($account_id);
+        $this->assertEquals('201', $this->charge_response->status_code);
+        $this->assertEquals('PENDING', $this->charge_response->account_status);
+    }
+
+
+    public function testGetPaymentAccountWithNonExistAccount()
     {
         try {
             $this->charge_response = CoreApi::getPaymentAccount("dummy");
@@ -136,7 +149,7 @@ class CoreApiIntegrationTest extends IntegrationTest
         }
     }
 
-    public function testUnlinkPaymentAccount()
+    public function testUnlinkPaymentAccountWithNonExistAccount()
     {
         try {
             $this->charge_response = CoreApi::unlinkPaymentAccount("dummy");
@@ -171,10 +184,20 @@ class CoreApiIntegrationTest extends IntegrationTest
         );
         $this->charge_response = CoreApi::createSubscription($param);
         $this->assertEquals('active', $this->charge_response->status);
-        $this->subscriptionId = $this->charge_response->id;
+        $subscription_id = $this->charge_response->id;
+        return $subscription_id;
     }
 
-    public function testGetSubscription()
+    /**
+     * @depends testCreateSubscription
+     */
+    public function testGetSubscription($subscription_id)
+    {
+        $this->charge_response = CoreApi::getSubscription($subscription_id);
+        $this->assertEquals('active', $this->charge_response->status);
+    }
+
+    public function testGetSubscriptionWithNonExistAccount()
     {
         try {
             $this->charge_response = CoreApi::getSubscription("dummy");
@@ -183,7 +206,16 @@ class CoreApiIntegrationTest extends IntegrationTest
         }
     }
 
-    public function testDisableSubscription()
+    /**
+     * @depends testCreateSubscription
+     */
+    public function testDisableSubscription($subscription_id)
+    {
+        $this->charge_response = CoreApi::disableSubscription($subscription_id);
+        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
+    }
+
+    public function testDisableSubscriptionWithNonExistAccount()
     {
         try {
             $this->charge_response = CoreApi::disableSubscription("dummy");
@@ -192,7 +224,16 @@ class CoreApiIntegrationTest extends IntegrationTest
         }
     }
 
-    public function testEnableSubscription()
+    /**
+     * @depends testCreateSubscription
+     */
+    public function testEnableSubscription($subscription_id)
+    {
+        $this->charge_response = CoreApi::enableSubscription($subscription_id);
+        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
+    }
+
+    public function testEnableSubscriptionWithNonExistAccount()
     {
         try {
             $this->charge_response = CoreApi::enableSubscription("dummy");
@@ -201,7 +242,26 @@ class CoreApiIntegrationTest extends IntegrationTest
         }
     }
 
-    public function testUpdateSubscription()
+    /**
+     * @depends testCreateSubscription
+     */
+    public function testUpdateSubscription($subscription_id)
+    {
+        $param = array(
+            "name" => "Monthly_2021",
+            "amount" => "25000",
+            "currency" => "IDR",
+            "token" => "dummy",
+            "schedule" => array(
+                "interval" => 1
+            )
+        );
+
+        $this->charge_response = CoreApi::updateSubscription($subscription_id, $param);
+        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
+    }
+
+    public function testUpdateSubscriptionWithNonExistAccount()
     {
         $param = array(
             "name" => "Monthly_2021",
