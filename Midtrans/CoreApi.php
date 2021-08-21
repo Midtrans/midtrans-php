@@ -37,7 +37,7 @@ class CoreApi
         }
 
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/v2/charge',
+            Config::getBaseUrl() . '/charge',
             Config::$serverKey,
             $payloads
         );
@@ -57,7 +57,7 @@ class CoreApi
         );
 
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/v2/capture',
+            Config::getBaseUrl() . '/capture',
             Config::$serverKey,
             $payloads
         );
@@ -80,7 +80,7 @@ class CoreApi
             . "&client_key=" . Config::$clientKey;
 
         return ApiRequestor::get(
-            Config::getBaseUrl() . "/v2" . $path,
+            Config::getBaseUrl() . $path,
             Config::$clientKey,
             false
         );
@@ -105,7 +105,7 @@ class CoreApi
             . "&client_key=" . Config::$clientKey;
 
         return ApiRequestor::get(
-            Config::getBaseUrl() . "/v2" . $path,
+            Config::getBaseUrl() . $path,
             Config::$clientKey,
             false
         );
@@ -121,7 +121,7 @@ class CoreApi
     public static function cardPointInquiry($tokenId)
     {
         return ApiRequestor::get(
-            Config::getBaseUrl() . '/v2/point_inquiry/' . $tokenId,
+            Config::getBaseUrl() . '/point_inquiry/' . $tokenId,
             Config::$serverKey,
             false
         );
@@ -137,7 +137,7 @@ class CoreApi
     public static function linkPaymentAccount($param)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/v2/pay/account',
+            Config::getBaseUrl() . '/pay/account',
             Config::$serverKey,
             $param
         );
@@ -153,7 +153,7 @@ class CoreApi
     public static function getPaymentAccount($accountId)
     {
         return ApiRequestor::get(
-            Config::getBaseUrl() . '/v2/pay/account/' . $accountId,
+            Config::getBaseUrl() . '/pay/account/' . $accountId,
             Config::$serverKey,
             false
         );
@@ -169,7 +169,7 @@ class CoreApi
     public static function unlinkPaymentAccount($accountId)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/v2/pay/account/' . $accountId . '/unbind',
+            Config::getBaseUrl() . '/pay/account/' . $accountId . '/unbind',
             Config::$serverKey,
             false
         );
@@ -185,7 +185,7 @@ class CoreApi
     public static function createSubscription($param)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/v1/subscriptions',
+            Config::getBaseUrlV1() . '/subscriptions',
             Config::$serverKey,
             $param
         );
@@ -201,7 +201,7 @@ class CoreApi
     public static function getSubscription($SubscriptionId)
     {
         return ApiRequestor::get(
-            Config::getBaseUrl() . '/v1/subscriptions/' . $SubscriptionId,
+            Config::getBaseUrlV1() . '/subscriptions/' . $SubscriptionId,
             Config::$serverKey,
             false
         );
@@ -217,7 +217,7 @@ class CoreApi
     public static function disableSubscription($SubscriptionId)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/v1/subscriptions/' . $SubscriptionId . '/disable',
+            Config::getBaseUrlV1() . '/subscriptions/' . $SubscriptionId . '/disable',
             Config::$serverKey,
             false
         );
@@ -233,7 +233,7 @@ class CoreApi
     public static function enableSubscription($SubscriptionId)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/v1/subscriptions/' . $SubscriptionId . '/enable',
+            Config::getBaseUrlV1() . '/subscriptions/' . $SubscriptionId . '/enable',
             Config::$serverKey,
             false
         );
@@ -249,7 +249,7 @@ class CoreApi
     public static function updateSubscription($SubscriptionId, $param)
     {
         return ApiRequestor::patch(
-            Config::getBaseUrl() . '/v1/subscriptions/' . $SubscriptionId,
+            Config::getBaseUrlV1() . '/subscriptions/' . $SubscriptionId,
             Config::$serverKey,
             $param
         );
