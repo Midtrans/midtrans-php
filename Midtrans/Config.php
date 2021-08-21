@@ -66,8 +66,10 @@ class Config
      */
     public static $curlOptions = array();
 
-    const SANDBOX_BASE_URL = 'https://api.sandbox.midtrans.com';
-    const PRODUCTION_BASE_URL = 'https://api.midtrans.com';
+    const SANDBOX_BASE_URL_V1 = 'https://api.sandbox.midtrans.com/v1';
+    const PRODUCTION_BASE_URL_V1 = 'https://api.midtrans.com/v1';
+    const SANDBOX_BASE_URL = 'https://api.sandbox.midtrans.com/v2';
+    const PRODUCTION_BASE_URL = 'https://api.midtrans.com/v2';
     const SNAP_SANDBOX_BASE_URL = 'https://app.sandbox.midtrans.com/snap/v1';
     const SNAP_PRODUCTION_BASE_URL = 'https://app.midtrans.com/snap/v1';
 
@@ -80,6 +82,17 @@ class Config
     {
         return Config::$isProduction ?
         Config::PRODUCTION_BASE_URL : Config::SANDBOX_BASE_URL;
+    }
+
+    /**
+     * Get baseUrl
+     *
+     * @return string Midtrans API URL, depends on $isProduction
+     */
+    public static function getBaseUrlV1()
+    {
+        return Config::$isProduction ?
+            Config::PRODUCTION_BASE_URL_V1 : Config::SANDBOX_BASE_URL_V1;
     }
 
     /**
