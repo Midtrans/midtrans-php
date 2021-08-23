@@ -37,7 +37,7 @@ class CoreApi
         }
 
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/charge',
+            Config::getBaseUrl() . '/v2/charge',
             Config::$serverKey,
             $payloads
         );
@@ -57,7 +57,7 @@ class CoreApi
         );
 
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/capture',
+            Config::getBaseUrl() . '/v2/capture',
             Config::$serverKey,
             $payloads
         );
@@ -80,7 +80,7 @@ class CoreApi
             . "&client_key=" . Config::$clientKey;
 
         return ApiRequestor::get(
-            Config::getBaseUrl() . $path,
+            Config::getBaseUrl() . "/v2" . $path,
             Config::$clientKey,
             false
         );
@@ -105,7 +105,7 @@ class CoreApi
             . "&client_key=" . Config::$clientKey;
 
         return ApiRequestor::get(
-            Config::getBaseUrl() . $path,
+            Config::getBaseUrl() . "/v2" . $path,
             Config::$clientKey,
             false
         );
@@ -121,7 +121,7 @@ class CoreApi
     public static function cardPointInquiry($tokenId)
     {
         return ApiRequestor::get(
-            Config::getBaseUrl() . '/point_inquiry/' . $tokenId,
+            Config::getBaseUrl() . '/v2/point_inquiry/' . $tokenId,
             Config::$serverKey,
             false
         );
@@ -137,7 +137,7 @@ class CoreApi
     public static function linkPaymentAccount($param)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/pay/account',
+            Config::getBaseUrl() . '/v2/pay/account',
             Config::$serverKey,
             $param
         );
@@ -153,7 +153,7 @@ class CoreApi
     public static function getPaymentAccount($accountId)
     {
         return ApiRequestor::get(
-            Config::getBaseUrl() . '/pay/account/' . $accountId,
+            Config::getBaseUrl() . '/v2/pay/account/' . $accountId,
             Config::$serverKey,
             false
         );
@@ -169,7 +169,7 @@ class CoreApi
     public static function unlinkPaymentAccount($accountId)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/pay/account/' . $accountId . '/unbind',
+            Config::getBaseUrl() . '/v2/pay/account/' . $accountId . '/unbind',
             Config::$serverKey,
             false
         );
@@ -185,14 +185,14 @@ class CoreApi
     public static function createSubscription($param)
     {
         return ApiRequestor::post(
-            Config::getBaseUrlV1() . '/subscriptions',
+            Config::getBaseUrl() . '/v1/subscriptions',
             Config::$serverKey,
             $param
         );
     }
 
     /**
-     * Do `/v1/subscription/{subscription_id}` API request to Core API
+     * Do `/v1/subscription/<subscription_id>` API request to Core API
      *
      * @param string get subscription request (more params detail refer to: https://api-docs.midtrans.com/#get-subscription)
      * @return mixed
@@ -201,14 +201,14 @@ class CoreApi
     public static function getSubscription($SubscriptionId)
     {
         return ApiRequestor::get(
-            Config::getBaseUrlV1() . '/subscriptions/' . $SubscriptionId,
+            Config::getBaseUrl() . '/v1/subscriptions/' . $SubscriptionId,
             Config::$serverKey,
             false
         );
     }
 
     /**
-     * Do disable `/v1/subscription/{subscription_id}/disable` API request to Core API
+     * Do disable `/v1/subscription/<subscription_id>/disable` API request to Core API
      *
      * @param string disable subscription request (more params detail refer to: https://api-docs.midtrans.com/#disable-subscription)
      * @return mixed
@@ -217,14 +217,14 @@ class CoreApi
     public static function disableSubscription($SubscriptionId)
     {
         return ApiRequestor::post(
-            Config::getBaseUrlV1() . '/subscriptions/' . $SubscriptionId . '/disable',
+            Config::getBaseUrl() . '/v1/subscriptions/' . $SubscriptionId . '/disable',
             Config::$serverKey,
             false
         );
     }
 
     /**
-     * Do enable `/v1/subscription/{subscription_id}/enable` API request to Core API
+     * Do enable `/v1/subscription/<subscription_id>/enable` API request to Core API
      *
      * @param string enable subscription request (more params detail refer to: https://api-docs.midtrans.com/#enable-subscription)
      * @return mixed
@@ -233,14 +233,14 @@ class CoreApi
     public static function enableSubscription($SubscriptionId)
     {
         return ApiRequestor::post(
-            Config::getBaseUrlV1() . '/subscriptions/' . $SubscriptionId . '/enable',
+            Config::getBaseUrl() . '/v1/subscriptions/' . $SubscriptionId . '/enable',
             Config::$serverKey,
             false
         );
     }
 
     /**
-     * Do update subscription `/v1/subscription/{subscription_id}` API request to Core API
+     * Do update subscription `/v1/subscription/<subscription_id>` API request to Core API
      *
      * @param string update subscription request (more params detail refer to: https://api-docs.midtrans.com/#update-subscription)
      * @return mixed
@@ -249,7 +249,7 @@ class CoreApi
     public static function updateSubscription($SubscriptionId, $param)
     {
         return ApiRequestor::patch(
-            Config::getBaseUrlV1() . '/subscriptions/' . $SubscriptionId,
+            Config::getBaseUrl() . '/v1/subscriptions/' . $SubscriptionId,
             Config::$serverKey,
             $param
         );
