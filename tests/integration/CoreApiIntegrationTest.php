@@ -113,6 +113,128 @@ class CoreApiIntegrationTest extends IntegrationTest
         $this->assertEquals('pending', $this->charge_response->transaction_status);
     }
 
+    public function testCreateSubscription()
+    {
+        $param = array(
+            "name" => "Monthly_2021",
+            "amount" => "10000",
+            "currency" => "IDR",
+            "payment_type" => "credit_card",
+            "token" => "dummy",
+            "schedule" => array(
+                "interval" => 1,
+                "interval_unit" => "month",
+                "max_interval" => "12",
+                "start_time" => "2022-08-17 10:00:01 +0700"
+            ),
+            "metadata" => array(
+                "description" => "Recurring payment for user a"
+            ),
+            "customer_details" => array(
+                "first_name" => "John",
+                "last_name" => "Doe",
+                "email" => "johndoe@gmail.com",
+                "phone_number" => "+628987654321"
+            )
+        );
+        $this->charge_response = CoreApi::createSubscription($param);
+        $this->assertEquals('active', $this->charge_response->status);
+        $subscription_id = $this->charge_response->id;
+        return $subscription_id;
+    }
+
+    /**
+     * @depends testCreateSubscription
+     */
+    public function testGetSubscription($subscription_id)
+    {
+        $this->charge_response = CoreApi::getSubscription($subscription_id);
+        $this->assertEquals('active', $this->charge_response->status);
+    }
+
+    /**
+     * @depends testCreateSubscription
+     */
+    public function testDisableSubscription($subscription_id)
+    {
+        $this->charge_response = CoreApi::disableSubscription($subscription_id);
+        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
+    }
+
+    /**
+     * @depends testCreateSubscription
+     */
+    public function testEnableSubscription($subscription_id)
+    {
+        $this->charge_response = CoreApi::enableSubscription($subscription_id);
+        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
+    }
+
+    /**
+     * @depends testCreateSubscription
+     */
+    public function testUpdateSubscription($subscription_id)
+    {
+        $param = array(
+            "name" => "Monthly_2021",
+            "amount" => "25000",
+            "currency" => "IDR",
+            "token" => "dummy",
+            "schedule" => array(
+                "interval" => 1
+            )
+        );
+
+        $this->charge_response = CoreApi::updateSubscription($subscription_id, $param);
+        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
+    }
+
+    public function testGetSubscriptionWithNonExistAccount()
+    {
+        try {
+            $this->charge_response = CoreApi::getSubscription("dummy");
+        } catch (\Exception $e) {
+            $this->assertContains("Midtrans API is returning API error.", $e->getMessage());
+        }
+    }
+
+    public function testDisableSubscriptionWithNonExistAccount()
+    {
+        try {
+            $this->charge_response = CoreApi::disableSubscription("dummy");
+        } catch (\Exception $e) {
+            $this->assertContains("Midtrans API is returning API error.", $e->getMessage());
+        }
+    }
+
+    public function testEnableSubscriptionWithNonExistAccount()
+    {
+        try {
+            $this->charge_response = CoreApi::enableSubscription("dummy");
+        } catch (\Exception $e) {
+            $this->assertContains("Midtrans API is returning API error.", $e->getMessage());
+        }
+    }
+
+    public function testUpdateSubscriptionWithNonExistAccount()
+    {
+        $param = array(
+            "name" => "Monthly_2021",
+            "amount" => "25000",
+            "currency" => "IDR",
+            "token" => "dummy",
+            "schedule" => array(
+                "interval" => 1
+            )
+        );
+
+        try {
+            $this->charge_response = CoreApi::updateSubscription("dummy", $param);
+        } catch (\Exception $e) {
+            $this->assertContains("Midtrans API is returning API error.", $e->getMessage());
+        }
+    }
+
     public function testCreatePayAccount()
     {
         $params = array(
@@ -155,128 +277,6 @@ class CoreApiIntegrationTest extends IntegrationTest
             $this->charge_response = CoreApi::unlinkPaymentAccount("dummy");
         } catch (\Exception $e) {
             $this->assertContains("Account doesn't exist.", $e->getMessage());
-        }
-    }
-
-    public function testCreateSubscription()
-    {
-        $param = array(
-            "name" => "Monthly_2021",
-            "amount" => "10000",
-            "currency" => "IDR",
-            "payment_type" => "credit_card",
-            "token" => "dummy",
-            "schedule" => array(
-                "interval" => 1,
-                "interval_unit" => "month",
-                "max_interval" => "12",
-                "start_time" => "2022-08-17 10:00:01 +0700"
-            ),
-            "metadata" => array(
-                "description" => "Recurring payment for user a"
-            ),
-            "customer_details" => array(
-                "first_name" => "John",
-                "last_name" => "Doe",
-                "email" => "johndoe@gmail.com",
-                "phone_number" => "+628987654321"
-            )
-        );
-        $this->charge_response = CoreApi::createSubscription($param);
-        $this->assertEquals('active', $this->charge_response->status);
-        $subscription_id = $this->charge_response->id;
-        return $subscription_id;
-    }
-
-    /**
-     * @depends testCreateSubscription
-     */
-    public function testGetSubscription($subscription_id)
-    {
-        $this->charge_response = CoreApi::getSubscription($subscription_id);
-        $this->assertEquals('active', $this->charge_response->status);
-    }
-
-    public function testGetSubscriptionWithNonExistAccount()
-    {
-        try {
-            $this->charge_response = CoreApi::getSubscription("dummy");
-        } catch (\Exception $e) {
-            $this->assertContains("Subscription doesn't exist.", $e->getMessage());
-        }
-    }
-
-    /**
-     * @depends testCreateSubscription
-     */
-    public function testDisableSubscription($subscription_id)
-    {
-        $this->charge_response = CoreApi::disableSubscription($subscription_id);
-        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
-    }
-
-    public function testDisableSubscriptionWithNonExistAccount()
-    {
-        try {
-            $this->charge_response = CoreApi::disableSubscription("dummy");
-        } catch (\Exception $e) {
-            $this->assertContains("Subscription doesn't exist.", $e->getMessage());
-        }
-    }
-
-    /**
-     * @depends testCreateSubscription
-     */
-    public function testEnableSubscription($subscription_id)
-    {
-        $this->charge_response = CoreApi::enableSubscription($subscription_id);
-        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
-    }
-
-    public function testEnableSubscriptionWithNonExistAccount()
-    {
-        try {
-            $this->charge_response = CoreApi::enableSubscription("dummy");
-        } catch (\Exception $e) {
-            $this->assertContains("Subscription doesn't exist.", $e->getMessage());
-        }
-    }
-
-    /**
-     * @depends testCreateSubscription
-     */
-    public function testUpdateSubscription($subscription_id)
-    {
-        $param = array(
-            "name" => "Monthly_2021",
-            "amount" => "25000",
-            "currency" => "IDR",
-            "token" => "dummy",
-            "schedule" => array(
-                "interval" => 1
-            )
-        );
-
-        $this->charge_response = CoreApi::updateSubscription($subscription_id, $param);
-        $this->assertContains('Subscription is updated.', $this->charge_response->status_message);
-    }
-
-    public function testUpdateSubscriptionWithNonExistAccount()
-    {
-        $param = array(
-            "name" => "Monthly_2021",
-            "amount" => "25000",
-            "currency" => "IDR",
-            "token" => "dummy",
-            "schedule" => array(
-                "interval" => 1
-            )
-        );
-
-        try {
-            $this->charge_response = CoreApi::updateSubscription("dummy", $param);
-        } catch (\Exception $e) {
-            $this->assertContains("Subscription doesn't exist.", $e->getMessage());
         }
     }
 }
