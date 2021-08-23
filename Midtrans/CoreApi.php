@@ -192,7 +192,7 @@ class CoreApi
     }
 
     /**
-     * Do `/v1/subscription/{subscription_id}` API request to Core API
+     * Do `/v1/subscription/<subscription_id>` API request to Core API
      *
      * @param string get subscription request (more params detail refer to: https://api-docs.midtrans.com/#get-subscription)
      * @return mixed
@@ -208,7 +208,7 @@ class CoreApi
     }
 
     /**
-     * Do disable `/v1/subscription/{subscription_id}/disable` API request to Core API
+     * Do disable `/v1/subscription/<subscription_id>/disable` API request to Core API
      *
      * @param string disable subscription request (more params detail refer to: https://api-docs.midtrans.com/#disable-subscription)
      * @return mixed
@@ -224,7 +224,7 @@ class CoreApi
     }
 
     /**
-     * Do enable `/v1/subscription/{subscription_id}/enable` API request to Core API
+     * Do enable `/v1/subscription/<subscription_id>/enable` API request to Core API
      *
      * @param string enable subscription request (more params detail refer to: https://api-docs.midtrans.com/#enable-subscription)
      * @return mixed
@@ -240,7 +240,7 @@ class CoreApi
     }
 
     /**
-     * Do update subscription `/v1/subscription/{subscription_id}` API request to Core API
+     * Do update subscription `/v1/subscription/<subscription_id>` API request to Core API
      *
      * @param string update subscription request (more params detail refer to: https://api-docs.midtrans.com/#update-subscription)
      * @return mixed

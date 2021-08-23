@@ -98,7 +98,7 @@ class ApiRequestor
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
                 'Accept: application/json',
-                'User-Agent: midtrans-php-v2.5.0',
+                'User-Agent: midtrans-php-v2.5.2',
                 'Authorization: Basic ' . base64_encode($server_key . ':')
             ),
             CURLOPT_RETURNTRANSFER => 1
