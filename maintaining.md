@@ -1,5 +1,9 @@
 > Warning: This note is for developer/maintainer of this package only
 
+## Running Tests
+- Make sure to install/update dependencies `composer install`
+- Run PHP unit test (all): `./vendor/bin/phpunit tests`
+
 ## Updating Package
 
 - Make your changes
