@@ -20,7 +20,7 @@ class Transaction
     public static function status($id)
     {
         return ApiRequestor::get(
-            Config::getBaseUrl() . '/' . $id . '/status',
+            Config::getBaseUrl() . '/v2/' . $id . '/status',
             Config::$serverKey,
             false
         );
@@ -37,7 +37,7 @@ class Transaction
     public static function statusB2b($id)
     {
         return ApiRequestor::get(
-            Config::getBaseUrl() . '/' . $id . '/status/b2b',
+            Config::getBaseUrl() . '/v2/' . $id . '/status/b2b',
             Config::$serverKey,
             false
         );
@@ -54,7 +54,7 @@ class Transaction
     public static function approve($id)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/' . $id . '/approve',
+            Config::getBaseUrl() . '/v2/' . $id . '/approve',
             Config::$serverKey,
             false
         )->status_code;
@@ -71,7 +71,7 @@ class Transaction
     public static function cancel($id)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/' . $id . '/cancel',
+            Config::getBaseUrl() . '/v2/' . $id . '/cancel',
             Config::$serverKey,
             false
         )->status_code;
@@ -88,7 +88,7 @@ class Transaction
     public static function expire($id)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/' . $id . '/expire',
+            Config::getBaseUrl() . '/v2/' . $id . '/expire',
             Config::$serverKey,
             false
         );
@@ -108,7 +108,7 @@ class Transaction
     public static function refund($id, $params)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/' . $id . '/refund',
+            Config::getBaseUrl() . '/v2/' . $id . '/refund',
             Config::$serverKey,
             $params
         );
@@ -127,7 +127,7 @@ class Transaction
     public static function refundDirect($id, $params)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/' . $id . '/refund/online/direct',
+            Config::getBaseUrl() . '/v2/' . $id . '/refund/online/direct',
             Config::$serverKey,
             $params
         );
@@ -145,7 +145,7 @@ class Transaction
     public static function deny($id)
     {
         return ApiRequestor::post(
-            Config::getBaseUrl() . '/' . $id . '/deny',
+            Config::getBaseUrl() . '/v2/' . $id . '/deny',
             Config::$serverKey,
             false
         );
