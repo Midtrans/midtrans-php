@@ -1,9 +1,21 @@
 <?php
+// This is just for very basic implementation reference, in production, you should validate the incoming requests and implement your backend more securely.
+
 namespace Midtrans;
 
 require_once dirname(__FILE__) . '/../../Midtrans.php';
-//Set Your server key
-Config::$serverKey = "<your server key>";
+// Set Your server key
+// can find in Merchant Portal -> Settings -> Access keys
+Config::$serverKey = '<your server key>';
+if (strpos(Config::$serverKey, 'your ') != false ) {
+    echo "<code>";
+    echo "<h4>Please set your server key from sandbox</h4>";
+    echo "In file: " . __FILE__;
+    echo "<br>";
+    echo "<br>";
+    echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
+    die();
+}
 
 // define variables and set to empty values
 $number = "";
@@ -21,7 +33,13 @@ $params = array(
     )
 );
 
-$response = CoreApi::linkPaymentAccount($params);
+try {
+    $response = CoreApi::linkPaymentAccount($params);
+} catch (\Exception $e) {
+    echo $e->getMessage();
+    die();
+}
+
 ?>
 
 <!DOCTYPE HTML>

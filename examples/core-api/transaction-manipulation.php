@@ -1,11 +1,12 @@
 <?php
+// This is just for very basic implementation reference, in production, you should validate the incoming requests and implement your backend more securely.
 
 namespace Midtrans;
 
 require_once dirname(__FILE__) . '/../../Midtrans.php';
-
+// Set Your server key
+// can find in Merchant Portal -> Settings -> Access keys
 Config::$serverKey = '<your server key>';
-
 if (strpos(Config::$serverKey, 'your ') != false ) {
     echo "<code>";
     echo "<h4>Please set your server key from sandbox</h4>";
@@ -21,7 +22,7 @@ $orderId = '<your order id / transaction id>';
 // Get transaction status to Midtrans API
 try {
     $status = Transaction::status($orderId);
-} catch (Exception $e) {
+} catch (\Exception $e) {
     echo $e->getMessage();
     die();
 }

@@ -1,12 +1,31 @@
 <?php
+// This is just for very basic implementation reference, in production, you should validate the incoming requests and implement your backend more securely.
+// Please refer to this docs for sample HTTP notifications:
+// https://docs.midtrans.com/en/after-payment/http-notification?id=sample-of-different-payment-channels
 
 namespace Midtrans;
 
 require_once dirname(__FILE__) . '/../Midtrans.php';
 Config::$isProduction = false;
-Config::$serverKey = '<your serverkey>';
-$notif = new Notification();
+Config::$serverKey = '<your server key>';
+if (strpos(Config::$serverKey, 'your ') != false ) {
+    echo "<code>";
+    echo "<h4>Please set your server key from sandbox</h4>";
+    echo "In file: " . __FILE__;
+    echo "<br>";
+    echo "<br>";
+    echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
+    die();
+}
 
+try {
+    $notif = new Notification();
+}
+catch (\Exception $e) {
+    exit($e->getMessage());
+}
+
+$notif = $notif->getResponse();
 $transaction = $notif->transaction_status;
 $type = $notif->payment_type;
 $order_id = $notif->order_id;
