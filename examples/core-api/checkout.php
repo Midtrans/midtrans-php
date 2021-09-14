@@ -9,14 +9,20 @@ require_once dirname(__FILE__) . '/../../Midtrans.php';
 // Set Your server key
 // can find in Merchant Portal -> Settings -> Access keys
 Config::$clientKey = '<your client key>';
-if (strpos(Config::$clientKey, 'your ') != false ) {
-    echo "<code>";
-    echo "<h4>Please set your server key from sandbox</h4>";
-    echo "In file: " . __FILE__;
-    echo "<br>";
-    echo "<br>";
-    echo htmlspecialchars('Config::$clientKey = \'<your client key>\';');
-    die();
+
+// non-relevant function only used for demo/example purpose
+printExampleWarningMessage();
+
+function printExampleWarningMessage() {
+    if (strpos(Config::$clientKey, 'your ') != false ) {
+        echo "<code>";
+        echo "<h4>Please set your client key from sandbox</h4>";
+        echo "In file: " . __FILE__;
+        echo "<br>";
+        echo "<br>";
+        echo htmlspecialchars('Config::$clientKey = \'<your client key>\';');
+        die();
+    } 
 }
 ?>
 <html>
@@ -145,12 +151,12 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
                 $(this).attr("disabled", "disabled");
 
                 console.log('1. get token_id');
-                MidtransNew3ds.getCardToken(card, callback);
+                MidtransNew3ds.getCardToken(card, getCardTokenCallback);
                 return false;
             });
 
             // callback functions
-            var callback = {
+            var getCardTokenCallback = {
                 onSuccess: function(response) {
                     // Success to get card token_id, implement as you wish here
                     console.log('Success to get card token_id, response:', response);

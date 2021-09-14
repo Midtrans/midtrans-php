@@ -12,15 +12,8 @@ Config::$serverKey = '<your server key>';
 // Config::$appendNotifUrl = "https://example.com";
 // Config::$overrideNotifUrl = "https://example.com";
 
-if (strpos(Config::$serverKey, 'your ') != false ) {
-    echo "<code>";
-    echo "<h4>Please set your server key from sandbox</h4>";
-    echo "In file: " . __FILE__;
-    echo "<br>";
-    echo "<br>";
-    echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
-    die();
-}
+// non-relevant function only used for demo/example purpose
+printExampleWarningMessage();
 
 // Uncomment for production environment
 // Config::$isProduction = true;
@@ -109,3 +102,16 @@ try {
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
+
+function printExampleWarningMessage() {
+    if (strpos(Config::$serverKey, 'your ') != false ) {
+        echo "<code>";
+        echo "<h4>Please set your server key from sandbox</h4>";
+        echo "In file: " . __FILE__;
+        echo "<br>";
+        echo "<br>";
+        echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
+        die();
+    } 
+}
+
