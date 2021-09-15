@@ -1,11 +1,18 @@
 <?php
+// This is just for very basic implementation reference, in production, you should validate the incoming requests and implement your backend more securely.
+// Please refer to this docs for snap popup:
+// https://docs.midtrans.com/en/snap/integration-guide?id=integration-steps-overview
 
 namespace Midtrans;
 
 require_once dirname(__FILE__) . '/../../Midtrans.php';
+// Set Your server key
+// can find in Merchant Portal -> Settings -> Access keys
+Config::$serverKey = '<your server key>';
+Config::$clientKey = '<your client key>';
 
-//Set Your server key
-Config::$serverKey = "<your server key>";
+// non-relevant function only used for demo/example purpose
+printExampleWarningMessage();
 
 // Uncomment for production environment
 // Config::$isProduction = true;
@@ -88,8 +95,28 @@ $transaction = array(
     'item_details' => $item_details,
 );
 
-$snapToken = Snap::getSnapToken($transaction);
-echo "snapToken = ".$snapToken;
+$snap_token = '';
+try {
+    $snap_token = Snap::getSnapToken($transaction);
+}
+catch (\Exception $e) {
+    echo $e->getMessage();
+}
+
+echo "snapToken = ".$snap_token;
+
+function printExampleWarningMessage() {
+    if (strpos(Config::$serverKey, 'your ') != false ) {
+        echo "<code>";
+        echo "<h4>Please set your server key from sandbox</h4>";
+        echo "In file: " . __FILE__;
+        echo "<br>";
+        echo "<br>";
+        echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
+        die();
+    } 
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -99,11 +126,11 @@ echo "snapToken = ".$snapToken;
         <pre><div id="result-json">JSON result will appear here after payment:<br></div></pre> 
 
         <!-- TODO: Remove ".sandbox" from script src URL for production environment. Also input your client key in "data-client-key" -->
-        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<Set your ClientKey here>"></script>
+        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<?php echo Config::$clientKey;?>"></script>
         <script type="text/javascript">
             document.getElementById('pay-button').onclick = function(){
                 // SnapToken acquired from previous step
-                snap.pay('<?php echo $snapToken?>', {
+                snap.pay('<?php echo $snap_token?>', {
                     // Optional
                     onSuccess: function(result){
                         /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);

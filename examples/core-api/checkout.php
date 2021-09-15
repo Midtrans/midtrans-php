@@ -1,17 +1,28 @@
 <?php
+// This is just for very basic implementation reference, in production, you should validate the incoming requests and implement your backend more securely.
+// Please refer to this docs:
+// https://docs.midtrans.com/en/core-api/credit-card?id=_1-getting-the-card-token
 
 namespace Midtrans;
 
 require_once dirname(__FILE__) . '/../../Midtrans.php';
-
-// YOUR CLIENT KEY
+// Set Your server key
 // can find in Merchant Portal -> Settings -> Access keys
-Config::$clientKey = "<your client key>";
+Config::$clientKey = '<your client key>';
 
-if (strpos(Config::$clientKey, 'your ') != false ) {
-    echo "<p style='background: #FFB588; padding: 10px;'>";
-    echo "Please set your client key in file " . __FILE__;
-    echo "</p>";
+// non-relevant function only used for demo/example purpose
+printExampleWarningMessage();
+
+function printExampleWarningMessage() {
+    if (strpos(Config::$clientKey, 'your ') != false ) {
+        echo "<code>";
+        echo "<h4>Please set your client key from sandbox</h4>";
+        echo "In file: " . __FILE__;
+        echo "<br>";
+        echo "<br>";
+        echo htmlspecialchars('Config::$clientKey = \'<your client key>\';');
+        die();
+    } 
 }
 ?>
 <html>
@@ -22,7 +33,7 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
 </head>
 
 <body>
-    <script id="midtrans-script" type="text/javascript" src="https://api.midtrans.com/v2/assets/js/midtrans-new-3ds.min.js" data-environment="sandbox" data-client-key="VT-client-0N5ngRfFPbOhBa7k"></script>
+    <script id="midtrans-script" type="text/javascript" src="https://api.midtrans.com/v2/assets/js/midtrans-new-3ds.min.js" data-environment="sandbox" data-client-key="<?php echo Config::$clientKey;?>"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.12/featherlight.min.js"></script>
 
@@ -33,29 +44,27 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
             <small><strong>Field that may be presented to customer:</strong></small>
             <p>
                 <label>Card Number</label>
-                <input class="card-number" value="4811 1111 1111 1114" size="23" type="text" autocomplete="off" />
+                <input class="card-number" name="card-number" value="4811 1111 1111 1114" size="23" type="text" autocomplete="off" />
             </p>
             <p>
                 <label>Expiration (MM/YYYY)</label>
-                <input class="card-expiry-month" value="12" placeholder="MM" size="2" type="text" />
+                <input class="card-expiry-month" name="card-expiry-month" value="12" placeholder="MM" size="2" type="text" />
                 <span> / </span>
-                <input class="card-expiry-year" value="2020" placeholder="YYYY" size="4" type="text" />
+                <input class="card-expiry-year" name="card-expiry-year" value="2025" placeholder="YYYY" size="4" type="text" />
             </p>
             <p>
                 <label>CVV</label>
-                <input class="card-cvv" value="123" size="4" type="password" autocomplete="off" />
+                <input class="card-cvv" name="card-cvv" value="123" size="4" type="password" autocomplete="off" />
             </p>
             <p>
                 <label>Save credit card</label>
-                <input type="checkbox" name="save_cc" value="true">
+                <input type="checkbox" id="save_cc" name="save_cc" value="true">
             </p>
-
             <small><strong>Fields that shouldn't be presented to the customer:</strong></small>
             <p>
                 <label>3D Secure</label>
-                <input type="checkbox" name="secure" value="true" checked>
+                <input type="checkbox" id="secure" name="secure" value="true" checked>
             </p>
-
             <input id="token_id" name="token_id" type="hidden" />
             <button class="submit-button" type="submit">Submit Payment</button>
         </fieldset>
@@ -84,35 +93,24 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
     <!-- Javascript for token generation -->
     <script type="text/javascript">
         $(function () {
-            // Sandbox URL
-            MidtransNew3ds.url = "https://api.sandbox.midtrans.com/v2/token";
-            // TODO: Change with your client key.
-            MidtransNew3ds.clientKey = "<?php echo Config::$clientKey ?>";
-
-            var card = {
-                "card_number": $(".card-number").val(),
-                "card_exp_month": $(".card-expiry-month").val(),
-                "card_exp_year": $(".card-expiry-year").val(),
-                "card_cvv": $(".card-cvv").val(),
-                "secure": $('[name=secure]')[0].checked,
-                // "bank": "bni", // optional acquiring bank
-                "gross_amount": 200000
-            };
+            // open the console log to check the flow
+            // 3ds new flow:
+            // 1. get token_id
+            // 2. send token_id to backend
+            // 3. initial charge from backend to midtrans api
+            // 4. open redirect_url
 
             var options = {
                 performAuthentication: function(redirect_url){
                     openDialog(redirect_url);
                 },
                 onSuccess: function(response){
-                    console.log('sukses');
+                    console.log('success');
                     console.log('response:',response);
                     closeDialog();
-                    // Submit form
-                    $("#token_id").val(response.token_id);
-                    $("#payment-form").submit();
                 },
                 onFailure: function(response){
-                    console.log('gagal');
+                    console.log('fail');
                     console.log('response:',response);
                     closeDialog();
                     alert(response.status_message);
@@ -122,21 +120,6 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
                     console.log('pending');
                     console.log('response:',response);
                     closeDialog();
-                }
-            };
-
-            // callback functions
-            var callback = {
-                onSuccess: function(response){
-                    // Success to get card token_id, implement as you wish here
-                    console.log('Success to get card token_id, response:', response);
-                    MidtransNew3ds.authenticate(response.redirect_url, options);
-                },
-                onFailure: function(response){
-                    // Fail to get card token_id, implement as you wish here
-                    console.log('Fail to get card token_id, response:', response);
-                    closeDialog();
-                    $('button').removeAttr("disabled");
                 }
             };
 
@@ -157,12 +140,60 @@ if (strpos(Config::$clientKey, 'your ') != false ) {
             }
 
             $(".submit-button").click(function (event) {
-                console.log("SUBMIT");
+                var card = {
+                    "card_number": $(".card-number").val(),
+                    "card_exp_month": $(".card-expiry-month").val(),
+                    "card_exp_year": $(".card-expiry-year").val(),
+                    "card_cvv": $(".card-cvv").val()
+                };
+                
                 event.preventDefault();
                 $(this).attr("disabled", "disabled");
-                MidtransNew3ds.getCardToken(card, callback);
+
+                console.log('1. get token_id');
+                MidtransNew3ds.getCardToken(card, getCardTokenCallback);
                 return false;
             });
+
+            // callback functions
+            var getCardTokenCallback = {
+                onSuccess: function(response) {
+                    // Success to get card token_id, implement as you wish here
+                    console.log('Success to get card token_id, response:', response);
+                    var token_id = response.token_id;
+                    $("#token_id").val(token_id);
+
+                    console.log('This is the card token_id:', token_id);
+                    // Implement sending the token_id to backend to proceed to next step
+                    console.log('2. send token_id to backend');
+                    // send token_id, save_cc and secure params
+                    // we send secure param for sample, in production, you should define transaction is secure/not in backend
+                    // we recommend always use secure=true
+                    // data: $("#token_id, #save_cc, #secure").serialize()
+                    $.ajax({
+                        type: 'POST',
+                        url: 'checkout-process.php',
+                        data: $("#token_id, #save_cc, #secure").serialize(),
+                        success: function(response){
+                            console.log('3. response charge from backend:', response);
+                            if (response.redirect_url){
+                                console.log('4. open redirect_url');
+                                MidtransNew3ds.authenticate(response.redirect_url, options);
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            console.error(xhr);
+                        }
+                    });
+                    
+                },
+                onFailure: function(response) {
+                    // Fail to get card token_id, implement as you wish here
+                    console.log('Fail to get card token_id, response:', response);
+                    closeDialog();
+                    $('button').removeAttr("disabled");
+                }
+            };
         });
     </script>
 </body>

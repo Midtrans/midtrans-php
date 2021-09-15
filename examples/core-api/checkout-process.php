@@ -1,27 +1,19 @@
 <?php
+// This is just for very basic implementation reference, in production, you should validate the incoming requests and implement your backend more securely.
+// Please refer to this docs:
+// https://docs.midtrans.com/en/core-api/credit-card?id=_2-sending-transaction-data-to-charge-api
 
 namespace Midtrans;
 
 require_once dirname(__FILE__) . '/../../Midtrans.php';
-
-if (empty($_POST['token_id'])) {
-    die('Empty token_id!');
-}
 
 Config::$serverKey = '<your server key>';
 // Uncomment for append and override notification URL
 // Config::$appendNotifUrl = "https://example.com";
 // Config::$overrideNotifUrl = "https://example.com";
 
-if (strpos(Config::$serverKey, 'your ') != false ) {
-    echo "<code>";
-    echo "<h4>Please set your server key from sandbox</h4>";
-    echo "In file: " . __FILE__;
-    echo "<br>";
-    echo "<br>";
-    echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
-    die();
-}
+// non-relevant function only used for demo/example purpose
+printExampleWarningMessage();
 
 // Uncomment for production environment
 // Config::$isProduction = true;
@@ -86,14 +78,17 @@ $customer_details = array(
 
 // Token ID from checkout page
 $token_id = $_POST['token_id'];
+$authentication = isset($_POST['secure']);
+$save_token_id = isset($_POST['save_cc']);
 
 // Transaction data to be sent
 $transaction_data = array(
     'payment_type' => 'credit_card',
     'credit_card'  => array(
-        'token_id'      => $token_id,
-        // 'bank'          => 'bni', // optional acquiring bank, must be the same bank with get-token bank
-        'save_token_id' => isset($_POST['save_cc'])
+        'token_id'       => $token_id,
+        'authentication' => $authentication,
+        // 'bank'        => 'bni', // optional acquiring bank
+        'save_token_id'  => $save_token_id
     ),
     'transaction_details' => $transaction_details,
     'item_details'        => $items,
@@ -102,56 +97,21 @@ $transaction_data = array(
 
 try {
     $response = CoreApi::charge($transaction_data);
-} catch (Exception $e) {
+    header('Content-Type: application/json');
+    echo json_encode($response);
+} catch (\Exception $e) {
     echo $e->getMessage();
-    die();
 }
 
-// Success
-if ($response->transaction_status == 'capture') {
-    echo "<p>Transaksi berhasil.</p>";
-    echo "<p>Status transaksi untuk order id $response->order_id: " .
-        "$response->transaction_status</p>";
-
-    echo "<h3>Detail transaksi:</h3>";
-    echo "<pre>";
-    var_dump($response);
-    echo "</pre>";
-}
-// Deny
-else if ($response->transaction_status == 'deny') {
-    echo "<p>Transaksi ditolak.</p>";
-    echo "<p>Status transaksi untuk order id .$response->order_id: " .
-        "$response->transaction_status</p>";
-    echo "<h3>Detail transaksi:</h3>";
-    echo "<pre>";
-    var_dump($response);
-    echo "</pre>";
-}
-// Challenge
-else if ($response->transaction_status == 'challenge') {
-    echo "<p>Transaksi challenge.</p>";
-    echo "<p>Status transaksi untuk order id $response->order_id: " .
-        "$response->transaction_status</p>";
-
-    echo "<h3>Detail transaksi:</h3>";
-    echo "<pre>";
-    var_dump($response);
-    echo "</pre>";
-}
-// Error
-else {
-    echo "<p>Terjadi kesalahan pada data transaksi yang dikirim.</p>";
-    echo "<p>Status message: [$response->status_code] " .
-        "$response->status_message</p>";
-
-    echo "<pre>";
-    var_dump($response);
-    echo "</pre>";
+function printExampleWarningMessage() {
+    if (strpos(Config::$serverKey, 'your ') != false ) {
+        echo "<code>";
+        echo "<h4>Please set your server key from sandbox</h4>";
+        echo "In file: " . __FILE__;
+        echo "<br>";
+        echo "<br>";
+        echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
+        die();
+    } 
 }
 
-echo "<hr>";
-echo "<h3>Request</h3>";
-echo "<pre>";
-var_dump($response);
-echo "</pre>";

@@ -1,10 +1,17 @@
 <?php
+// This is just for very basic implementation reference, in production, you should validate the incoming requests and implement your backend more securely.
+// Please refer to this docs for snap-redirect:
+// https://docs.midtrans.com/en/snap/integration-guide?id=alternative-way-to-display-snap-payment-page-via-redirect
 
 namespace Midtrans;
 
 require_once dirname(__FILE__) . '/../../Midtrans.php';
-//Set Your server key
-Config::$serverKey = "<your server key>";
+// Set Your server key
+// can find in Merchant Portal -> Settings -> Access keys
+Config::$serverKey = '<your server key>';
+
+// non-relevant function only used for demo/example purpose
+printExampleWarningMessage();
 
 // Uncomment for production environment
 // Config::$isProduction = true;
@@ -86,6 +93,18 @@ try {
     // Redirect to Snap Payment Page
     header('Location: ' . $paymentUrl);
 }
-catch (Exception $e) {
+catch (\Exception $e) {
     echo $e->getMessage();
+}
+
+function printExampleWarningMessage() {
+    if (strpos(Config::$serverKey, 'your ') != false ) {
+        echo "<code>";
+        echo "<h4>Please set your server key from sandbox</h4>";
+        echo "In file: " . __FILE__;
+        echo "<br>";
+        echo "<br>";
+        echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
+        die();
+    } 
 }
