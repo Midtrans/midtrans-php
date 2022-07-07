@@ -161,7 +161,7 @@ class ApiRequestor
                 throw new Exception("API Request Error unable to json_decode API response: ".$result . ' | Request url: '.$url);
             }
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            if (isset($result_array->status_code) && $result_array->status_code >= 401 && $result_array->status_code != 407) {
+            if (isset($result_array->status_code) && $result_array->status_code >= 401 && $result_array->status_code != 407 && $result_array->status_code != 404) {
                 throw new Exception('Midtrans API is returning API error. HTTP status code: ' . $result_array->status_code . ' API response: ' . $result, $result_array->status_code);
             } elseif ($httpCode >= 400) {
                 throw new Exception('Midtrans API is returning API error. HTTP status code: ' . $httpCode . ' API response: ' . $result, $httpCode);
