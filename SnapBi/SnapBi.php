@@ -7,7 +7,8 @@ use Midtrans\Config;
 /**
  * API methods to get transaction status, approve and cancel transactions
  */
-class SnapBi {
+class SnapBi
+{
 
     const ACCESS_TOKEN = '/v1.0/access-token/b2b';
     const PAYMENT_HOST_TO_HOST = '/v1.0/debit/payment-host-to-host';
@@ -29,70 +30,92 @@ class SnapBi {
     private $debugId;
     private $timeStamp;
 
-    public function __construct($apiUrl) {
+    public function __construct($apiUrl)
+    {
         $this->apiPath = $apiUrl;
         $this->timeStamp = date("c");
     }
 
-    public static function directDebit() {
+    public static function directDebit()
+    {
         $apiPath = self::PAYMENT_HOST_TO_HOST;
         return new self($apiPath);
     }
 
-    public static function va() {
+    public static function va()
+    {
         $apiPath = self::CREATE_VA;
         return new self($apiPath);
     }
-    public static function transaction() {
+
+    public static function transaction()
+    {
         $apiPath = "";
         return new self($apiPath);
     }
-    public function withAccessTokenHeader(array $headers) {
+
+    public function withAccessTokenHeader(array $headers)
+    {
         $this->accessTokenHeader = array_merge($this->accessTokenHeader, $headers);
         return $this;
     }
-    public function withTransactionHeader(array $headers) {
+
+    public function withTransactionHeader(array $headers)
+    {
         $this->transactionHeader = array_merge($this->transactionHeader, $headers);
         return $this;
     }
 
-    public function withAccessToken($accessToken) {
+    public function withAccessToken($accessToken)
+    {
         $this->accessToken = $accessToken;
         return $this;
     }
 
-    public function withBody(array $body) {
+    public function withBody(array $body)
+    {
         $this->body = $body;
         return $this;
     }
-    public function withPrivateKey($privateKey) {
+
+    public function withPrivateKey($privateKey)
+    {
         SnapBiConfig::$snapBiPrivateKey = $privateKey;
         return $this;
     }
-    public function withClientId($clientId) {
+
+    public function withClientId($clientId)
+    {
         SnapBiConfig::$snapBiClientId = $clientId;
         return $this;
     }
 
-    public function withClientSecret($clientSecret) {
+    public function withClientSecret($clientSecret)
+    {
         SnapBiConfig::$snapBiClientSecret = $clientSecret;
         return $this;
     }
 
-    public function withPartnerId($partnerId) {
+    public function withPartnerId($partnerId)
+    {
         SnapBiConfig::$snapBiPartnerId = $partnerId;
         return $this;
     }
-    public function withChannelId($channelId) {
+
+    public function withChannelId($channelId)
+    {
         SnapBiConfig::$snapBiChannelId = $channelId;
         return $this;
     }
 
-    public function withDeviceId($deviceId) {
+    public function withDeviceId($deviceId)
+    {
         $this->deviceId = $deviceId;
         return $this;
     }
-    public function withDebuglId($debugId) {
+
+    public function withDebuglId($debugId)
+    {
         $this->debugId = $debugId;
         return $this;
     }
@@ -103,7 +126,8 @@ class SnapBi {
     }
 
     public function cancel($externalId)
-    {$this->apiPath = self::CANCEL;
+    {
+        $this->apiPath = self::CANCEL;
         return $this->createTransaction($externalId);
     }
 
@@ -119,14 +143,17 @@ class SnapBi {
         return $this->createTransaction($externalId);
     }
 
-    public function getAccessToken() {
+    public function getAccessToken()
+    {
         $snapBiAccessTokenHeader = $this->buildAccessTokenHeader($this->timeStamp);
         $openApiPayload = array(
             'grant_type' => 'client_credentials',
         );
         return SnapBiApiRequestor::remoteCall(SnapBiConfig::getSnapBiTransactionBaseUrl() . self::ACCESS_TOKEN, $snapBiAccessTokenHeader, $openApiPayload);
     }
-    public function createTransaction($externalId = null) {
+
+    public function createTransaction($externalId = null)
+    {
         // Attempt to get the access token if it's not already set
         if (!$this->accessToken) {
             $access_token_response = $this->getAccessToken($this->timeStamp);
@@ -144,7 +171,8 @@ class SnapBi {
         return SnapBiApiRequestor::remoteCall(SnapBiConfig::getSnapBiTransactionBaseUrl() . $this->apiPath, $snapBiTransactionHeader, $this->body);
     }
 
-    public static function getSymmetricSignatureHmacSh512($accessToken, $requestBody, $method, $path, $clientSecret, $timeStamp) {
+    public static function getSymmetricSignatureHmacSh512($accessToken, $requestBody, $method, $path, $clientSecret, $timeStamp)
+    {
         // Minify and hash the request body
         $minifiedBody = json_encode($requestBody, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $hashedBody = hash('sha256', $minifiedBody, true); // Get binary digest
@@ -157,9 +185,10 @@ class SnapBi {
         // Encode the result to Base64
         return base64_encode($hmac);
     }
+
     public static function getAsymmetricSignatureSha256WithRsa($client_id, $x_time_stamp, $private_key)
     {
-        $stringToSign = $client_id."|".$x_time_stamp;
+        $stringToSign = $client_id . "|" . $x_time_stamp;
         $binarySignature = null;
         openssl_sign($stringToSign, $binarySignature, $private_key, OPENSSL_ALGO_SHA256);
         return base64_encode($binarySignature);

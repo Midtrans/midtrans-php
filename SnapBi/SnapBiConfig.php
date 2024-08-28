@@ -19,7 +19,7 @@ class SnapBiConfig
 
     /**
      * Get baseUrl
-     * 
+     *
      * @return string Midtrans API URL, depends on $isProduction
      */
     public static function getSnapBiTransactionBaseUrl()

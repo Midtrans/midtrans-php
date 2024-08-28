@@ -1,10 +1,13 @@
 <?php
+
 namespace SnapBi;
+
 use Exception;
 
 class SnapBiApiRequestor
 {
-    public static function remoteCall($url, $header, $body) {
+    public static function remoteCall($url, $header, $body)
+    {
         $ch = curl_init($url);
 
         $curlHeaders = [];
