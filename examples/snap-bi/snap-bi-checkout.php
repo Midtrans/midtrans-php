@@ -14,10 +14,15 @@ require_once dirname(__FILE__) . '/../../Midtrans.php';
  * SETUP YOUR CREDENTIALS HERE
  */
 
-$client_id = "your-client-id-here";
-$private_key = "your-private-key-here";
-$client_secret = "your-client-secret-here";
-$partner_id = "your-partner-id-here";
+$client_id = "Zabcdefg-MIDTRANS-CLIENT-SNAP";
+
+//make sure to add 3 newline "\n" to your private key as shown below
+$private_key = "-----BEGIN PRIVATE KEY-----\nABCDEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7Zk6kJjqamLddaN1lK03XJW3vi5zOSA7V+5eSiYeM9tCOGouJewN/Py58wgvRh7OMAMm1IbSZpAbcZbBa1=\n-----END PRIVATE KEY-----\n";
+$client_secret = "ABcdefghiSrLJPgKRXqdjaSAuj5WDAbeaXAX8Vn7CWGHuBCfFgABCDVqRLvNZf8BaqPGKaksMjrZDrZqzZEbaA1AYFwBewIWCqLZr4PuvuLBqfTmYIzAbCakHKejABCa";
+$partner_id = "partner-id";
+$merchant_id = "M001234";
+
+
 
 date_default_timezone_set('Asia/Jakarta');
 $time_stamp = date("c");
@@ -34,7 +39,7 @@ $valid_until = $date->format('c');
 $debitParamsArray = array(
     "partnerReferenceNo" => $external_id,
     "chargeToken" => "",
-    "merchantId" => "G109932452",
+    "merchantId" => $merchant_id,
     "urlParam" => array(
         array(
             "url" => "https://www.google.com",
@@ -289,10 +294,10 @@ $statusByReferenceArrayzz = array(
 );
 
 $cancelByReferenceArray = array(
-  "originalReferenceNo" => "A120240828025158LSO0It0MjkID"
+  "originalReferenceNo" => "A120240902104935GBqSQK0gtQID"
 );
 $cancelByExternalIdArray = array(
-    "originalExternalId" => "uzi-order-testing66ce90ce90ee5"
+    "originalExternalId" => "uzi-order-testing66d5983eabc71"
 );
 
 $snapBiResponse = null;
@@ -301,6 +306,7 @@ SnapBiConfig::$snapBiPrivateKey = $private_key;
 SnapBiConfig::$snapBiClientSecret = $client_secret;
 SnapBiConfig::$snapBiPartnerId = $partner_id;
 SnapBiConfig::$snapBiChannelId = $partner_id;
+SnapBiConfig::$snapBiChannelId = "12345";
 
 try {
 
@@ -311,9 +317,9 @@ try {
     /**
      * Example code to create va
      */
-//    $snapBiResponse = SnapBi::va()
-//        ->withBody($vaParamsArray)
-//        ->createPayment($external_id);
+    $snapBiResponse = SnapBi::va()
+        ->withBody($vaParamsArray)
+        ->createPayment($external_id);
 //
 //    $snapBiResponse = SnapBi::va()
 //        ->withAccessToken("")
@@ -353,7 +359,7 @@ try {
 //    $snapBiResponse = SnapBi::directDebit()
 //        ->withBody($debitParamsArray)
 //        ->createPayment($external_id);
-//
+
 //    $snapBiResponse = SnapBi::directDebit()
 //        ->withAccessToken("")
 //        ->withBody($debitParamsArray)
@@ -375,17 +381,17 @@ try {
 //        ->withBody($debitParamsArray)
 //        ->createPayment($external_id);
 //
-    $snapBiResponse = SnapBi::directDebit()
-        ->withAccessTokenHeader([
-            "debug-id"=> "va debug id",
-            "X-DEVICE-ID"=>"va device id"
-        ])
-        ->withTransactionHeader([
-            "debug-id"=> "va debug id",
-            "X-DEVICE-ID"=>"va device id"
-        ])
-        ->withBody($debitParamsArray)
-        ->createPayment($external_id);
+//    $snapBiResponse = SnapBi::directDebit()
+//        ->withAccessTokenHeader([
+//            "debug-id"=> "va debug id",
+//            "X-DEVICE-ID"=>"va device id",
+//        ])
+//        ->withTransactionHeader([
+//            "debug-id"=> "va debug id",
+//            "X-DEVICE-ID"=>"va device id",
+//        ])
+//        ->withBody($debitParamsArray)
+//        ->createPayment($external_id);
 //
     /**
      * Example code for operation related with the transaction (getStatus/refund/cancel)
@@ -443,9 +449,15 @@ try {
 //        ->withAccessToken("")
 //        ->withBody($cancelByExternalIdArray)
 //        ->cancel($external_id);
-//
+////
 //    $snapBiResponse = SnapBi::transaction()
-//        ->withBody($cancelByReferenceArray)
+//        ->withBody($cancelByExternalIdArray)
+//        ->withAccessTokenHeader([
+//            "CHANNEL-ID" => "12345"
+//        ])
+//        ->withTransactionHeader([
+//            "CHANNEL-ID" => "12345"
+//        ])
 //        ->cancel($external_id);
 //
 //    $snapBiResponse = SnapBi::transaction()
@@ -465,7 +477,8 @@ try {
 }
 echo "snap bi response = " . print_r($snapBiResponse, true), PHP_EOL;
 
-function generateRandomNumber() {
+function generateRandomNumber()
+{
     $prefix = "6280"; // Fixed prefix
     $randomDigits = mt_rand(100000000, 999999999); // Generate 9 random digits
     return $prefix . $randomDigits;
