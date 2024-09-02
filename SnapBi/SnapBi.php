@@ -122,25 +122,25 @@ class SnapBi
 
     public function createPayment($externalId)
     {
-        return $this->createTransaction($externalId);
+        return $this->createConnection($externalId);
     }
 
     public function cancel($externalId)
     {
         $this->apiPath = self::CANCEL;
-        return $this->createTransaction($externalId);
+        return $this->createConnection($externalId);
     }
 
     public function refund($externalId)
     {
         $this->apiPath = self::REFUND;
-        return $this->createTransaction($externalId);
+        return $this->createConnection($externalId);
     }
 
     public function getStatus($externalId)
     {
         $this->apiPath = self::STATUS;
-        return $this->createTransaction($externalId);
+        return $this->createConnection($externalId);
     }
 
     public function getAccessToken()
@@ -152,7 +152,7 @@ class SnapBi
         return SnapBiApiRequestor::remoteCall(SnapBiConfig::getSnapBiTransactionBaseUrl() . self::ACCESS_TOKEN, $snapBiAccessTokenHeader, $openApiPayload);
     }
 
-    public function createTransaction($externalId = null)
+    public function createConnection($externalId = null)
     {
         // Attempt to get the access token if it's not already set
         if (!$this->accessToken) {
@@ -207,7 +207,7 @@ class SnapBi
             "X-PARTNER-ID" => SnapBiConfig::$snapBiPartnerId,
             "X-EXTERNAL-ID" => $externalId,
             "X-DEVICE-ID" => $this->deviceId,
-            "CHANNEL-ID" => "95221",
+            "CHANNEL-ID" => SnapBiConfig::$snapBiChannelId,
             "debug-id" => $this->debugId,
             "Authorization" => "Bearer " . $this->accessToken,
             "X-TIMESTAMP" => $timeStamp,
@@ -239,7 +239,7 @@ class SnapBi
             "X-CLIENT-KEY" => SnapBiConfig::$snapBiClientId,
             "X-SIGNATURE" => SnapBi::getAsymmetricSignatureSha256WithRsa(SnapBiConfig::$snapBiClientId, $timeStamp, SnapBiConfig::$snapBiPrivateKey),
             "X-TIMESTAMP" => $timeStamp,
-            "debug-id" => 'debugid-default'
+            "debug-id" => $this->debugId
         );
         //if withAccessTokenHeader is used, the header will be merged with the default header
         if (isset($this->accessTokenHeader)) {
