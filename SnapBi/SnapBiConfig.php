@@ -14,7 +14,7 @@ class SnapBiConfig
     public static $snapBiPartnerId;
     public static $snapBiChannelId;
 
-    const SNAP_BI_SANDBOX_BASE_URL = 'https://merchants.stg.midtrans.com';
+    const SNAP_BI_SANDBOX_BASE_URL = 'https://merchants.sbx.midtrans.com';
     const SNAP_BI_PRODUCTION_BASE_URL = 'https://merchants.midtrans.com';
 
     /**
