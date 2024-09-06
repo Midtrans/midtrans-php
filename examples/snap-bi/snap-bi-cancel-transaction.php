@@ -64,23 +64,23 @@ try {
     /**
      * Example code to cancel transaction using your existing access token
      */
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessToken("")
-//        ->withBody($cancelByExternalIdArray)
-//        ->cancel($external_id);
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessToken("")
+        ->withBody($cancelByExternalIdArray)
+        ->cancel($external_id);
 
     /**
      * Example code to cancel transaction by adding or overriding the accessTokenHeader and TranasctionHeader
      */
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withBody($cancelByExternalIdArray)
-//        ->withAccessTokenHeader([
-//            "CHANNEL-ID" => "12345"
-//        ])
-//        ->withTransactionHeader([
-//            "CHANNEL-ID" => "12345"
-//        ])
-//        ->cancel($external_id);
+    $snapBiResponse = SnapBi::transaction()
+        ->withBody($cancelByExternalIdArray)
+        ->withAccessTokenHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->withTransactionHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->cancel($external_id);
 
     /**
      * Example code for cancel using referenceNo
@@ -96,23 +96,23 @@ try {
     /**
      * Example code to cancel transaction using your existing access token
      */
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessToken("")
-//        ->withBody($cancelByReferenceArray)
-//        ->cancel($external_id);
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessToken("")
+        ->withBody($cancelByReferenceArray)
+        ->cancel($external_id);
 
     /**
-     * Example code to cancel transaction by adding or overriding the accessTokenHeader and TranasctionHeader
+     * Example code to cancel transaction by adding or overriding the accessTokenHeader and TransactionHeader
      */
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withBody($cancelByReferenceArray)
-//        ->withAccessTokenHeader([
-//            "CHANNEL-ID" => "12345"
-//        ])
-//        ->withTransactionHeader([
-//            "CHANNEL-ID" => "12345"
-//        ])
-//        ->cancel($external_id);
+    $snapBiResponse = SnapBi::transaction()
+        ->withBody($cancelByReferenceArray)
+        ->withAccessTokenHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->withTransactionHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->cancel($external_id);
 
 
 } catch (\Exception $e) {

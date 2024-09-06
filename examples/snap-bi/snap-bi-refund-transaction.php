@@ -67,51 +67,61 @@ try {
     $snapBiResponse = SnapBi::transaction()
         ->withBody($refundByExternalIdArray)
         ->refund($external_id);
-//
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessToken("")
-//        ->withBody($refundByExternalIdArray)
-//        ->refund($external_id);
-//
-//
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessTokenHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id"
-//        ])
-//        ->withTransactionHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id"
-//        ])
-//        ->withBody($refundByExternalIdArray)
-//        ->refund($external_id);
+
+    /**
+     * Example code for refund using externalId by re-using access token
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessToken("")
+        ->withBody($refundByExternalIdArray)
+        ->refund($external_id);
+
+    /**
+     * Example code for refund using externalId by adding additional header
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessTokenHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id"
+        ])
+        ->withTransactionHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id"
+        ])
+        ->withBody($refundByExternalIdArray)
+        ->refund($external_id);
 
 
 
-//    /**
-//     * Example code for refund using reference no
-//     */
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withBody($refundByReferenceArray)
-//        ->refund($external_id);
-//
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessToken("")
-//        ->withBody($refundByReferenceArray)
-//        ->refund($external_id);
-//
-//
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessTokenHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id"
-//        ])
-//        ->withTransactionHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id"
-//        ])
-//        ->withBody($refundByReferenceArray)
-//        ->refund($external_id);
+    /**
+     * Example code for refund using reference no
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withBody($refundByReferenceArray)
+        ->refund($external_id);
+
+    /**
+     * Example code for refund using reference no by re-using access token
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessToken("")
+        ->withBody($refundByReferenceArray)
+        ->refund($external_id);
+
+    /**
+     * Example code for refund using reference no by adding additional header
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessTokenHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id"
+        ])
+        ->withTransactionHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id"
+        ])
+        ->withBody($refundByReferenceArray)
+        ->refund($external_id);
 
 
 } catch (\Exception $e) {

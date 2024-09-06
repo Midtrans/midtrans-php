@@ -60,43 +60,55 @@ try {
         ->withBody($statusByExternalIdArray)
         ->getStatus($external_id);
 
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessToken("")
-//        ->withBody($statusByExternalIdArray)
-//        ->getStatus($external_id);
+    /**
+     * Example code for getStatus using externalId by re-using access token
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessToken("")
+        ->withBody($statusByExternalIdArray)
+        ->getStatus($external_id);
 
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessTokenHeader([
-//            "CHANNEL-ID" => "12345"
-//        ])
-//        ->withTransactionHeader([
-//            "CHANNEL-ID" => "12345"
-//        ])
-//        ->withBody($statusByExternalIdArray)
-//        ->getStatus($external_id);
+    /**
+     * Example code for getStatus using externalId by adding additional header
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessTokenHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->withTransactionHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->withBody($statusByExternalIdArray)
+        ->getStatus($external_id);
 
 
     /**
      * Example code for getStatus using referenceNo
      */
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withBody($statusByReferenceArray)
-//        ->getStatus($external_id);
+    $snapBiResponse = SnapBi::transaction()
+        ->withBody($statusByReferenceArray)
+        ->getStatus($external_id);
 
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessToken("")
-//        ->withBody($statusByReferenceArray)
-//        ->getStatus($external_id);
+    /**
+     * Example code for getStatus using referenceNo by re-using access token
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessToken("")
+        ->withBody($statusByReferenceArray)
+        ->getStatus($external_id);
 
-//    $snapBiResponse = SnapBi::transaction()
-//        ->withAccessTokenHeader([
-//            "CHANNEL-ID" => "12345"
-//        ])
-//        ->withTransactionHeader([
-//            "CHANNEL-ID" => "12345"
-//        ])
-//        ->withBody($statusByReferenceArray)
-//        ->getStatus($external_id);
+    /**
+     * Example code for getStatus using referenceNo by adding additional header
+     */
+    $snapBiResponse = SnapBi::transaction()
+        ->withAccessTokenHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->withTransactionHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->withBody($statusByReferenceArray)
+        ->getStatus($external_id);
 
 
 } catch (\Exception $e) {

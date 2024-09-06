@@ -27,12 +27,12 @@ date_default_timezone_set('Asia/Jakarta');
 $time_stamp = date("c");
 $date = new DateTime($time_stamp);
 $external_id = "uzi-order-testing" . uniqid();
-$vaCustomerNo = "6280123456";
+$customerVaNo = "6280123456";
 
-$vaParamsArray = array(
+$vaParams = array(
     "partnerServiceId"=> "   70012",
-    "customerNo"=> $vaCustomerNo,
-    "virtualAccountNo"=> "   70012" . $vaCustomerNo,
+    "customerNo"=> $customerVaNo,
+    "virtualAccountNo"=> "   70012" . $customerVaNo,
     "virtualAccountName"=> "Jokul Doe",
     "virtualAccountEmail"=> "jokul@email.com",
     "virtualAccountPhone"=> "6281828384858",
@@ -137,53 +137,53 @@ try {
      * basic implementation to create payment using va
      */
     $snapBiResponse = SnapBi::va()
-        ->withBody($vaParamsArray)
+        ->withBody($vaParams)
         ->createPayment($external_id);
 
-//    /**
-//     * You can re-use your existing accessToken by using ->withAccessToken
-//     */
-//    $snapBiResponse = SnapBi::va()
-//        ->withAccessToken("")
-//        ->withBody($vaParamsArray)
-//        ->createPayment($external_id);
+    /**
+     * You can re-use your existing accessToken by using ->withAccessToken
+     */
+    $snapBiResponse = SnapBi::va()
+        ->withAccessToken("")
+        ->withBody($vaParams)
+        ->createPayment($external_id);
 
     /**
      * Adding custom header during accessToken request by using ->withAccessTokenHeader
      */
-//    $snapBiResponse = SnapBi::va()
-//        ->withAccessTokenHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id"
-//        ])
-//        ->withBody($vaParamsArray)
-//        ->createPayment($external_id);
+    $snapBiResponse = SnapBi::va()
+        ->withAccessTokenHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id"
+        ])
+        ->withBody($vaParams)
+        ->createPayment($external_id);
 
     /**
      * Adding custom header during transaction process request by using ->withTransactionHeader
      */
-//    $snapBiResponse = SnapBi::va()
-//        ->withTransactionHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id"
-//        ])
-//        ->withBody($vaParamsArray)
-//        ->createPayment($external_id);
+    $snapBiResponse = SnapBi::va()
+        ->withTransactionHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id"
+        ])
+        ->withBody($vaParams)
+        ->createPayment($external_id);
 
     /**
      * Adding custom header during both access token  & transaction process request by using ->withAccessTokenHeader ->withTransactionHeader
      */
-//    $snapBiResponse = SnapBi::va()
-//        ->withAccessTokenHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id"
-//        ])
-//        ->withTransactionHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id"
-//        ])
-//        ->withBody($vaParamsArray)
-//        ->createPayment($external_id);
+    $snapBiResponse = SnapBi::va()
+        ->withAccessTokenHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id"
+        ])
+        ->withTransactionHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id"
+        ])
+        ->withBody($vaParams)
+        ->createPayment($external_id);
 
 } catch (\Exception $e) {
     echo $e->getMessage();

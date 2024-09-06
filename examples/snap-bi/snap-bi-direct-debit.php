@@ -34,7 +34,7 @@ $date->modify('+10 minutes');
 // Format the new date
 $valid_until = $date->format('c');
 
-$debitParamsArray = array(
+$debitParams = array(
     "partnerReferenceNo" => $external_id,
     "chargeToken" => "",
     "merchantId" => $merchant_id,
@@ -121,33 +121,33 @@ try {
      * to change the payment method, you can change the value of the request body on the `payOptionDetails`
      */
     $snapBiResponse = SnapBi::directDebit()
-        ->withBody($debitParamsArray)
+        ->withBody($debitParams)
         ->createPayment($external_id);
 
     /**
      * Example of using existing access token to create payment. You can uncomment and run the code
      * to change the payment method, you can change the value of the request body on the `payOptionDetails`
      */
-//    $snapBiResponse = SnapBi::directDebit()
-//        ->withAccessToken("")
-//        ->withBody($debitParamsArray)
-//        ->createPayment($external_id);
+    $snapBiResponse = SnapBi::directDebit()
+        ->withAccessToken("")
+        ->withBody($debitParams)
+        ->createPayment($external_id);
 
     /**
      * Example of using additional header on access token and when doing transaction  header. You can uncomment and run the code
      * to change the payment method, you can change the value of the request body on the `payOptionDetails`
      */
-//    $snapBiResponse = SnapBi::directDebit()
-//        ->withAccessTokenHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id",
-//        ])
-//        ->withTransactionHeader([
-//            "debug-id"=> "va debug id",
-//            "X-DEVICE-ID"=>"va device id",
-//        ])
-//        ->withBody($debitParamsArray)
-//        ->createPayment($external_id);
+    $snapBiResponse = SnapBi::directDebit()
+        ->withAccessTokenHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id",
+        ])
+        ->withTransactionHeader([
+            "debug-id"=> "va debug id",
+            "X-DEVICE-ID"=>"va device id",
+        ])
+        ->withBody($debitParams)
+        ->createPayment($external_id);
 
 } catch (\Exception $e) {
     echo $e->getMessage();
