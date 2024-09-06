@@ -443,6 +443,7 @@ $direct_refund = \Midtrans\Transaction::refundDirect($orderId, $params);
 var_dump($direct_refund);
 ```
 ## 3. Snap-BI (*NEW FEATURE starting v2.6.0)
+Standar Nasional Open API Pembayaran, or in short SNAP, is a national payment open API standard published by Bank Indonesia. To learn more you can read this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview)
 
 ### 3.1 General Settings
 
@@ -463,6 +464,7 @@ var_dump($direct_refund);
 ```
 
 ### 3.2 Create Payment: Direct Debit (Gopay, Shopeepay, Dana)
+Refer to this [docs](https://docs.midtrans.com/reference/direct-debit-api-gopay) for more detailed information about direct debit.
 
 ```php
    
@@ -556,7 +558,7 @@ $snapBiResponse = SnapBi::directDebit()
 
 ```
 ### 3.3 Create Payment: VA (Bank Transfer)
-
+Refer to this [docs](https://docs.midtrans.com/reference/virtual-account-api-bank-transfer) for more detailed information about VA/Bank Transfer.
 ```php
 date_default_timezone_set('Asia/Jakarta');
 $time_stamp = date("c");
@@ -660,6 +662,7 @@ $snapBiResponse = SnapBi::va()
 ```
 
 ### 3.4 Get Transaction Status
+Refer to this [docs](https://docs.midtrans.com/reference/get-transaction-status-api) for more detailed information about getting the transaction status.
 ```php
 $statusByExternalId = array(
     "originalExternalId" => "uzi-order-testing66ce90ce90ee5",
@@ -691,7 +694,7 @@ $snapBiResponse = SnapBi::transaction()
 ```
 
 ### 3.5 Cancel Transaction
-
+Refer to this [docs](https://docs.midtrans.com/reference/cancel-api) for more detailed information about cancelling the payment.
 ```php
 $cancelByReference = array(
     "originalReferenceNo" => "A120240902104935GBqSQK0gtQID"
@@ -717,6 +720,7 @@ $snapBiResponse = SnapBi::transaction()
 ```
 
 ### 3.6 Refund Transaction
+Refer to this [docs](https://docs.midtrans.com/reference/refund-api) for more detailed information about refunding the payment.
 
 ```php
 $refundByExternalId = array(
@@ -803,6 +807,10 @@ $snapBiResponse = SnapBi::va()
     ->createPayment($external_id);
 
 ```
+
+### 3.9 Payment Notification
+To implement Payment Notification you can refer to this [docs](https://docs.midtrans.com/reference/payment-notification-api)
+
 
 ## Unit Test
 ### Integration Test (sandbox real transactions)
