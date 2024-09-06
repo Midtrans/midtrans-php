@@ -36,48 +36,74 @@ class SnapBi
         $this->timeStamp = date("c");
     }
 
+
+    /**
+     * this method chain is used to start creating direct debit payment
+     */
+
     public static function directDebit()
     {
         $apiPath = self::PAYMENT_HOST_TO_HOST;
         return new self($apiPath);
     }
 
+    /**
+     * this method chain is used to start creating va(bank transfer) payment
+     */
     public static function va()
     {
         $apiPath = self::CREATE_VA;
         return new self($apiPath);
     }
 
+    /**
+     * this method chain is used to handle transaction (getStatus, refund, cancel)
+     */
     public static function transaction()
     {
         $apiPath = "";
         return new self($apiPath);
     }
 
+    /**
+     * this method chain is used to add additional header during access token request
+     */
     public function withAccessTokenHeader(array $headers)
     {
         $this->accessTokenHeader = array_merge($this->accessTokenHeader, $headers);
         return $this;
     }
 
+    /**
+     * this method chain is used to add additional header during transaction process (create payment/ get status/ refund/ cancel)
+     */
     public function withTransactionHeader(array $headers)
     {
         $this->transactionHeader = array_merge($this->transactionHeader, $headers);
         return $this;
     }
 
+    /**
+     * this method chain is used to supply access token that you already have, and want to re-use
+     */
     public function withAccessToken($accessToken)
     {
         $this->accessToken = $accessToken;
         return $this;
     }
 
+    /**
+     * this method chain is used to supply the request body/ payload
+     */
     public function withBody(array $body)
     {
         $this->body = $body;
         return $this;
     }
 
+    /**
+     * These method chains below are config related method chain that can be used as an option
+     */
     public function withPrivateKey($privateKey)
     {
         SnapBiConfig::$snapBiPrivateKey = $privateKey;
@@ -120,29 +146,49 @@ class SnapBi
         return $this;
     }
 
+    /**
+     * These method chain below are used to execute the preferred functionalities
+     */
+
+    /**
+     * these method chain is used to execute create payment
+     */
     public function createPayment($externalId)
     {
         return $this->createConnection($externalId);
     }
 
+    /**
+     * these method chain is used to cancel the transaction
+     */
     public function cancel($externalId)
     {
         $this->apiPath = self::CANCEL;
         return $this->createConnection($externalId);
     }
 
+    /**
+     * these method chain is used to refund the transaction
+     */
     public function refund($externalId)
     {
         $this->apiPath = self::REFUND;
         return $this->createConnection($externalId);
     }
 
+    /**
+     * these method chain is used to get the status of the transaction
+     */
     public function getStatus($externalId)
     {
         $this->apiPath = self::STATUS;
         return $this->createConnection($externalId);
     }
 
+
+    /**
+     * these method chain is used to get the access token
+     */
     public function getAccessToken()
     {
         $snapBiAccessTokenHeader = $this->buildAccessTokenHeader($this->timeStamp);
@@ -152,7 +198,7 @@ class SnapBi
         return SnapBiApiRequestor::remoteCall(SnapBiConfig::getSnapBiTransactionBaseUrl() . self::ACCESS_TOKEN, $snapBiAccessTokenHeader, $openApiPayload);
     }
 
-    public function createConnection($externalId = null)
+    private function createConnection($externalId = null)
     {
         // Attempt to get the access token if it's not already set
         if (!$this->accessToken) {
