@@ -500,7 +500,7 @@ $debitParams = array(
             "payOption" => "DANA",
             "transAmount" => array(
                 "value" => "100.0",
-                "currency" => "IDR"
+                "currency" => "IDR" //currently we only support `IDR`
             )
         )
     ),
@@ -668,13 +668,11 @@ $statusByExternalId = array(
     "originalExternalId" => "uzi-order-testing66ce90ce90ee5",
     "originalPartnerReferenceNo" => "uzi-order-testing66ce90ce90ee5",
     "serviceCode" => "54",
-    "additionalInfo" => array()
 );
 
 $statusByReference = array(
     "originalReferenceNo" => "A1202408280618283vcBaAmf7RID",
     "serviceCode" => "54",
-    "additionalInfo" => array()
 );
 
 /**
@@ -759,8 +757,8 @@ $snapBiResponse = SnapBi::transaction()
 
 ### 3.7 Adding additional header / override the header
 
-you can add or override the header value, by utilizing the `->withAccessTokenHeader` or `->withTransactionHeader`.
-You can refer to this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview) to see the header value required by Snap-Bi , and see the default header on each payment method
+You can add or override the header value, by utilizing the `->withAccessTokenHeader` or `->withTransactionHeader`.
+Refer to this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview) to see the header value required by Snap-Bi , and see the default header on each payment method
 
 ```php
  /**
@@ -795,7 +793,7 @@ $snapBiResponse = SnapBi::va()
 
 ### 3.8 Reusing Access Token
 
-you can add or override the header value, by utilizing the `->withAccessToken`.
+You can add or override the header value, by utilizing the `->withAccessToken`.
 
 ```php
 /**
