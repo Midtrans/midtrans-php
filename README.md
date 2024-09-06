@@ -451,15 +451,15 @@ var_dump($direct_refund);
 // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
 \SnapBi\Config::$isProduction = false;
 // Set your client id. Merchant’s client ID that will be given by Midtrans, will be used as X-CLIENT-KEY on request’s header in B2B Access Token API.
-\SnapBi\Config::$snapBiClientId = true;
-// Set your private key here
-\SnapBi\Config::$snapBiPrivateKey = true;
+\SnapBi\Config::$snapBiClientId = "YOUR CLIENT ID";
+// Set your private key here, make sure to add \n on the private key, you can refer to the examples
+\SnapBi\Config::$snapBiPrivateKey = "YOUR PRIVATE KEY";
 // Set your client secret. Merchant’s secret key that will be given by Midtrans, will be used for symmetric signature generation for Transactional API’s header.
-\SnapBi\Config::$snapBiClientSecret = true;
+\SnapBi\Config::$snapBiClientSecret = "YOUR CLIENT SECRET";
 // Set your partner id. Merchant’s partner ID that will be given by Midtrans, will be used as X-PARTNER-ID on Transactional API’s header.
-\SnapBi\Config::$snapBiPartnerId = true;
+\SnapBi\Config::$snapBiPartnerId = "YOUR PARTNER ID";
 // Set the channel id here.
-\SnapBi\Config::$snapBiChannelId = true;
+\SnapBi\Config::$snapBiChannelId = "CHANNEL ID";
 ```
 
 ### 2.1 Create Payment: Direct Debit (Gopay, Shopeepay, Dana)
