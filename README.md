@@ -444,7 +444,7 @@ var_dump($direct_refund);
 ```
 ## 3. Snap-BI (*NEW FEATURE starting v2.6.0)
 
-### 2.1 General Settings
+### 3.1 General Settings
 
 ```php
 //These config value are based on the header stated here https://docs.midtrans.com/reference/getting-started-1
@@ -462,7 +462,7 @@ var_dump($direct_refund);
 \SnapBi\Config::$snapBiChannelId = "CHANNEL ID";
 ```
 
-### 2.1 Create Payment: Direct Debit (Gopay, Shopeepay, Dana)
+### 3.2 Create Payment: Direct Debit (Gopay, Shopeepay, Dana)
 
 ```php
    
@@ -554,7 +554,7 @@ $debitParamsArray = array(
         ->createPayment($external_id);
 
 ```
-### 2.1 Create Payment: VA (Bank Transfer)
+### 3.3 Create Payment: VA (Bank Transfer)
 
 ```php
 date_default_timezone_set('Asia/Jakarta');
@@ -657,7 +657,7 @@ $vaParamsArray = array(
         ->createPayment($external_id);
 ```
 
-### 2.1 Get Transaction Status
+### 3.4 Get Transaction Status
 ```php
 $statusByExternalIdArray = array(
     "originalExternalId" => "uzi-order-testing66ce90ce90ee5",
@@ -687,7 +687,7 @@ $statusByReferenceArray = array(
         ->getStatus($external_id);
 ```
 
-### 2.1 Cancel Transaction
+### 3.5 Cancel Transaction
 
 ```php
 $cancelByReferenceArray = array(
@@ -714,7 +714,7 @@ $cancelByExternalIdArray = array(
 
 ```
 
-### 2.1 Refund Transaction
+### 3.6 Refund Transaction
 
 ```php
 $refundByExternalIdArray = array(
@@ -752,9 +752,9 @@ $refundByReferenceArray = array(
 
 ```
 
-### 2.1 Adding additional header / override the header
+### 3.7 Adding additional header / override the header
 
-you can add or override the header value, by utilizing the `->withAccessTokenHeader` or `withTransactionHeader`.
+you can add or override the header value, by utilizing the `->withAccessTokenHeader` or `->withTransactionHeader`.
 You can refer to this docs to see the header value required by Snap-Bi https://docs.midtrans.com/reference/core-api-snap-open-api-overview, and see the default header on each payment method
 
 ```php
@@ -789,7 +789,7 @@ You can refer to this docs to see the header value required by Snap-Bi https://d
 
 ```
 
-### 2.1 Reusing Access Token
+### 3.8 Reusing Access Token
 
 you can add or override the header value, by utilizing the `->withAccessToken`.
 
