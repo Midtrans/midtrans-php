@@ -13,10 +13,13 @@ class SnapBi
     const ACCESS_TOKEN = '/v1.0/access-token/b2b';
     const PAYMENT_HOST_TO_HOST = '/v1.0/debit/payment-host-to-host';
     const CREATE_VA = '/v1.0/transfer-va/create-va';
-    const STATUS = '/v1.0/debit/status';
-    const REFUND = '/v1.0/debit/refund';
-    const CANCEL = '/v1.0/debit/cancel';
+    const DEBIT_STATUS = '/v1.0/debit/status';
+    const DEBIT_REFUND = '/v1.0/debit/refund';
+    const DEBIT_CANCEL = '/v1.0/debit/cancel';
+    const VA_STATUS = '/v1.0/transfer-va/status';
+    const VA_CANCEL = '/v1.0/transfer-va/delete-va';
     private $apiPath;
+    private $paymentMethod;
     private $accessTokenHeader = [];
     private $transactionHeader = [];
     private $accessToken;
@@ -30,39 +33,27 @@ class SnapBi
     private $debugId;
     private $timeStamp;
 
-    public function __construct($apiUrl)
+    public function __construct($paymentMethod)
     {
-        $this->apiPath = $apiUrl;
+        $this->paymentMethod = $paymentMethod;
         $this->timeStamp = date("c");
     }
 
-
     /**
-     * this method chain is used to start creating direct debit payment
+     * this method chain is used to start Direct Debit (Gopay, Shopeepay, Dana) related transaction
      */
 
     public static function directDebit()
     {
-        $apiPath = self::PAYMENT_HOST_TO_HOST;
-        return new self($apiPath);
+        return new self("directDebit");
     }
 
     /**
-     * this method chain is used to start creating va(bank transfer) payment
+     * this method chain is used to start VA(Bank Transfer) related transaction
      */
     public static function va()
     {
-        $apiPath = self::CREATE_VA;
-        return new self($apiPath);
-    }
-
-    /**
-     * this method chain is used to handle transaction (getStatus, refund, cancel)
-     */
-    public static function transaction()
-    {
-        $apiPath = "";
-        return new self($apiPath);
+        return new self("va");
     }
 
     /**
@@ -155,6 +146,7 @@ class SnapBi
      */
     public function createPayment($externalId)
     {
+        $this->apiPath = $this->setupCreatePaymentApiPath($this->paymentMethod);
         return $this->createConnection($externalId);
     }
 
@@ -163,7 +155,7 @@ class SnapBi
      */
     public function cancel($externalId)
     {
-        $this->apiPath = self::CANCEL;
+        $this->apiPath = $this->setupCancelApiPath($this->paymentMethod);
         return $this->createConnection($externalId);
     }
 
@@ -172,7 +164,7 @@ class SnapBi
      */
     public function refund($externalId)
     {
-        $this->apiPath = self::REFUND;
+        $this->apiPath = $this->setupRefundApiPath($this->paymentMethod);
         return $this->createConnection($externalId);
     }
 
@@ -181,7 +173,7 @@ class SnapBi
      */
     public function getStatus($externalId)
     {
-        $this->apiPath = self::STATUS;
+        $this->apiPath = $this->setupGetStatusApiPath($this->paymentMethod);
         return $this->createConnection($externalId);
     }
 
@@ -202,7 +194,7 @@ class SnapBi
     {
         // Attempt to get the access token if it's not already set
         if (!$this->accessToken) {
-            $access_token_response = $this->getAccessToken($this->timeStamp);
+            $access_token_response = $this->getAccessToken();
 
             // If getting the access token failed, return the response from getAccessToken
             if (!isset($access_token_response->accessToken)) {
@@ -292,5 +284,39 @@ class SnapBi
             $snapBiAccessTokenHeader = array_merge($snapBiAccessTokenHeader, $this->accessTokenHeader);
         }
         return $snapBiAccessTokenHeader;
+    }
+
+    private function setupCreatePaymentApiPath($paymentMethod)
+    {
+        switch ($paymentMethod) {
+            case "va":
+                return self::CREATE_VA;
+            default:
+                return self::PAYMENT_HOST_TO_HOST;
+        }
+    }
+    private function setupRefundApiPath($paymentMethod)
+    {
+        return self::DEBIT_REFUND;
+    }
+
+    private function setupCancelApiPath($paymentMethod)
+    {
+        switch ($paymentMethod) {
+            case "va":
+                return self::VA_CANCEL;
+            default:
+                return self::DEBIT_CANCEL;
+        }
+    }
+
+    private function setupGetStatusApiPath($paymentMethod)
+    {
+        switch ($paymentMethod) {
+            case "va":
+                return self::VA_STATUS;
+            default:
+                return self::DEBIT_STATUS;
+        }
     }
 }
