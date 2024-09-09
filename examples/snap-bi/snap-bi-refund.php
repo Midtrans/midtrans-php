@@ -12,18 +12,17 @@ require_once dirname(__FILE__) . '/../../Midtrans.php';
  */
 
 $client_id = "Zabcdefg-MIDTRANS-CLIENT-SNAP";
-
 //make sure to add 3 newline "\n" to your private key as shown below
 $private_key = "-----BEGIN PRIVATE KEY-----\nABCDEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7Zk6kJjqamLddaN1lK03XJW3vi5zOSA7V+5eSiYeM9tCOGouJewN/Py58wgvRh7OMAMm1IbSZpAbcZbBa1=\n-----END PRIVATE KEY-----\n";
 $client_secret = "ABcdefghiSrLJPgKRXqdjaSAuj5WDAbeaXAX8Vn7CWGHuBCfFgABCDVqRLvNZf8BaqPGKaksMjrZDrZqzZEbaA1AYFwBewIWCqLZr4PuvuLBqfTmYIzAbCakHKejABCa";
 $partner_id = "partner-id";
 $merchant_id = "M001234";
-
 $channel_id = "12345";
+
 
 $external_id = "uzi-order-testing" . uniqid();
 
-$refundByExternalIdArray = array(
+$directDebitRefundByExternalIdBody = array(
     "originalExternalId" => "uzi-order-testing66cec41c7f905",
     "partnerRefundNo" =>  "uzi-order-testing66cec41c7f905" . "refund-0001".rand(),
     "reason" => "some-reason",
@@ -33,8 +32,8 @@ $refundByExternalIdArray = array(
         "currency" => "IDR"
     ));
 
-$refundByReferenceArray = array(
-    "originalReferenceNo" => "A120240828062651Y0NQMbJkDOID",
+$directDebitRefundByReferenceBody = array(
+    "originalReferenceNo" => "A120240907120426ZsbsQvlcYBID",
     "reason" => "some-reason",
     "additionalInfo" => array(),
     "refundAmount" => array(
@@ -64,22 +63,22 @@ try {
     /**
      * Example code for refund using externalId
      */
-    $snapBiResponse = SnapBi::transaction()
-        ->withBody($refundByExternalIdArray)
+    $snapBiResponse = SnapBi::directDebit()
+        ->withBody($directDebitRefundByExternalIdBody)
         ->refund($external_id);
 
     /**
      * Example code for refund using externalId by re-using access token
      */
-    $snapBiResponse = SnapBi::transaction()
+    $snapBiResponse = SnapBi::directDebit()
         ->withAccessToken("")
-        ->withBody($refundByExternalIdArray)
+        ->withBody($directDebitRefundByExternalIdBody)
         ->refund($external_id);
 
     /**
      * Example code for refund using externalId by adding additional header
      */
-    $snapBiResponse = SnapBi::transaction()
+    $snapBiResponse = SnapBi::directDebit()
         ->withAccessTokenHeader([
             "debug-id"=> "va debug id",
             "X-DEVICE-ID"=>"va device id"
@@ -88,7 +87,7 @@ try {
             "debug-id"=> "va debug id",
             "X-DEVICE-ID"=>"va device id"
         ])
-        ->withBody($refundByExternalIdArray)
+        ->withBody($directDebitRefundByExternalIdBody)
         ->refund($external_id);
 
 
@@ -96,22 +95,22 @@ try {
     /**
      * Example code for refund using reference no
      */
-    $snapBiResponse = SnapBi::transaction()
-        ->withBody($refundByReferenceArray)
+    $snapBiResponse = SnapBi::directDebit()
+        ->withBody($directDebitRefundByReferenceBody)
         ->refund($external_id);
 
     /**
      * Example code for refund using reference no by re-using access token
      */
-    $snapBiResponse = SnapBi::transaction()
+    $snapBiResponse = SnapBi::directDebit()
         ->withAccessToken("")
-        ->withBody($refundByReferenceArray)
+        ->withBody($directDebitRefundByReferenceBody)
         ->refund($external_id);
 
     /**
      * Example code for refund using reference no by adding additional header
      */
-    $snapBiResponse = SnapBi::transaction()
+    $snapBiResponse = SnapBi::directDebit()
         ->withAccessTokenHeader([
             "debug-id"=> "va debug id",
             "X-DEVICE-ID"=>"va device id"
@@ -120,7 +119,7 @@ try {
             "debug-id"=> "va debug id",
             "X-DEVICE-ID"=>"va device id"
         ])
-        ->withBody($refundByReferenceArray)
+        ->withBody($directDebitRefundByReferenceBody)
         ->refund($external_id);
 
 

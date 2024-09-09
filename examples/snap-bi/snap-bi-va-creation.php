@@ -22,12 +22,8 @@ $merchant_id = "M001234";
 
 $channel_id = "12345";
 
-
-date_default_timezone_set('Asia/Jakarta');
-$time_stamp = date("c");
-$date = new DateTime($time_stamp);
 $external_id = "uzi-order-testing" . uniqid();
-$customerVaNo = "6280123456";
+$customerVaNo = generateRandomNumber();
 
 $vaParams = array(
     "partnerServiceId"=> "   70012",
@@ -131,7 +127,6 @@ try {
      * Example code for SnapBI, you can uncomment and run the code.
      * Below are example code to create va
      */
-
 
     /**
      * basic implementation to create payment using va
