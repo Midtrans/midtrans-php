@@ -2,10 +2,8 @@
 
 namespace SnapBi;
 
-use Midtrans\Config;
-
 /**
- * API methods to get transaction status, approve and cancel transactions
+ * Provide Snap-Bi functionalities (create transaction, refund, cancel, get status)
  */
 class SnapBi
 {
@@ -136,7 +134,7 @@ class SnapBi
         $this->debugId = $debugId;
         return $this;
     }
-    
+
     /**
      * these method chain is used to execute create payment
      */
