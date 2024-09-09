@@ -461,6 +461,8 @@ Standar Nasional Open API Pembayaran, or in short SNAP, is a national payment op
 \SnapBi\Config::$snapBiPartnerId = "YOUR PARTNER ID";
 // Set the channel id here.
 \SnapBi\Config::$snapBiChannelId = "CHANNEL ID";
+// Enable logging to see details of the request/response make sure to disable this on production, the default is disabled.
+SnapBiConfig::$enableLogging = false;
 ```
 
 ### 3.2 Create Payment: Direct Debit (Gopay, Shopeepay, Dana)
@@ -664,56 +666,90 @@ $snapBiResponse = SnapBi::va()
 ### 3.4 Get Transaction Status
 Refer to this [docs](https://docs.midtrans.com/reference/get-transaction-status-api) for more detailed information about getting the transaction status.
 ```php
-$statusByExternalId = array(
+$directDebitStatusByExternalIdBody = array(
     "originalExternalId" => "uzi-order-testing66ce90ce90ee5",
     "originalPartnerReferenceNo" => "uzi-order-testing66ce90ce90ee5",
     "serviceCode" => "54",
 );
 
-$statusByReference = array(
+$directDebitStatusByReferenceBody = array(
     "originalReferenceNo" => "A1202408280618283vcBaAmf7RID",
     "serviceCode" => "54",
 );
 
+$vaStatusBody = array(
+    "partnerServiceId" => "    5818",
+    "customerNo" => "628064192914",
+    "virtualAccountNo" => "    5818628064192914",
+    "inquiryRequestId" => "uzi-order-testing66dc4799e4af5",
+    "paymentRequestId" => "uzi-order-testing66dc4799e4af5",
+    "additionalInfo" => array(
+        "merchantId" => $va_merchant_id
+    )
+);
+
 /**
- * Example code for getStatus using externalId
+ * Example code for Direct Debit getStatus using externalId
  */
-$snapBiResponse = SnapBi::transaction()
+$snapBiResponse = SnapBi::directDebit()
     ->withBody($statusByExternalId)
     ->getStatus($external_id);
 
 /**
- * Example code for getStatus using referenceNo
+ * Example code for Direct Debit getStatus using referenceNo
  */
-$snapBiResponse = SnapBi::transaction()
+$snapBiResponse = SnapBi::directDebit()
     ->withBody($statusByReference)
     ->getStatus($external_id);
+    
+/**
+ * Example code for VA (Bank Transfer) getStatus
+ */
+$snapBiResponse = SnapBi::va()
+    ->withBody($vaStatusBody)
+    ->getStatus($external_id);    
 
 ```
 
 ### 3.5 Cancel Transaction
 Refer to this [docs](https://docs.midtrans.com/reference/cancel-api) for more detailed information about cancelling the payment.
 ```php
-$cancelByReference = array(
+$directDebitCancelByReferenceBody = array(
     "originalReferenceNo" => "A120240902104935GBqSQK0gtQID"
 );
         
-$cancelByExternalId = array(
+$directDebitCancelByExternalIdBody = array(
     "originalExternalId" => "uzi-order-testing66d5983eabc71"
 );
 
+$vaCancelBody = array(
+    "partnerServiceId" => "    5818",
+    "customerNo" => "628014506680",
+    "virtualAccountNo" => "    5818628014506680",
+    "trxId" => "uzi-order-testing66dc76754bf1c",
+    "additionalInfo" => array(
+        "merchantId" => $va_merchant_id
+    )
+);
 /**
  * Basic implementation to cancel transaction using referenceNo
  */
-$snapBiResponse = SnapBi::transaction()
+$snapBiResponse = SnapBi::directDebit()
     ->withBody($cancelByReference)
     ->cancel($external_id);
 
 /**
  * Basic implementation to cancel transaction using externalId
  */
-$snapBiResponse = SnapBi::transaction()
+$snapBiResponse = SnapBi::directDebit()
     ->withBody($cancelByExternalId)
+    ->cancel($external_id);
+
+/**
+ * Basic implementation of VA (Bank Transfer) to cancel transaction
+ */
+$snapBiResponse = SnapBi::va()
+    ->withBody($vaCancelBody)
     ->cancel($external_id);
 ```
 
@@ -721,7 +757,7 @@ $snapBiResponse = SnapBi::transaction()
 Refer to this [docs](https://docs.midtrans.com/reference/refund-api) for more detailed information about refunding the payment.
 
 ```php
-$refundByExternalId = array(
+$directDebitRefundByExternalIdBody = array(
     "originalExternalId" => "uzi-order-testing66cec41c7f905",
     "partnerRefundNo" =>  "uzi-order-testing66cec41c7f905" . "refund-0001".rand(),
     "reason" => "some-reason",
@@ -731,7 +767,7 @@ $refundByExternalId = array(
         "currency" => "IDR"
     ));
 
-$refundByReference = array(
+$directDebitRefundByReferenceBody = array(
     "originalReferenceNo" => "A120240828062651Y0NQMbJkDOID",
     "reason" => "some-reason",
     "additionalInfo" => array(),
@@ -742,14 +778,14 @@ $refundByReference = array(
 /**
  * Example code for refund using externalId
  */
-$snapBiResponse = SnapBi::transaction()
+$snapBiResponse = SnapBi::directDebit()
     ->withBody($refundByExternalId)
     ->refund($external_id);
 
 /**
  * Example code for refund using reference no
  */
-$snapBiResponse = SnapBi::transaction()
+$snapBiResponse = SnapBi::directDebit()
     ->withBody($refundByReference)
     ->refund($external_id);
 
@@ -757,14 +793,14 @@ $snapBiResponse = SnapBi::transaction()
 
 ### 3.7 Adding additional header / override the header
 
-You can add or override the header value, by utilizing the `->withAccessTokenHeader` or `->withTransactionHeader`.
+You can add or override the header value, by utilizing the `->withAccessTokenHeader` or `->withTransactionHeader` method chain.
 Refer to this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview) to see the header value required by Snap-Bi , and see the default header on each payment method
 
 ```php
  /**
- * Example code for refund using additional header
+ * Example code for Direct Debit refund using additional header
  */
-$snapBiResponse = SnapBi::transaction()
+$snapBiResponse = SnapBi::directDebit()
     ->withAccessTokenHeader([
         "debug-id"=> "va debug id",
         "X-DEVICE-ID"=>"va device id"
@@ -773,7 +809,7 @@ $snapBiResponse = SnapBi::transaction()
         "debug-id"=> "va debug id",
         "X-DEVICE-ID"=>"va device id"
     ])
-    ->withBody($refundByExternalIdArray)
+    ->withBody($directDebitRefundByExternalIdBody)
     ->refund($external_id);
 /**
  * Example code for using additional header on creating payment using VA
@@ -793,22 +829,21 @@ $snapBiResponse = SnapBi::va()
 
 ### 3.8 Reusing Access Token
 
-You can add or override the header value, by utilizing the `->withAccessToken`.
+If you've saved your previous access token and wanted to re-use it, you can do it by utilizing the `->withAccessToken`.
 
 ```php
 /**
  * Example reusing your existing accessToken by using ->withAccessToken
  */
 $snapBiResponse = SnapBi::va()
-    ->withAccessToken("")
+    ->withAccessToken("your-access-token")
     ->withBody($vaParams)
     ->createPayment($external_id);
 
 ```
 
 ### 3.9 Payment Notification
-To implement Payment Notification you can refer to this [docs](https://docs.midtrans.com/reference/payment-notification-api)
-
+To implement Snap-Bi Payment Notification you can refer to this [docs](https://docs.midtrans.com/reference/payment-notification-api)
 
 ## Unit Test
 ### Integration Test (sandbox real transactions)
