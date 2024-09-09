@@ -136,11 +136,7 @@ class SnapBi
         $this->debugId = $debugId;
         return $this;
     }
-
-    /**
-     * These method chain below are used to execute the preferred functionalities
-     */
-
+    
     /**
      * these method chain is used to execute create payment
      */

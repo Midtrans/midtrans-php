@@ -19,6 +19,7 @@ $client_secret = "ABcdefghiSrLJPgKRXqdjaSAuj5WDAbeaXAX8Vn7CWGHuBCfFgABCDVqRLvNZf
 $partner_id = "partner-id";
 $merchant_id = "M001234";
 $channel_id = "12345";
+$va_merchant_id = "G012345677";
 
 $external_id = "uzi-order-testing" . uniqid();
 
@@ -54,7 +55,7 @@ try {
      * Example code for SnapBI, you can uncomment and run the code.
      * To cancel transaction you can use externalId or referenceNo.
      * The difference is based on the request body/ payload.
-     * you can refer to the variable $cancelByExternalIdArray or $cancelByReferenceArray to see the value.
+     * you can refer to the variable $directDebitCancelByReferenceBody or $directDebitCancelByExternalIdBody (for direct debit) or $vaCancelBody (for va) to see the value.
      *
      * Below are example code to cancel the transaction.
      */

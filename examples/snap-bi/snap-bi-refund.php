@@ -56,7 +56,7 @@ try {
      * Example code for SnapBI, you can uncomment and run the code.
      * Below are example code to refund the transaction.
      * You can refund the transaction using externalId or referenceNo
-     * The difference is based on the payload, you can refer to $refundByExternalIdArray or $refundByReferenceArray to see the value
+     * The difference is based on the payload, you can refer to $directDebitRefundByExternalIdBody or $directDebitRefundByReferenceBody to see the value
      */
 
 
