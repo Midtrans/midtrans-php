@@ -13,6 +13,7 @@ class SnapBiConfig
     public static $snapBiClientSecret;
     public static $snapBiPartnerId;
     public static $snapBiChannelId;
+    public static $enableLogging = false;
 
     const SNAP_BI_SANDBOX_BASE_URL = 'https://merchants.sbx.midtrans.com';
     const SNAP_BI_PRODUCTION_BASE_URL = 'https://merchants.midtrans.com';
