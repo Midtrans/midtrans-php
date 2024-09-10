@@ -10,7 +10,7 @@ Midtrans-PHP
 [Midtrans](https://midtrans.com) :heart: PHP!
 
 This is the Official PHP wrapper/library for Midtrans Payment API, that is compatible with Composer. Visit [https://midtrans.com](https://midtrans.com) for more information about the product and see documentation at [http://docs.midtrans.com](https://docs.midtrans.com) for more technical details.
-
+Starting version 2.6, this library now supports Snap-bi. You can go to this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview) to learn more about Snap-bi.
 ## 1. Installation
 
 ### 1.a Composer Installation
@@ -442,6 +442,408 @@ $params = array(
 $direct_refund = \Midtrans\Transaction::refundDirect($orderId, $params);
 var_dump($direct_refund);
 ```
+## 3. Snap-BI (*NEW FEATURE starting v2.6.0)
+Standar Nasional Open API Pembayaran, or in short SNAP, is a national payment open API standard published by Bank Indonesia. To learn more you can read this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview)
+
+### 3.1 General Settings
+
+```php
+//These config value are based on the header stated here https://docs.midtrans.com/reference/getting-started-1
+// Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+\SnapBi\Config::$isProduction = false;
+// Set your client id. Merchant’s client ID that will be given by Midtrans, will be used as X-CLIENT-KEY on request’s header in B2B Access Token API.
+\SnapBi\Config::$snapBiClientId = "YOUR CLIENT ID";
+// Set your private key here, make sure to add \n on the private key, you can refer to the examples
+\SnapBi\Config::$snapBiPrivateKey = "YOUR PRIVATE KEY";
+// Set your client secret. Merchant’s secret key that will be given by Midtrans, will be used for symmetric signature generation for Transactional API’s header.
+\SnapBi\Config::$snapBiClientSecret = "YOUR CLIENT SECRET";
+// Set your partner id. Merchant’s partner ID that will be given by Midtrans, will be used as X-PARTNER-ID on Transactional API’s header.
+\SnapBi\Config::$snapBiPartnerId = "YOUR PARTNER ID";
+// Set the channel id here.
+\SnapBi\Config::$snapBiChannelId = "CHANNEL ID";
+// Enable logging to see details of the request/response make sure to disable this on production, the default is disabled.
+SnapBiConfig::$enableLogging = false;
+```
+
+### 3.2 Create Payment: Direct Debit (Gopay, Shopeepay, Dana)
+Refer to this [docs](https://docs.midtrans.com/reference/direct-debit-api-gopay) for more detailed information about direct debit.
+
+```php
+   
+date_default_timezone_set('Asia/Jakarta');
+$time_stamp = date("c");
+$date = new DateTime($time_stamp);
+$external_id = "uzi-order-testing" . uniqid();
+
+// Add 10 minutes validity time
+$date->modify('+10 minutes');
+
+// Format the new date
+$valid_until = $date->format('c');
+
+
+//create direct debit request body/ payload
+//you can change the payment method on the `payOptionDetails`
+$debitParams = array(
+    "partnerReferenceNo" => $external_id,
+    "chargeToken" => "",
+    "merchantId" => $merchant_id,
+    "urlParam" => array(
+        array(
+            "url" => "https://www.google.com",
+            "type" => "PAY_RETURN",
+            "isDeeplink" => "Y"
+        )
+    ),
+    "validUpTo" => $valid_until,
+    "payOptionDetails" => array(
+        array(
+            "payMethod" => "DANA",
+            "payOption" => "DANA",
+            "transAmount" => array(
+                "value" => "100.0",
+                "currency" => "IDR" //currently we only support `IDR`
+            )
+        )
+    ),
+    "additionalInfo" => array(
+        "customerDetails" => array(
+            "phone" => "081122334455",
+            "firstName" => "Andri",
+            "lastName" => "Litani",
+            "email" => "andri@litani.com",
+            "billingAddress" => array(
+                "firstName" => "Andri",
+                "lastName" => "Litani",
+                "phone" => "081122334455",
+                "address" => "billingAddress",
+                "city" => "billingCity",
+                "postalCode" => "12790",
+                "countryCode" => "CZH"
+            ),
+            "shippingAddress" => array(
+                "firstName" => "Andri",
+                "lastName" => "Litani",
+                "phone" => "081122334455",
+                "address" => "shippingAddress",
+                "city" => "shippingCity",
+                "postalCode" => "12790",
+                "countryCode" => "CZH"
+            )
+        ),
+        "items" => array(
+            array(
+                "id" => "1",
+                "price" => array(
+                    "value" => "100.00",
+                    "currency" => "IDR"
+                ),
+                "quantity" => 1,
+                "name" => "Apple",
+                "brand" => "Apple",
+                "category" => "Subscription",
+                "merchantName" => "amazon prime",
+                "url" => "itemUrl"
+            )
+        ),
+        "metadata" => array()
+    )
+);
+/**
+ *  Basic example
+ * to change the payment method, you can change the value of the request body on the `payOptionDetails`
+ * the `currency` value that we support for now is only `IDR`
+ */
+$snapBiResponse = SnapBi::directDebit()
+    ->withBody($debitParams)
+    ->createPayment($external_id);
+
+```
+### 3.3 Create Payment: VA (Bank Transfer)
+Refer to this [docs](https://docs.midtrans.com/reference/virtual-account-api-bank-transfer) for more detailed information about VA/Bank Transfer.
+```php
+date_default_timezone_set('Asia/Jakarta');
+$time_stamp = date("c");
+$date = new DateTime($time_stamp);
+$external_id = "uzi-order-testing" . uniqid();
+$customerVaNo = "6280123456";
+
+$vaParams = array(
+    "partnerServiceId"=> "   70012",
+    "customerNo"=> $customerVaNo,
+    "virtualAccountNo"=> "   70012" . $customerVaNo,
+    "virtualAccountName"=> "Jokul Doe",
+    "virtualAccountEmail"=> "jokul@email.com",
+    "virtualAccountPhone"=> "6281828384858",
+    "trxId"=> $external_id,
+    "totalAmount"=> [
+        "value"=> "10000.00",
+        "currency"=> "IDR"
+    ],
+    "additionalInfo"=> [
+        "merchantId"=> $merchant_id,
+        "bank"=> "mandiri",
+        "flags"=> [
+            "shouldRandomizeVaNumber"=> false
+        ],
+        "mandiri"=> [
+            "billInfo1"=> "bank_name",
+            "billInfo2"=> "mandiri",
+            "billInfo3"=> "Name:",
+            "billInfo4"=> "Budi Utomo",
+            "billInfo5"=> "Class:",
+            "billInfo6"=> "Computer Science",
+            "billInfo7"=> "ID:",
+            "billInfo8"=> "VT-12345"
+        ],
+        "customerDetails"=> [
+            "firstName"=> "Jokul",
+            "lastName"=> "Doe",
+            "email"=> "jokul@email.com",
+            "phone"=> "+6281828384858",
+            "billingAddress"=> [
+                "firstName"=> "Jukul",
+                "lastName"=> "Doe",
+                "address"=> "Kalibata",
+                "city"=> "Jakarta",
+                "postalCode"=> "12190",
+                "phone"=> "+6281828384858",
+                "countryCode"=> "IDN"
+            ],
+            "shippingAddress"=> [
+                "firstName"=> "Jukul",
+                "lastName"=> "Doe",
+                "address"=> "Kalibata",
+                "city"=> "Jakarta",
+                "postalCode"=> "12190",
+                "phone"=> "+6281828384858",
+                "countryCode"=> "IDN"
+            ]
+        ],
+        "customField"=> [
+            "1"=> "custom-field-1",
+            "2"=> "custom-field-2",
+            "3"=> "custom-field-3"
+        ],
+        "items"=> [
+            [
+                "id"=> "a1",
+                "price"=> [
+                    "value"=> "1000.00",
+                    "currency"=> "IDR"
+                ],
+                "quantity"=> 3,
+                "name"=> "Apel",
+                "brand"=> "Fuji Apple",
+                "category"=> "Fruit",
+                "merchantName"=> "Fruit-store"
+
+            ],
+            [
+                "id"=> "a2",
+                "price"=> [
+                    "value"=> "1000.00",
+                    "currency"=> "IDR"
+                ],
+                "quantity"=> 7,
+                "name"=> "Apel Malang",
+                "brand"=> "Fuji Apple",
+                "category"=> "Fruit",
+                "merchantName"=> "Fruit-store"
+            ]
+        ]
+    ]
+);
+
+/**
+ * basic implementation to create payment using va
+ */
+$snapBiResponse = SnapBi::va()
+    ->withBody($vaParams)
+    ->createPayment($external_id);
+```
+
+### 3.4 Get Transaction Status
+Refer to this [docs](https://docs.midtrans.com/reference/get-transaction-status-api) for more detailed information about getting the transaction status.
+```php
+$directDebitStatusByExternalIdBody = array(
+    "originalExternalId" => "uzi-order-testing66ce90ce90ee5",
+    "originalPartnerReferenceNo" => "uzi-order-testing66ce90ce90ee5",
+    "serviceCode" => "54",
+);
+
+$directDebitStatusByReferenceBody = array(
+    "originalReferenceNo" => "A1202408280618283vcBaAmf7RID",
+    "serviceCode" => "54",
+);
+
+$vaStatusBody = array(
+    "partnerServiceId" => "    5818",
+    "customerNo" => "628064192914",
+    "virtualAccountNo" => "    5818628064192914",
+    "inquiryRequestId" => "uzi-order-testing66dc4799e4af5",
+    "paymentRequestId" => "uzi-order-testing66dc4799e4af5",
+    "additionalInfo" => array(
+        "merchantId" => $va_merchant_id
+    )
+);
+
+/**
+ * Example code for Direct Debit getStatus using externalId
+ */
+$snapBiResponse = SnapBi::directDebit()
+    ->withBody($statusByExternalId)
+    ->getStatus($external_id);
+
+/**
+ * Example code for Direct Debit getStatus using referenceNo
+ */
+$snapBiResponse = SnapBi::directDebit()
+    ->withBody($statusByReference)
+    ->getStatus($external_id);
+    
+/**
+ * Example code for VA (Bank Transfer) getStatus
+ */
+$snapBiResponse = SnapBi::va()
+    ->withBody($vaStatusBody)
+    ->getStatus($external_id);    
+
+```
+
+### 3.5 Cancel Transaction
+Refer to this [docs](https://docs.midtrans.com/reference/cancel-api) for more detailed information about cancelling the payment.
+```php
+$directDebitCancelByReferenceBody = array(
+    "originalReferenceNo" => "A120240902104935GBqSQK0gtQID"
+);
+        
+$directDebitCancelByExternalIdBody = array(
+    "originalExternalId" => "uzi-order-testing66d5983eabc71"
+);
+
+$vaCancelBody = array(
+    "partnerServiceId" => "    5818",
+    "customerNo" => "628014506680",
+    "virtualAccountNo" => "    5818628014506680",
+    "trxId" => "uzi-order-testing66dc76754bf1c",
+    "additionalInfo" => array(
+        "merchantId" => $va_merchant_id
+    )
+);
+/**
+ * Basic implementation to cancel transaction using referenceNo
+ */
+$snapBiResponse = SnapBi::directDebit()
+    ->withBody($cancelByReference)
+    ->cancel($external_id);
+
+/**
+ * Basic implementation to cancel transaction using externalId
+ */
+$snapBiResponse = SnapBi::directDebit()
+    ->withBody($cancelByExternalId)
+    ->cancel($external_id);
+
+/**
+ * Basic implementation of VA (Bank Transfer) to cancel transaction
+ */
+$snapBiResponse = SnapBi::va()
+    ->withBody($vaCancelBody)
+    ->cancel($external_id);
+```
+
+### 3.6 Refund Transaction
+Refer to this [docs](https://docs.midtrans.com/reference/refund-api) for more detailed information about refunding the payment.
+
+```php
+$directDebitRefundByExternalIdBody = array(
+    "originalExternalId" => "uzi-order-testing66cec41c7f905",
+    "partnerRefundNo" =>  "uzi-order-testing66cec41c7f905" . "refund-0001".rand(),
+    "reason" => "some-reason",
+    "additionalInfo" => array(),
+    "refundAmount" => array(
+        "value" => "100.00",
+        "currency" => "IDR"
+    ));
+
+$directDebitRefundByReferenceBody = array(
+    "originalReferenceNo" => "A120240828062651Y0NQMbJkDOID",
+    "reason" => "some-reason",
+    "additionalInfo" => array(),
+    "refundAmount" => array(
+        "value" => "100.00",
+        "currency" => "IDR"
+    ));
+/**
+ * Example code for refund using externalId
+ */
+$snapBiResponse = SnapBi::directDebit()
+    ->withBody($refundByExternalId)
+    ->refund($external_id);
+
+/**
+ * Example code for refund using reference no
+ */
+$snapBiResponse = SnapBi::directDebit()
+    ->withBody($refundByReference)
+    ->refund($external_id);
+
+```
+
+### 3.7 Adding additional header / override the header
+
+You can add or override the header value, by utilizing the `->withAccessTokenHeader` or `->withTransactionHeader` method chain.
+Refer to this [docs](https://docs.midtrans.com/reference/core-api-snap-open-api-overview) to see the header value required by Snap-Bi , and see the default header on each payment method
+
+```php
+ /**
+ * Example code for Direct Debit refund using additional header
+ */
+$snapBiResponse = SnapBi::directDebit()
+    ->withAccessTokenHeader([
+        "debug-id"=> "va debug id",
+        "X-DEVICE-ID"=>"va device id"
+    ])
+    ->withTransactionHeader([
+        "debug-id"=> "va debug id",
+        "X-DEVICE-ID"=>"va device id"
+    ])
+    ->withBody($directDebitRefundByExternalIdBody)
+    ->refund($external_id);
+/**
+ * Example code for using additional header on creating payment using VA
+ */
+$snapBiResponse = SnapBi::va()
+    ->withAccessTokenHeader([
+        "debug-id"=> "va debug id",
+        "X-DEVICE-ID"=>"va device id"
+    ])
+    ->withTransactionHeader([
+        "debug-id"=> "va debug id",
+        "X-DEVICE-ID"=>"va device id"
+    ])
+    ->withBody($vaParams)
+    ->createPayment($external_id);
+```
+
+### 3.8 Reusing Access Token
+
+If you've saved your previous access token and wanted to re-use it, you can do it by utilizing the `->withAccessToken`.
+
+```php
+/**
+ * Example reusing your existing accessToken by using ->withAccessToken
+ */
+$snapBiResponse = SnapBi::va()
+    ->withAccessToken("your-access-token")
+    ->withBody($vaParams)
+    ->createPayment($external_id);
+
+```
+
+### 3.9 Payment Notification
+To implement Snap-Bi Payment Notification you can refer to this [docs](https://docs.midtrans.com/reference/payment-notification-api)
 
 ## Unit Test
 ### Integration Test (sandbox real transactions)
