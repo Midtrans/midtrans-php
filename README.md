@@ -465,8 +465,10 @@ Standar Nasional Open API Pembayaran, or in short SNAP, is a national payment op
 SnapBiConfig::$enableLogging = false;
 ```
 
-### 3.2 Create Payment: Direct Debit (Gopay, Shopeepay, Dana)
-Refer to this [docs](https://docs.midtrans.com/reference/direct-debit-api-gopay) for more detailed information about direct debit.
+### 3.2 Create Payment
+
+#### 3.2.1 Direct Debit (Gopay, Dana, Shopeepay)
+Refer to this [docs](https://docs.midtrans.com/reference/direct-debit-api-gopay) for more detailed information about creating payment using direct debit.
 
 ```php
    
@@ -474,12 +476,11 @@ date_default_timezone_set('Asia/Jakarta');
 $time_stamp = date("c");
 $date = new DateTime($time_stamp);
 $external_id = "uzi-order-testing" . uniqid();
-
 // Add 10 minutes validity time
 $date->modify('+10 minutes');
-
 // Format the new date
 $valid_until = $date->format('c');
+$merchant_id = "M001234";
 
 
 //create direct debit request body/ payload
@@ -559,14 +560,12 @@ $snapBiResponse = SnapBi::directDebit()
     ->createPayment($external_id);
 
 ```
-### 3.3 Create Payment: VA (Bank Transfer)
+#### 3.2.2 VA (Bank Transfer)
 Refer to this [docs](https://docs.midtrans.com/reference/virtual-account-api-bank-transfer) for more detailed information about VA/Bank Transfer.
 ```php
-date_default_timezone_set('Asia/Jakarta');
-$time_stamp = date("c");
-$date = new DateTime($time_stamp);
 $external_id = "uzi-order-testing" . uniqid();
 $customerVaNo = "6280123456";
+$merchant_id = "M001234";
 
 $vaParams = array(
     "partnerServiceId"=> "   70012",
@@ -662,10 +661,60 @@ $snapBiResponse = SnapBi::va()
     ->withBody($vaParams)
     ->createPayment($external_id);
 ```
+#### 3.2.2 Qris 
+Refer to this [docs](https://docs.midtrans.com/reference/mpm-api-qris) for more detailed information about Qris.
+```php
+$external_id = "uzi-order-testing" . uniqid();
+$merchant_id = "M001234";
+$qrisBody = array(
+    "partnerReferenceNo" => $external_id,
+    "amount" => array(
+        "value" => "1500.00",
+        "currency" => "IDR"
+    ),
+    "merchantId" => $merchant_id,
+    "validityPeriod" => "2030-07-03T12:08:56-07:00",
+    "additionalInfo" => array(
+        "acquirer" => "gopay",
+        "items" => array(
+            array(
+                "id" => "8143fc4f-ec05-4c55-92fb-620c212f401e",
+                "price" => array(
+                    "value" => "1500.00",
+                    "currency" => "IDR"
+                ),
+                "quantity" => 1,
+                "name" => "test item name",
+                "brand" => "test item brand",
+                "category" => "test item category",
+                "merchantName" => "Merchant Operation"
+            )
+        ),
+        "customerDetails" => array(
+            "email" => "merchant-ops@midtrans.com",
+            "firstName" => "Merchant",
+            "lastName" => "Operation",
+            "phone" => "+6281932358123"
+        ),
+        "countryCode" => "ID",
+        "locale" => "id_ID"
+    )
+);
+
+/**
+ * basic implementation to create payment using Qris
+ */
+$snapBiResponse = SnapBi::qris()
+        ->withBody($qrisBody)
+        ->createPayment($external_id);
+```
 
 ### 3.4 Get Transaction Status
 Refer to this [docs](https://docs.midtrans.com/reference/get-transaction-status-api) for more detailed information about getting the transaction status.
 ```php
+$merchant_id = "M001234";
+$external_id = "uzi-order-testing" . uniqid();
+
 $directDebitStatusByExternalIdBody = array(
     "originalExternalId" => "uzi-order-testing66ce90ce90ee5",
     "originalPartnerReferenceNo" => "uzi-order-testing66ce90ce90ee5",
@@ -684,8 +733,15 @@ $vaStatusBody = array(
     "inquiryRequestId" => "uzi-order-testing66dc4799e4af5",
     "paymentRequestId" => "uzi-order-testing66dc4799e4af5",
     "additionalInfo" => array(
-        "merchantId" => $va_merchant_id
+        "merchantId" => $merchant_id
     )
+);
+
+$qrisStatusBody = array(
+    "originalReferenceNo" => "A120240910100828anKJlXgsi6ID",
+    "originalPartnerReferenceNo" => "uzi-order-testing66e01a9b8c6bf",
+    "merchantId" => $merchant_id,
+    "serviceCode" => "54"
 );
 
 /**
@@ -707,13 +763,23 @@ $snapBiResponse = SnapBi::directDebit()
  */
 $snapBiResponse = SnapBi::va()
     ->withBody($vaStatusBody)
-    ->getStatus($external_id);    
+    ->getStatus($external_id);
+    /**
+ * 
+ * Example code for Qris getStatus
+ */
+$snapBiResponse = SnapBi::qris()
+    ->withBody($qrisStatusBody)
+    ->getStatus($external_id);      
 
 ```
 
 ### 3.5 Cancel Transaction
 Refer to this [docs](https://docs.midtrans.com/reference/cancel-api) for more detailed information about cancelling the payment.
 ```php
+$merchant_id = "M001234";
+$external_id = "uzi-order-testing" . uniqid();
+
 $directDebitCancelByReferenceBody = array(
     "originalReferenceNo" => "A120240902104935GBqSQK0gtQID"
 );
@@ -731,18 +797,24 @@ $vaCancelBody = array(
         "merchantId" => $va_merchant_id
     )
 );
+
+$qrisCancelBody = array(
+    "originalReferenceNo" => "A120240910091847fYkCqhCH1XID",
+    "merchantId" => $merchant_id,
+    "reason" => "cancel reason",
+);
 /**
  * Basic implementation to cancel transaction using referenceNo
  */
 $snapBiResponse = SnapBi::directDebit()
-    ->withBody($cancelByReference)
+    ->withBody($directDebitCancelByReferenceBody)
     ->cancel($external_id);
 
 /**
  * Basic implementation to cancel transaction using externalId
  */
 $snapBiResponse = SnapBi::directDebit()
-    ->withBody($cancelByExternalId)
+    ->withBody($directDebitCancelByExternalIdBody)
     ->cancel($external_id);
 
 /**
@@ -751,12 +823,22 @@ $snapBiResponse = SnapBi::directDebit()
 $snapBiResponse = SnapBi::va()
     ->withBody($vaCancelBody)
     ->cancel($external_id);
+
+/**
+ * Basic implementation of VA (Bank Transfer) to cancel transaction
+ */
+$snapBiResponse = SnapBi::qris()
+    ->withBody($qrisCancelBody)
+    ->cancel($external_id);
 ```
 
 ### 3.6 Refund Transaction
 Refer to this [docs](https://docs.midtrans.com/reference/refund-api) for more detailed information about refunding the payment.
 
 ```php
+$merchant_id = "M001234";
+$external_id = "uzi-order-testing" . uniqid();
+
 $directDebitRefundByExternalIdBody = array(
     "originalExternalId" => "uzi-order-testing66cec41c7f905",
     "partnerRefundNo" =>  "uzi-order-testing66cec41c7f905" . "refund-0001".rand(),
@@ -775,18 +857,40 @@ $directDebitRefundByReferenceBody = array(
         "value" => "100.00",
         "currency" => "IDR"
     ));
+    
+$qrisRefundBody = array(
+    "merchantId" => $merchant_id,
+    "originalPartnerReferenceNo" => "uzi-order-testing66e01a9b8c6bf",
+    "originalReferenceNo" => "A120240910100828anKJlXgsi6ID",
+    "partnerRefundNo" => "partner-refund-no-". uniqid(),
+    "reason" => "refund reason",
+    "refundAmount" => array(
+        "value" => "1500.00",
+        "currency" => "IDR"
+    ),
+    "additionalInfo" => array(
+        "foo" => "bar"
+    )
+);
 /**
  * Example code for refund using externalId
  */
 $snapBiResponse = SnapBi::directDebit()
-    ->withBody($refundByExternalId)
+    ->withBody($directDebitRefundByExternalIdBody)
     ->refund($external_id);
 
 /**
  * Example code for refund using reference no
  */
 $snapBiResponse = SnapBi::directDebit()
-    ->withBody($refundByReference)
+    ->withBody($directDebitRefundByReferenceBody)
+    ->refund($external_id);
+    
+    /**
+ * Example code for refund using Qris
+ */
+$snapBiResponse = SnapBi::qris()
+    ->withBody($qrisRefundBody)
     ->refund($external_id);
 
 ```
