@@ -39,6 +39,11 @@ $vaCancelBody = array(
         "merchantId" => $va_merchant_id
     )
 );
+$qrisCancelBody = array(
+    "originalReferenceNo" => "A120240910091847fYkCqhCH1XID",
+    "merchantId" => $merchant_id,
+    "reason" => "cancel reason",
+);
 
 
 $snapBiResponse = null;
@@ -46,8 +51,8 @@ SnapBiConfig::$snapBiClientId = $client_id;
 SnapBiConfig::$snapBiPrivateKey = $private_key;
 SnapBiConfig::$snapBiClientSecret = $client_secret;
 SnapBiConfig::$snapBiPartnerId = $partner_id;
-SnapBiConfig::$snapBiChannelId = $partner_id;
 SnapBiConfig::$snapBiChannelId = $channel_id;
+SnapBiConfig::$enableLogging = true;
 
 try {
 
@@ -148,6 +153,38 @@ try {
      */
     $snapBiResponse = SnapBi::va()
         ->withBody($vaCancelBody)
+        ->withAccessTokenHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->withTransactionHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->cancel($external_id);
+
+    /**
+     * Example code for Qris to cancel transaction
+     */
+
+    /**
+     * Basic implementation of Qris to cancel transaction
+     */
+    $snapBiResponse = SnapBi::qris()
+        ->withBody($qrisCancelBody)
+        ->cancel($external_id);
+
+    /**
+     * Example code of Qris to cancel transaction using your existing access token
+     */
+    $snapBiResponse = SnapBi::qris()
+        ->withAccessToken("")
+        ->withBody($qrisCancelBody)
+        ->cancel($external_id);
+
+    /**
+     * Example code of Qris to cancel transaction by adding or overriding the accessTokenHeader and TransactionHeader
+     */
+    $snapBiResponse = SnapBi::qris()
+        ->withBody($qrisCancelBody)
         ->withAccessTokenHeader([
             "CHANNEL-ID" => "12345"
         ])
