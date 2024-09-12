@@ -661,7 +661,7 @@ $snapBiResponse = SnapBi::va()
     ->withBody($vaParams)
     ->createPayment($external_id);
 ```
-#### 3.2.2 Qris 
+#### 3.2.3 Qris 
 Refer to this [docs](https://docs.midtrans.com/reference/mpm-api-qris) for more detailed information about Qris.
 ```php
 $external_id = "uzi-order-testing" . uniqid();
