@@ -794,7 +794,7 @@ $vaCancelBody = array(
     "virtualAccountNo" => "    5818628014506680",
     "trxId" => "uzi-order-testing66dc76754bf1c",
     "additionalInfo" => array(
-        "merchantId" => $va_merchant_id
+        "merchantId" => $merchant_id
     )
 );
 
@@ -825,7 +825,7 @@ $snapBiResponse = SnapBi::va()
     ->cancel($external_id);
 
 /**
- * Basic implementation of VA (Bank Transfer) to cancel transaction
+ * Basic implementation of Qris to cancel transaction
  */
 $snapBiResponse = SnapBi::qris()
     ->withBody($qrisCancelBody)
