@@ -16,10 +16,10 @@ class SnapBiApiRequestor
             $curlHeaders[] = "$key: $value";
         }
 
-        $payload_json = json_encode($body, JSON_PRETTY_PRINT);
+        $payload_json = json_encode($body);
 
         if (SnapBiConfig::$enableLogging){
-            echo "Request Body: " .PHP_EOL . $payload_json . PHP_EOL;
+            echo sprintf("Request Body: \n%s\n", $payload_json);
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -37,7 +37,7 @@ class SnapBiApiRequestor
         $jsonResponse = json_decode($response);
         curl_close($ch);
         if (SnapBiConfig::$enableLogging){
-            echo "Response body: " .PHP_EOL . json_encode($jsonResponse, JSON_PRETTY_PRINT) . PHP_EOL;
+            echo sprintf("Response Body: \n%s\n", $response);
         }
         
         return $jsonResponse;
