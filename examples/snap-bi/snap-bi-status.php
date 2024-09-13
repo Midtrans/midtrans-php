@@ -49,13 +49,20 @@ $vaStatusBody = array(
     )
 );
 
+$qrisStatusBody = array(
+    "originalReferenceNo" => "A120240910100828anKJlXgsi6ID",
+    "originalPartnerReferenceNo" => "uzi-order-testing66e01a9b8c6bf",
+    "merchantId" => $merchant_id,
+    "serviceCode" => "54"
+);
+
 $snapBiResponse = null;
 SnapBiConfig::$snapBiClientId = $client_id;
 SnapBiConfig::$snapBiPrivateKey = $private_key;
 SnapBiConfig::$snapBiClientSecret = $client_secret;
 SnapBiConfig::$snapBiPartnerId = $partner_id;
-SnapBiConfig::$snapBiChannelId = $partner_id;
 SnapBiConfig::$snapBiChannelId = $channel_id;
+SnapBiConfig::$enableLogging = true;
 
 try {
 
@@ -64,6 +71,7 @@ try {
      * The difference is based on the request body/ payload.
      * For Direct Debit you can refer to the variable $directDebitStatusByExternalIdBody or $directDebitStatusByReferenceBody to see the value.
      * For VA (Bank Transfer) you can refer to the variable $vaStatusBody to see the value.
+     * For qris, you can refer to the variable $qrisStatusBody.
      */
 
     /**
@@ -147,6 +155,34 @@ try {
      */
     $snapBiResponse = SnapBi::va()
         ->withBody($vaStatusBody)
+        ->withAccessTokenHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->withTransactionHeader([
+            "CHANNEL-ID" => "12345"
+        ])
+        ->getStatus($external_id);
+
+    /**
+     * Example code for Qris getStatus
+     */
+    $snapBiResponse = SnapBi::qris()
+        ->withBody($qrisStatusBody)
+        ->getStatus($external_id);
+
+    /**
+     * Example code for Qris getStatus by re-using access token
+     */
+    $snapBiResponse = SnapBi::qris()
+        ->withBody($qrisStatusBody)
+        ->withAccessToken("")
+        ->getStatus($external_id);
+
+    /**
+     * Example code for Qris getStatus by adding additional header
+     */
+    $snapBiResponse = SnapBi::qris()
+        ->withBody($qrisStatusBody)
         ->withAccessTokenHeader([
             "CHANNEL-ID" => "12345"
         ])

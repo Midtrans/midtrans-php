@@ -16,6 +16,10 @@ class SnapBi
     const DEBIT_CANCEL = '/v1.0/debit/cancel';
     const VA_STATUS = '/v1.0/transfer-va/status';
     const VA_CANCEL = '/v1.0/transfer-va/delete-va';
+    const QRIS_PAYMENT = '/v1.0/qr/qr-mpm-generate';
+    const QRIS_STATUS = '/v1.0/qr/qr-mpm-query';
+    const QRIS_REFUND = '/v1.0/qr/qr-mpm-refund';
+    const QRIS_CANCEL = '/v1.0/qr/qr-mpm-cancel';
     private $apiPath;
     private $paymentMethod;
     private $accessTokenHeader = [];
@@ -52,6 +56,13 @@ class SnapBi
     public static function va()
     {
         return new self("va");
+    }
+    /**
+     * this method chain is used to start Qris related transaction
+     */
+    public static function qris()
+    {
+        return new self("qris");
     }
 
     /**
@@ -285,13 +296,20 @@ class SnapBi
         switch ($paymentMethod) {
             case "va":
                 return self::CREATE_VA;
+            case "qris":
+                return self::QRIS_PAYMENT;
             default:
                 return self::PAYMENT_HOST_TO_HOST;
         }
     }
     private function setupRefundApiPath($paymentMethod)
     {
-        return self::DEBIT_REFUND;
+        switch ($paymentMethod) {
+            case "qris":
+                return self::QRIS_REFUND;
+            default:
+                return self::DEBIT_REFUND;
+        }
     }
 
     private function setupCancelApiPath($paymentMethod)
@@ -299,6 +317,8 @@ class SnapBi
         switch ($paymentMethod) {
             case "va":
                 return self::VA_CANCEL;
+            case "qris":
+                return self::QRIS_CANCEL;
             default:
                 return self::DEBIT_CANCEL;
         }
@@ -309,6 +329,8 @@ class SnapBi
         switch ($paymentMethod) {
             case "va":
                 return self::VA_STATUS;
+            case "qris":
+                return self::QRIS_STATUS;
             default:
                 return self::DEBIT_STATUS;
         }
