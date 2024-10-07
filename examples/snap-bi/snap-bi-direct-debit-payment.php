@@ -45,10 +45,10 @@ $debitParams = array(
     "validUpTo" => $valid_until,
     "payOptionDetails" => array(
         array(
-            "payMethod" => "DANA",
-            "payOption" => "DANA",
+            "payMethod" => "GOPAY",
+            "payOption" => "GOPAY_WALLET",
             "transAmount" => array(
-                "value" => "100.0",
+                "value" => "10000.0",
                 "currency" => "IDR"
             )
         )
@@ -82,7 +82,7 @@ $debitParams = array(
             array(
                 "id" => "1",
                 "price" => array(
-                    "value" => "100.00",
+                    "value" => "10000.00",
                     "currency" => "IDR"
                 ),
                 "quantity" => 1,
@@ -103,9 +103,8 @@ SnapBiConfig::$snapBiClientId = $client_id;
 SnapBiConfig::$snapBiPrivateKey = $private_key;
 SnapBiConfig::$snapBiClientSecret = $client_secret;
 SnapBiConfig::$snapBiPartnerId = $partner_id;
-SnapBiConfig::$snapBiChannelId = $partner_id;
 SnapBiConfig::$snapBiChannelId = $channel_id;
-SnapBiConfig::$enableLogging = false;
+SnapBiConfig::$enableLogging = true;
 
 try {
 

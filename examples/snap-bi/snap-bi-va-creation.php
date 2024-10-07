@@ -13,22 +13,20 @@ require_once dirname(__FILE__) . '/../../Midtrans.php';
  */
 
 $client_id = "Zabcdefg-MIDTRANS-CLIENT-SNAP";
-
 //make sure to add 3 newline "\n" to your private key as shown below
 $private_key = "-----BEGIN PRIVATE KEY-----\nABCDEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7Zk6kJjqamLddaN1lK03XJW3vi5zOSA7V+5eSiYeM9tCOGouJewN/Py58wgvRh7OMAMm1IbSZpAbcZbBa1=\n-----END PRIVATE KEY-----\n";
 $client_secret = "ABcdefghiSrLJPgKRXqdjaSAuj5WDAbeaXAX8Vn7CWGHuBCfFgABCDVqRLvNZf8BaqPGKaksMjrZDrZqzZEbaA1AYFwBewIWCqLZr4PuvuLBqfTmYIzAbCakHKejABCa";
 $partner_id = "partner-id";
 $merchant_id = "M001234";
-
 $channel_id = "12345";
 
 $external_id = "uzi-order-testing" . uniqid();
 $customerVaNo = generateRandomNumber();
 
 $vaParams = array(
-    "partnerServiceId"=> "   70012",
-    "customerNo"=> $customerVaNo,
-    "virtualAccountNo"=> "   70012" . $customerVaNo,
+    "partnerServiceId"=> "    1234",
+    "customerNo"=> "0000000000",
+    "virtualAccountNo"=> "    12340000000000",
     "virtualAccountName"=> "Jokul Doe",
     "virtualAccountEmail"=> "jokul@email.com",
     "virtualAccountPhone"=> "6281828384858",
@@ -39,19 +37,9 @@ $vaParams = array(
     ],
     "additionalInfo"=> [
         "merchantId"=> $merchant_id,
-        "bank"=> "mandiri",
+        "bank"=> "bca",
         "flags"=> [
-            "shouldRandomizeVaNumber"=> false
-        ],
-        "mandiri"=> [
-            "billInfo1"=> "bank_name",
-            "billInfo2"=> "mandiri",
-            "billInfo3"=> "Name:",
-            "billInfo4"=> "Budi Utomo",
-            "billInfo5"=> "Class:",
-            "billInfo6"=> "Computer Science",
-            "billInfo7"=> "ID:",
-            "billInfo8"=> "VT-12345"
+            "shouldRandomizeVaNumber"=> true
         ],
         "customerDetails"=> [
             "firstName"=> "Jokul",
@@ -118,8 +106,8 @@ SnapBiConfig::$snapBiClientId = $client_id;
 SnapBiConfig::$snapBiPrivateKey = $private_key;
 SnapBiConfig::$snapBiClientSecret = $client_secret;
 SnapBiConfig::$snapBiPartnerId = $partner_id;
-SnapBiConfig::$snapBiChannelId = $partner_id;
 SnapBiConfig::$snapBiChannelId = $channel_id;
+SnapBiConfig::$enableLogging = true;
 
 try {
 
