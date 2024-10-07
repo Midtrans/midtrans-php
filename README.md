@@ -462,7 +462,9 @@ Standar Nasional Open API Pembayaran, or in short SNAP, is a national payment op
 // Set the channel id here.
 \SnapBi\Config::$snapBiChannelId = "CHANNEL ID";
 // Enable logging to see details of the request/response make sure to disable this on production, the default is disabled.
-SnapBiConfig::$enableLogging = false;
+\SnapBi\Config::$enableLogging = false;
+// Set your public key here if you want to verify your webhook notification, make sure to add \n on the public key, you can refer to the examples
+\SnapBi\Config::$SnapBiPublicKey = "YOUR PUBLIC KEY"
 ```
 
 ### 3.2 Create Payment
@@ -948,6 +950,47 @@ $snapBiResponse = SnapBi::va()
 
 ### 3.9 Payment Notification
 To implement Snap-Bi Payment Notification you can refer to this [docs](https://docs.midtrans.com/reference/payment-notification-api)
+To verify the webhook notification that you recieve you can use this method below
+```php
+/**
+ * Example verifying the webhook notification
+ */
+ 
+//the request body/ payload sent by the webhook
+ $payload = json_decode(
+ {
+    "originalPartnerReferenceNo": "uzi-order-testing67039fa9da813",
+    "originalReferenceNo": "A120241007084530GSXji4Q5OdID",
+    "merchantId": "G653420184",
+    "amount": {
+        "value": "10000.00",
+        "currency": "IDR"
+    },
+    "latestTransactionStatus": "03",
+    "transactionStatusDesc": "PENDING",
+    "additionalInfo": {
+        "refundHistory": [],
+        "userPaymentDetails": []
+    }
+};
+
+// to get the signature value, you need to retrieve it from the webhook header called X-Signature
+$xSignature = "CgjmAyC9OZ3pB2JhBRDihL939kS86LjP1VLD1R7LgI4JkvYvskUQrPXgjhrZqU2SFkfPmLtSbcEUw21pg2nItQ0KoX582Y6Tqg4Mn45BQbxo4LTPzkZwclD4WI+aCYePQtUrXpJSTM8D32lSJQQndlloJfzoD6Rh24lNb+zjUpc+YEi4vMM6MBmS26PpCm/7FZ7/OgsVh9rlSNUsuQ/1QFpldA0F8bBNWSW4trwv9bE1NFDzliHrRAnQXrT/J3chOg5qqH0+s3E6v/W21hIrBYZVDTppyJPtTOoCWeuT1Tk9XI2HhSDiSuI3pevzLL8FLEWY/G4M5zkjm/9056LTDw==";
+
+// to get the timeStamp value, you need to retrieve it from the webhook header called X-Timestamp
+$xTimeStamp = "2024-10-07T15:45:22+07:00";
+
+// the url path is based on the webhook url of the payment method for example for direct debit is `/v1.0/debit/notify`
+$notificationUrlPath = "/v1.0/debit/notify"
+
+SnapBi::notification()
+    ->withBody($payload)
+    ->withSignature($xSignature)
+    ->withTimeStamp($xTimeStamp)
+    ->withNotificationUrlPath($notificationUrlPath)
+    ->isWebhookNotificationVerified()
+
+```
 
 ## Unit Test
 ### Integration Test (sandbox real transactions)
