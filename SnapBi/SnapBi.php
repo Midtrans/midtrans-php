@@ -2,6 +2,8 @@
 
 namespace SnapBi;
 
+use Exception;
+
 /**
  * Provide Snap-Bi functionalities (create transaction, refund, cancel, get status)
  */
@@ -34,6 +36,9 @@ class SnapBi
     private $deviceId;
     private $debugId;
     private $timeStamp;
+    private $signature;
+    private $timestamp;
+    private $notificationUrlPath;
 
     public function __construct($paymentMethod)
     {
@@ -64,7 +69,12 @@ class SnapBi
     {
         return new self("qris");
     }
-
+    /**
+     * this method chain is used to verify webhook notification
+     */
+    public static function notification(){
+        return new self("");
+    }
     /**
      * this method chain is used to add additional header during access token request
      */
@@ -95,7 +105,7 @@ class SnapBi
     /**
      * this method chain is used to supply the request body/ payload
      */
-    public function withBody(array $body)
+    public function withBody($body)
     {
         $this->body = $body;
         return $this;
@@ -143,6 +153,22 @@ class SnapBi
     public function withDebuglId($debugId)
     {
         $this->debugId = $debugId;
+        return $this;
+    }
+
+    public function withSignature($signature)
+    {
+        $this->signature = $signature;
+        return $this;
+    }
+    public function withTimeStamp($timeStamp)
+    {
+        $this->timestamp = $timeStamp;
+        return $this;
+    }
+    public function withNotificationUrlPath($notificationUrlPath)
+    {
+        $this->notificationUrlPath = $notificationUrlPath;
         return $this;
     }
 
@@ -195,6 +221,28 @@ class SnapBi
         return SnapBiApiRequestor::remoteCall(SnapBiConfig::getSnapBiTransactionBaseUrl() . self::ACCESS_TOKEN, $snapBiAccessTokenHeader, $openApiPayload);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function  isWebhookNotificationVerified(){
+        if (!SnapBiConfig::$SnapBiPublicKey){
+            throw new Exception(
+                'The public key is null, You need to set the public key from SnapBiConfig.' .
+                'For more details contact support at support@midtrans.com if you have any questions.'
+            );
+        }
+        $notificationHttpMethod = "POST";
+        $minifiedNotificationBodyJsonString = json_encode($this->body);
+        $hashedNotificationBodyJsonString = hash('sha256', $minifiedNotificationBodyJsonString);
+        $rawStringDataToVerifyAgainstSignature = $notificationHttpMethod . ':' . $this->notificationUrlPath . ':' . $hashedNotificationBodyJsonString . ':' . $this->timestamp;
+        $isSignatureVerified = openssl_verify(
+            $rawStringDataToVerifyAgainstSignature,
+            base64_decode($this->signature),
+            SnapBiConfig::$SnapBiPublicKey,
+            OPENSSL_ALGO_SHA256
+        );
+        return $isSignatureVerified === 1;
+    }
     private function createConnection($externalId = null)
     {
         // Attempt to get the access token if it's not already set
