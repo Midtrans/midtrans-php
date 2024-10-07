@@ -952,9 +952,6 @@ $snapBiResponse = SnapBi::va()
 To implement Snap-Bi Payment Notification you can refer to this [docs](https://docs.midtrans.com/reference/payment-notification-api)
 To verify the webhook notification that you recieve you can use this method below
 ```php
-/**
- * Example verifying the webhook notification
- */
  
 //the request body/ payload sent by the webhook
  $payload = json_decode(
@@ -982,8 +979,10 @@ $xTimeStamp = "2024-10-07T15:45:22+07:00";
 
 // the url path is based on the webhook url of the payment method for example for direct debit is `/v1.0/debit/notify`
 $notificationUrlPath = "/v1.0/debit/notify"
-
-SnapBi::notification()
+/**
+ * Example verifying the webhook notification
+ */
+$isVerified = SnapBi::notification()
     ->withBody($payload)
     ->withSignature($xSignature)
     ->withTimeStamp($xTimeStamp)
