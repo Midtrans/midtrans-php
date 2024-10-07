@@ -225,7 +225,7 @@ class SnapBi
      * @throws Exception
      */
     public function  isWebhookNotificationVerified(){
-        if (!SnapBiConfig::$SnapBiPublicKey){
+        if (!SnapBiConfig::$snapBiPublicKey){
             throw new Exception(
                 'The public key is null, You need to set the public key from SnapBiConfig.' .
                 'For more details contact support at support@midtrans.com if you have any questions.'
@@ -238,7 +238,7 @@ class SnapBi
         $isSignatureVerified = openssl_verify(
             $rawStringDataToVerifyAgainstSignature,
             base64_decode($this->signature),
-            SnapBiConfig::$SnapBiPublicKey,
+            SnapBiConfig::$snapBiPublicKey,
             OPENSSL_ALGO_SHA256
         );
         return $isSignatureVerified === 1;

@@ -37,7 +37,7 @@ header("Content-Type: application/json");
 $notificationUrlPath = $pathAfterNotification;
 
 $publicKeyString = "-----BEGIN PUBLIC KEY-----\nABCDefghlhuoJgoXiK21s2NIW0+uJb08sHmd/+/Cm7UH7M/oU3VE9oLhU89oOzXZgtsiw7lR8duWJ0w738NfzvkdA5pX8OYnIL+5Hfa/CxvlT4yAX/abcdEFgh\n-----END PUBLIC KEY-----\n";
-SnapBiConfig::$SnapBiPublicKey = $publicKeyString;
+SnapBiConfig::$snapBiPublicKey = $publicKeyString;
 
 
 try {

@@ -464,7 +464,7 @@ Standar Nasional Open API Pembayaran, or in short SNAP, is a national payment op
 // Enable logging to see details of the request/response make sure to disable this on production, the default is disabled.
 \SnapBi\Config::$enableLogging = false;
 // Set your public key here if you want to verify your webhook notification, make sure to add \n on the public key, you can refer to the examples
-\SnapBi\Config::$SnapBiPublicKey = "YOUR PUBLIC KEY"
+\SnapBi\Config::$snapBiPublicKey = "YOUR PUBLIC KEY"
 ```
 
 ### 3.2 Create Payment
