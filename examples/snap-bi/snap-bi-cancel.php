@@ -40,7 +40,7 @@ $vaCancelBody = array(
     )
 );
 $qrisCancelBody = array(
-    "originalReferenceNo" => "A120240910091847fYkCqhCH1XID",
+    "originalReferenceNo" => "A120241003151650FgOcD5vWIVID",
     "merchantId" => $merchant_id,
     "reason" => "cancel reason",
 );

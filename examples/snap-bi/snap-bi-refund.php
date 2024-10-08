@@ -13,14 +13,12 @@ require_once dirname(__FILE__) . '/../../Midtrans.php';
  */
 
 $client_id = "Zabcdefg-MIDTRANS-CLIENT-SNAP";
-
 //make sure to add 3 newline "\n" to your private key as shown below
 $private_key = "-----BEGIN PRIVATE KEY-----\nABCDEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7Zk6kJjqamLddaN1lK03XJW3vi5zOSA7V+5eSiYeM9tCOGouJewN/Py58wgvRh7OMAMm1IbSZpAbcZbBa1=\n-----END PRIVATE KEY-----\n";
 $client_secret = "ABcdefghiSrLJPgKRXqdjaSAuj5WDAbeaXAX8Vn7CWGHuBCfFgABCDVqRLvNZf8BaqPGKaksMjrZDrZqzZEbaA1AYFwBewIWCqLZr4PuvuLBqfTmYIzAbCakHKejABCa";
 $partner_id = "partner-id";
 $merchant_id = "M001234";
 $channel_id = "12345";
-
 
 $external_id = "uzi-order-testing" . uniqid();
 date_default_timezone_set('Asia/Jakarta');
@@ -48,12 +46,12 @@ $directDebitRefundByReferenceBody = array(
 
 $qrisRefundBody = array(
     "merchantId" => $merchant_id,
-    "originalPartnerReferenceNo" => "uzi-order-testing66e01a9b8c6bf",
-    "originalReferenceNo" => "A120240910100828anKJlXgsi6ID",
+    "originalPartnerReferenceNo" => "uzi-order-testing66feb6218257b",
+    "originalReferenceNo" => "A1202410031520025F17xSCZWMID",
     "partnerRefundNo" => "partner-refund-no-". uniqid(),
     "reason" => "refund reason",
     "refundAmount" => array(
-        "value" => "1500.00",
+        "value" => "100.00",
         "currency" => "IDR"
     ),
     "additionalInfo" => array(
