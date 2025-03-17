@@ -2,7 +2,7 @@
     "name": "midtrans/midtrans-php",
     "description": "PHP Wrapper for Midtrans Payment API.",
     "homepage": "https://midtrans.com",
-    "version": "2.6.1",
+    "version": "2.6.2",
     "type": "library",
     "license":"MIT",
     "authors": [
@@ -23,7 +23,7 @@
         "php": ">=5.4",
         "ext-curl": "*",
         "ext-json": "*",
-      "ext-openssl": "*"
+        "ext-openssl": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "5.7.*",
@@ -31,7 +31,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Midtrans\\": "Midtrans/"
+            "Midtrans\\": "Midtrans/",
+            "SnapBi\\": "SnapBi/"
         }
     },
     "autoload-dev": {
