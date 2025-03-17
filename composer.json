@@ -17,6 +17,10 @@
         {
             "name": "Ismail Faruqi",
             "email": "ismail.faruqi@veritrans.co.id"
+        },
+        {
+            "name": "Muhammad Fauzi Masykur",
+            "email": "muhammad.masykur@gojek.com"
         }
     ],
     "require": {
